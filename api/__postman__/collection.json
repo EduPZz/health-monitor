@@ -1,0 +1,49 @@
+{
+	"info": {
+		"_postman_id": "745881d9-e397-43f0-a54b-54d68eb1ead0",
+		"name": "Health Monitor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "15888669",
+		"_collection_link": "https://faculdade-1879.postman.co/workspace/Faculdade~399ee0f6-e090-4270-8de8-112499534e7a/collection/15888669-745881d9-e397-43f0-a54b-54d68eb1ead0?action=share&source=collection_link&creator=15888669"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"edu@gmail.com\", \"password\": \"Edu@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiZWR1QGdtYWlsLmNvbSIsImlhdCI6MTcyODg1NDg3NCwiZXhwIjoxNzI4OTQxMjc0fQ.z297PJONPQhRim8Rnj85nYJNiOTB5LFtg8RUTIm-19k"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/auth/profile"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
