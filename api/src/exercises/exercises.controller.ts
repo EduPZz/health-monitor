@@ -8,7 +8,7 @@ import {
   Delete,
   Request,
 } from '@nestjs/common';
-import { ExerciseService } from './exercise.service';
+import { ExerciseService } from './exercises.service';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
 import { UpdateExerciseDto } from './dto/update-exercise.dto';
 

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ExerciseService } from './exercise.service';
-import { ExerciseController } from './exercise.controller';
+import { ExerciseService } from './exercises.service';
+import { ExerciseController } from './exercises.controller';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersModule } from 'src/users/users.module';
 
@@ -9,4 +9,4 @@ import { UsersModule } from 'src/users/users.module';
   providers: [ExerciseService, PrismaService],
   imports: [UsersModule],
 })
-export class ExerciseModule {}
+export class ExercisesModule {}
