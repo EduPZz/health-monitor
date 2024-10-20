@@ -14,9 +14,19 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       Int        @id @default(autoincrement())
   password String
-  email    String @unique
+  email    String     @unique
   name     String
-  timezone String @default("UTC")
+  timezone String     @default("UTC")
+  Exercise Exercise[]
+}
+
+model Exercise {
+  id        Int      @id @default(autoincrement())
+  beginTime DateTime
+  endTime   DateTime
+  type      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

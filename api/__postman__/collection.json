@@ -13,8 +13,18 @@
 				{
 					"name": "singup",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"Joao@123\",\r\n    \"email\": \"edu@hotw12maail.com\",\r\n    \"name\": \"Duardinho\",\r\n    \"timezone\": \"BRT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/auth/signup"
 					},
 					"response": []
 				},
@@ -25,7 +35,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"edu@gmail.com\", \"password\": \"Edu@123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"edu@hotmail.com\", \"password\": \"Edu@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -42,7 +52,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiZWR1QGdtYWlsLmNvbSIsImlhdCI6MTcyODg1NDg3NCwiZXhwIjoxNzI4OTQxMjc0fQ.z297PJONPQhRim8Rnj85nYJNiOTB5LFtg8RUTIm-19k"
+								"token": "{{token}}"
 							}
 						},
 						"method": "GET",
@@ -55,7 +65,139 @@
 		},
 		{
 			"name": "Users",
-			"item": []
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"beginTime\": \"2024-10-19T12:00:00Z\",\r\n    \"endTime\": \"2024-10-19T13:00:00Z\",\r\n    \"type\": \"cardio\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/exercise"
+					},
+					"response": []
+				},
+				{
+					"name": "FindMy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/exercise"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"beginTime\": \"2024-10-19T12:00:00Z\",\r\n    \"endTime\": \"2024-10-19T13:00:00Z\",\r\n    \"type\": \"yoga\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/exercise/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/exercise/4"
+					},
+					"response": []
+				},
+				{
+					"name": "FindOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/exercise/3"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
