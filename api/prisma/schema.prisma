@@ -14,14 +14,16 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  password     String
-  email        String         @unique
-  name         String
-  timezone     String         @default("UTC")
-  Exercise     Exercise[]
-  BodyMeasure  BodyMeasure[]
-  consultation consultation[]
+  id             Int            @id @default(autoincrement())
+  password       String
+  email          String         @unique
+  name           String
+  timezone       String         @default("UTC")
+  smartwatchCode String?
+  smartwatch     smartwatch?     @relation(fields: [smartwatchCode], references: [code])
+  Exercise       Exercise[]
+  BodyMeasure    BodyMeasure[]
+  consultation   consultation[]
 }
 
 model Exercise {
@@ -56,4 +58,13 @@ model consultation {
   specialization String
   userId         Int
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model smartwatch {
+  code         String @id
+  bloodGlucose Int
+  heartbeat    Int
+  systolic     Int
+  diastolic    Int
+  User         User[]
 }
