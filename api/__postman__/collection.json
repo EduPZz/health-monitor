@@ -11,6 +11,14 @@
 			"name": "Auth",
 			"item": [
 				{
+					"name": "singup",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
 					"name": "Login",
 					"request": {
 						"method": "POST",
@@ -44,6 +52,10 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Users",
+			"item": []
 		}
 	]
 }

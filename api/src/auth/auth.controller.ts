@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,6 +20,12 @@ export class AuthController {
   @Public()
   signIn(@Body() signInDto: Record<string, any>) {
     return this.authService.signIn(signInDto.email, signInDto.password);
+  }
+
+  @Post('signup')
+  @Public()
+  signup(@Body() createUserDto: CreateUserDto) {
+    return this.authService.signup(createUserDto);
   }
 
   @Get('profile')
