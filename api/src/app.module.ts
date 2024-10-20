@@ -7,9 +7,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { ExercisesModule } from './exercises/exercises.module';
 import { BodyMeasuresModule } from './body-measures/body-measures.module';
+import { ConsultationsModule } from './consultations/consultations.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, ExercisesModule, BodyMeasuresModule],
+  imports: [UsersModule, AuthModule, ExercisesModule, BodyMeasuresModule, ConsultationsModule],
   controllers: [AppController],
   providers: [
     AppService,
