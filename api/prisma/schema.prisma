@@ -14,12 +14,13 @@ datasource db {
 }
 
 model User {
-  id       Int        @id @default(autoincrement())
-  password String
-  email    String     @unique
-  name     String
-  timezone String     @default("UTC")
-  Exercise Exercise[]
+  id          Int           @id @default(autoincrement())
+  password    String
+  email       String        @unique
+  name        String
+  timezone    String        @default("UTC")
+  Exercise    Exercise[]
+  BodyMeasure BodyMeasure[]
 }
 
 model Exercise {
@@ -27,6 +28,21 @@ model Exercise {
   beginTime DateTime
   endTime   DateTime
   type      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BodyMeasure {
+  id        Int      @id @default(autoincrement())
+  chest     Int      // Measurement of arm circumference in cm
+  arm       Int      // Measurement of arm circumference in cm
+  waist     Int      // Waist circumference in cm
+  thigh     Int      // Thigh circumference in cm
+  hip       Int      // Hip circumference in cm
+  calf      Int      // Calf circumference in cm
+  weight    Decimal  // kg
+  height    Decimal  // Meters
+  createdAt DateTime @default(now()) // Timestamp for tracking when the measurements were taken
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
