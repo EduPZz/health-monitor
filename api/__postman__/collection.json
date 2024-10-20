@@ -30,12 +30,30 @@
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the response JSON\r",
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"// Test to set the \"access_token\" from the response to the \"token\" variable of the collection\r",
+									"pm.test(\"Set access_token as token variable of the collection\", function () {\r",
+									"    pm.collectionVariables.set(\"token\", jsonData.access_token);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"edu@hotmail.com\", \"password\": \"Edu@123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"edu@gmail.com\",\r\n    \"password\": \"Edu@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -64,7 +82,7 @@
 			]
 		},
 		{
-			"name": "Users",
+			"name": "Exercises",
 			"item": [
 				{
 					"name": "Create",
@@ -118,14 +136,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beginTime\": \"2024-10-19T12:00:00Z\",\r\n    \"endTime\": \"2024-10-19T13:00:00Z\",\r\n    \"type\": \"yoga\"\r\n}",
+							"raw": "{\r\n    \"beginTime\": \"2024-10-19T12:00:00Z\",\r\n    \"endTime\": \"2024-10-19T13:00:00Z\",\r\n    \"type\": \"musculação\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:3000/exercise/1"
+						"url": "http://localhost:3000/exercise/6"
 					},
 					"response": []
 				},
@@ -149,7 +167,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/exercise/4"
+						"url": "http://localhost:3000/exercise/6"
 					},
 					"response": []
 				},
@@ -164,7 +182,114 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:3000/exercise/3"
+						"url": "http://localhost:3000/exercise/5"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Body measures",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"chest\": 100,\r\n  \"arm\": 35,\r\n  \"waist\": 85,\r\n  \"thigh\": 60,\r\n  \"hip\": 95,\r\n  \"calf\": 40,\r\n  \"weight\": \"75.5\",\r\n  \"height\": \"1.75\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/body-measure"
+					},
+					"response": []
+				},
+				{
+					"name": "FindMy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/body-measure"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"chest\": 1000,\r\n  \"arm\": 35,\r\n  \"waist\": 85,\r\n  \"thigh\": 60,\r\n  \"hip\": 95,\r\n  \"calf\": 40,\r\n  \"weight\": \"75.5\",\r\n  \"height\": \"1.75\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/body-measure/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/body-measure/3"
+					},
+					"response": []
+				},
+				{
+					"name": "FindOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/body-measure/4"
 					},
 					"response": []
 				}
@@ -198,6 +323,10 @@
 			"key": "token",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "abc",
+			"value": ""
 		}
 	]
 }
