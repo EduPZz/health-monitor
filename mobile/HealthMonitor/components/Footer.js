@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const Footer = () => {
   return (
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     padding: 10,
-    height: '80px',
+    height: '10%',
     width: "100%",
   },
 });
