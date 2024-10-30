@@ -32,9 +32,9 @@ const loginUser = (dispatch) => {
         password: password,
       });
 
-      await AsyncStorage.setItem("id", data.data.token);
+      await AsyncStorage.setItem("accessToken", data.data.token);
 
-      const id = await AsyncStorage.getItem("id");
+      const id = await AsyncStorage.getItem("accessToken");
       console.log(id);
     } catch (e) {
       console.log(e);
