@@ -1,6 +1,6 @@
 import createContext from "./createContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from '../api/index';
+import api from "../api/index";
 
 const initialState = {};
 
@@ -27,12 +27,12 @@ const isLogged = () => {
 const loginUser = (dispatch) => {
   return async (email, password) => {
     try {
-      const data = await api.post("auth/login", {
+      const { data } = await api.post("auth/login", {
         email: email,
         password: password,
       });
 
-      await AsyncStorage.setItem("accessToken", data.data.token);
+      await AsyncStorage.setItem("accessToken", data.access_token);
 
       const id = await AsyncStorage.getItem("accessToken");
       console.log(id);
