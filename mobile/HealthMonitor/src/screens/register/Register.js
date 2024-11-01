@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
-import registerStyle from "./cadastroStyle";
+import registerStyle from "./registerStyle";
 import { useState } from "react";
 import Feather from '@expo/vector-icons/Feather';
 
-const Cadastro = () => {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmaSenha, setConfirmaSenha] = useState('');
