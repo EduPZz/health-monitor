@@ -23,7 +23,7 @@ const CurrentDate = () => {
 
 const styles = StyleSheet.create({
     textDate: {
-        fontSize: '12px',
+        fontSize: 12,
         fontWeight: 'semibold',
         color: '#fff',
         fontFamily: 'Roboto'

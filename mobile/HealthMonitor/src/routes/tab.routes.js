@@ -8,7 +8,7 @@ const Tab = createBottomTabNavigator();
 
 export default function TabRoutes() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { height: 100 } }}>
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { height: 60 } }}>
       <Tab.Screen
         name="Home"
         component={Home}

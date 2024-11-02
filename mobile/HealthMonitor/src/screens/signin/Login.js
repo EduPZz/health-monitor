@@ -7,19 +7,20 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  Button,
   ToastAndroid,
 } from "react-native";
 import loginStyle from "./loginStyle";
 import { useContext, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
 import { Context } from "../../context/authContext";
+import { Link } from "@react-navigation/native";
 
 const Login = ({ navigation }) => {
   const { loginUser } = useContext(Context);
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
 
   const login = async () => {
     try {
@@ -27,8 +28,9 @@ const Login = ({ navigation }) => {
       navigation.reset({
         index: 0,
         routes: [{ name: "TabRoutes" }],
-    });
+      });
     } catch (error) {
+      console.log(error);
       ToastAndroid.show("Não foi possível fazer o login!", ToastAndroid.SHORT);
     }
   };
@@ -36,10 +38,10 @@ const Login = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={loginStyle.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 70}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -10}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <View style={loginStyle.topSection}>
           <Image
             style={{ width: 100, height: 100, margin: 50 }}
@@ -80,26 +82,33 @@ const Login = ({ navigation }) => {
               value={senha}
               onChangeText={setSenha}
               placeholderTextColor="#555"
-              secureTextEntry={true}
+              secureTextEntry={!isPasswordVisible}
             />
-            <Feather name="eye" size={24} color="black" />
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!isPasswordVisible)}
+            >
+              <Feather
+                name={isPasswordVisible ? "eye-off" : "eye"}
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
           </View>
 
-          <View style={{ width: "100%", flexDirection: "row-reverse" }}>
-            <Text style={loginStyle.textEmphasis}>Esqueceu a senha?</Text>
-          </View>
-
-          <TouchableOpacity style={loginStyle.loginButtom}>
-            <Button
-              style={loginStyle.textButtom}
-              onPress={login}
-              title="Login"
-            />
+          <TouchableOpacity
+            style={[
+              loginStyle.loginButtom,
+              { opacity: email && senha ? 1 : 0.5 },
+            ]}
+            onPress={login}
+            disabled={!email || !senha}
+          >
+            <Text style={loginStyle.textButtom}>Login</Text>
           </TouchableOpacity>
 
-          <Text style={loginStyle.textEmphasis}>
+          <Link to={{screen: 'Register'}} style={loginStyle.textEmphasis}>
             Não tem uma conta? Cadastre-se
-          </Text>
+          </Link >
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

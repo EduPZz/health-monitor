@@ -15,8 +15,6 @@ const isLogged = () => {
   return async () => {
     try {
       const token = await AsyncStorage.getItem("accessToken");
-      console.log({ token });
-      console.log(!!token);
       return !!token;
     } catch (e) {
       console.log(e);
@@ -24,26 +22,32 @@ const isLogged = () => {
   };
 };
 
-const loginUser = (dispatch) => {
+const loginUser = () => {
   return async (email, password) => {
-    try {
-      const { data } = await api.post("auth/login", {
-        email: email,
-        password: password,
-      });
+    const { data } = await api.post("auth/login", {
+      email: email,
+      password: password,
+    });
 
-      await AsyncStorage.setItem("accessToken", data.access_token);
+    await AsyncStorage.setItem("accessToken", data.access_token);
+  };
+};
 
-      const id = await AsyncStorage.getItem("accessToken");
-      console.log(id);
-    } catch (e) {
-      console.log(e);
-    }
+const signupUser = () => {
+  return async ({ password, email, name, timezone }) => {
+    const { data: { tokenInformation } } = await api.post("auth/signup", {
+      password,
+      email,
+      name,
+      timezone,
+    });
+
+    await AsyncStorage.setItem("accessToken", tokenInformation.access_token);
   };
 };
 
 export const { Context, Provider } = createContext(
   reducer,
-  { loginUser, isLogged },
+  { loginUser, isLogged, signupUser },
   initialState
 );

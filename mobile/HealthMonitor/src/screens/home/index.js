@@ -58,26 +58,26 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   divWelcome: {
-    padding: "30px",
+    padding: 30,
   },
   textWelcome: {
     color: "#fff",
-    fontWeight: "600",
-    fontSize: "18px",
-    paddingBottom: "10px",
+    fontWeight: "600", // Changed to string
+    fontSize: 18,
+    paddingBottom: 10,
     fontFamily: "Arial",
   },
   divOpt: {
-    marginTop: "15px",
-    marginRight: "30px",
-    marginBottom: "15px",
-    marginLeft: "30px",
+    marginTop: 15,
+    marginRight: 30,
+    marginBottom: 15,
+    marginLeft: 30,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-    height: "110px",
+    height: 110,
     backgroundColor: "#FFF",
-    borderRadius: "10px",
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   textOpt: {
-    fontSize: "16px",
-    fontWeight: "600",
+    fontSize: 16,
+    fontWeight: "600", // Changed to string
     textAlign: "center",
     width: "50%",
   },
