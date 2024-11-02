@@ -3,6 +3,7 @@
     height: 100%;
     background-color: #8D8D8D;
     display: flex;
+    font-family: 'Mulish', serif;
 }
 
 .content{
@@ -12,7 +13,6 @@
 
 .divWelcome{
     margin: 40px;
-    font-family: 'Mulish', serif;
 }
 
 .title{
@@ -29,8 +29,76 @@
 }
 
 .divMetricas{
-    width: 40%;
+    width: 60%;
     height: 100%;
     background-color: #303030;
     border-radius: 40px 0px 0px 40px;
+}
+
+.divMonitoramentosWatch{
+    display: flex;
+    margin: 0px 10px;
+}
+
+.divMonitoramento{
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    height: 260px;
+    background-color: #FFF;
+    border-radius: 12px;
+    border: 1px solid #E8E7E7;
+    margin: 0px 30px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.headerMonitoramento{
+    display: flex;
+    align-items: center;
+}
+
+.iconMonitoramento{
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border-radius: 12px;
+    margin: 20px 20px 10px 20px;
+}
+
+.titleMonitoramento{
+    font-size: 16px;
+    font-weight: 600;
+    width: 80px;
+}
+
+.divDados{
+    display: flex;
+    margin: 0px 20px;
+    align-items: center;
+}
+
+.numberDados{
+    font-size: 32px;
+    margin: 0px;
+}
+
+.tipoDado{
+    font-size: 16px;
+    color: #818181;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+.divStatus{
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0px 20px;
+    width: 60px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
 }
