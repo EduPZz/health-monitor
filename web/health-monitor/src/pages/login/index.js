@@ -75,7 +75,7 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item>
-            <Link to="/signin">
+            <Link to="/signup">
               <p>
                 Não possui conta? Registre-se
               </p>
