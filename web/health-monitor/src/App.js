@@ -1,19 +1,12 @@
-import "./App.css";
-import Sidebar from "./components/sidebar/sidebar";
-import Dashboard from "./pages/dashboard/dashboard";
-import Login from "./pages/login";
 import { AuthProvider } from "./context/AuthContext";
 import { BrowserRouter as Router, } from 'react-router-dom';
+import AppRoutes from "./appRoutes";
 
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="App">
-          <Login />
-          {/*<Sidebar />
-          <Dashboard />*/}
-        </div>
+          <AppRoutes />
       </AuthProvider>
     </Router>
   );

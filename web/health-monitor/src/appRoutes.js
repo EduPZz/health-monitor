@@ -5,6 +5,7 @@ import { Context } from "./context/AuthContext";
 
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard/dashboard";
+import LoggedInLayout from "./layout";
 
 function LogedRoutes() {
   const { loading, authenticated } = useContext(Context);
@@ -26,7 +27,9 @@ export default function AppRoutes() {
       <Route path="/login" element={<Login />} />
       {/* <Route path="/signin" element={<Signin />} /> */}
       <Route element={<LogedRoutes />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route element={<LoggedInLayout />}>
+          <Route path="/" element={<Dashboard />} />
+        </Route>
       </Route>
     </Routes>
   );

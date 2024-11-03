@@ -1,38 +1,41 @@
-.container{
-    width: 100%;
-    height: 100%;
-    background-color: #8D8D8D;
-    display: flex;
-    font-family: 'Mulish', serif;
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: #8d8d8d;
+  display: flex;
+  font-family: "Mulish", serif;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
 }
 
-.content{
-    width: 60%;
-    height: 100%;
+.content {
+  width: 60%;
+  height: 100%;
 }
 
-.divWelcome{
-    margin: 30px 40px;
+.divWelcome {
+  margin: 40px;
 }
 
-.title{
-    font-size: 28px;
-    font-weight: bold;
-    color: #FFF;
-    margin: 0;
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
 }
 
-.subTitle{
-    font-size: 16px;
-    font-weight: 600;
-    color: #FFF;
+.subTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
 }
 
-.divMetricas{
-    width: 60%;
-    height: 100%;
-    background-color: #303030;
-    border-radius: 40px 0px 0px 40px;
+.divMetricas {
+  width: 60%;
+  height: 100%;
+  background-color: #303030;
+  border-radius: 40px 0px 0px 40px;
 }
 
 .divMonitoramentosWatch{
@@ -54,43 +57,43 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.headerMonitoramento{
-    display: flex;
-    align-items: center;
+.headerMonitoramento {
+  display: flex;
+  align-items: center;
 }
 
-.iconMonitoramento{
-    width: 60px;
-    height: 60px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    border-radius: 12px;
-    margin: 20px 20px 10px 20px;
+.iconMonitoramento {
+  width: 60px;
+  height: 60px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border-radius: 12px;
+  margin: 20px 20px 10px 20px;
 }
 
-.titleMonitoramento{
-    font-size: 16px;
-    font-weight: 600;
-    width: 80px;
+.titleMonitoramento {
+  font-size: 16px;
+  font-weight: 600;
+  width: 80px;
 }
 
-.divDados{
-    display: flex;
-    margin: 0px 20px;
-    align-items: center;
+.divDados {
+  display: flex;
+  margin: 0px 20px;
+  align-items: center;
 }
 
-.numberDados{
-    font-size: 32px;
-    margin: 0px;
+.numberDados {
+  font-size: 32px;
+  margin: 0px;
 }
 
-.tipoDado{
-    font-size: 16px;
-    color: #818181;
-    font-weight: bold;
-    padding-left: 5px;
+.tipoDado {
+  font-size: 16px;
+  color: #818181;
+  font-weight: bold;
+  padding-left: 5px;
 }
 
 .divStatus{

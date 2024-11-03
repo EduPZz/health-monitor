@@ -9,7 +9,6 @@ export default function useAuth() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
-  const [userProfile, setUserProfile] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,7 +20,6 @@ export default function useAuth() {
 
     if (user){
       setUser(JSON.parse(user));
-      setUserProfile(JSON.parse(user).perfil);
     }
 
     setLoading(false);
@@ -29,10 +27,9 @@ export default function useAuth() {
 
   const getUser = async () => {
     try {
-      const { data } = await api.post("/auth/profile");
+      const { data } = await api.get("/auth/profile");
       setUser(data);
       localStorage.setItem("user", JSON.stringify(data));
-      setUserProfile(data.perfil);
     } catch (error) {
       console.log(error);
     }
@@ -60,5 +57,5 @@ export default function useAuth() {
     navigate("/login");
   }
   
-  return { authenticated, user, userProfile, handleLogin, handleLogout, loading };
+  return { authenticated, user, handleLogin, handleLogout, loading };
 }
