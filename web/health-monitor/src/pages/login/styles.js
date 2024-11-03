@@ -5,6 +5,7 @@ export const CardContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 100%;
 `;
 
 export const CentrilizerContainer = styled.div`

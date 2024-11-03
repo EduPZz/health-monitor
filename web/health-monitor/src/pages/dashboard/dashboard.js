@@ -6,6 +6,13 @@ import {
     AreaChart,
     Area,
     ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend
 } from "recharts";
 
 function CurrentDate() {
@@ -36,7 +43,7 @@ function CurrentDate() {
 }
 
 function Dashboard() {
-    const data = [
+    const dataWatch = [
         {
             name: 'Page A',
             uv: 1000,
@@ -67,6 +74,51 @@ function Dashboard() {
             pv: 4800,
             amt: 2181,
         },
+    ];
+
+    const dataExercicios = [
+        {
+            name: 'Segunda',
+            cardio: 30,
+            judo: 80,
+            musculacao: 80,
+        },
+        {
+            name: 'Terça',
+            cardio: 30,
+            judo: 60,
+            musculacao: 60,
+        },
+        {
+            name: 'Quarta',
+            cardio: 30,
+            judo: 60,
+            musculacao: 60,
+        },
+        {
+            name: 'Quinta',
+            cardio: 30,
+            judo: 60,
+            musculacao: 60,
+        },
+        {
+            name: 'Sexta',
+            cardio: 30,
+            judo: 60,
+            musculacao: 60,
+        },
+        {
+            name: 'Sábado',
+            cardio: 30,
+            judo: 60,
+            musculacao: 60,
+        },
+        {
+            name: 'Domingo',
+            cardio: 30,
+            judo: 60,
+            musculacao: 60,
+        }
     ];
 
     return (
@@ -100,7 +152,7 @@ function Dashboard() {
                             <AreaChart
                                 width={200}
                                 height={60}
-                                data={data}
+                                data={dataWatch}
                                 margin={{
                                     top: 10,
                                     right: 20,
@@ -138,7 +190,7 @@ function Dashboard() {
                             <AreaChart
                                 width={200}
                                 height={60}
-                                data={data}
+                                data={dataWatch}
                                 margin={{
                                     top: 10,
                                     right: 20,
@@ -176,7 +228,7 @@ function Dashboard() {
                             <AreaChart
                                 width={200}
                                 height={60}
-                                data={data}
+                                data={dataWatch}
                                 margin={{
                                     top: 10,
                                     right: 20,
@@ -192,6 +244,43 @@ function Dashboard() {
                                 />
                             </AreaChart>
                         </ResponsiveContainer>
+                    </div>
+                </div>
+                <div className="divEvolucaoExe">
+                    <header className="headerEvolucao">
+                        <p className="titleEvolucao">Evolução de exercícios</p>
+                        <select className="selectEvolucao">
+                            <option>Jan 2024</option>
+                        </select>
+                    </header>
+                    <ResponsiveContainer width="100%" height="75%">
+                        <BarChart
+                            width={500}
+                            height={300}
+                            data={dataExercicios}
+                            margin={{
+                                top: 20,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="judo" stackId="a" fill="#8884d8" />
+                            <Bar dataKey="cardio" stackId="a" fill="#82ca9d" />
+                            <Bar dataKey="musculacao" fill="#ffc658" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="divProxConsultas">
+                    <p className="titleProxConsultas">Próximas consultas</p>
+                    <div className="divInfosProxConsultas">
+                        <p className="dataProxConsultas">01 de outubro de 2024</p>
+                        <p className="docProxConsultas">Consulta com Dr.Fulano</p>
                     </div>
                 </div>
             </div>

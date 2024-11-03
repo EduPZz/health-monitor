@@ -12,7 +12,7 @@
 }
 
 .divWelcome{
-    margin: 40px;
+    margin: 30px 40px;
 }
 
 .title{
@@ -38,12 +38,14 @@
 .divMonitoramentosWatch{
     display: flex;
     margin: 0px 10px;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .divMonitoramento{
     display: flex;
     flex-direction: column;
-    min-width: 220px;
+    width: 220px;
     height: 260px;
     background-color: #FFF;
     border-radius: 12px;
@@ -101,4 +103,64 @@
     align-items: center;
     justify-content: center;
     border-radius: 4px;
+}
+
+.divEvolucaoExe{
+    margin: 20px 40px;
+    height: 410px;
+    background-color: #FFF;
+    border-radius: 12px;
+}
+
+.headerEvolucao{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.titleEvolucao{
+    font-size: 20px;
+    font-weight: bold;
+    color: #303030;
+}
+
+.selectEvolucao{
+    border: 1px solid #E1E1E1;
+    background-color: #FFF;
+    padding: 15px 20px;
+    border-radius: 12px;
+}
+
+.divProxConsultas{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFF;
+    border-radius: 12px;
+    margin: 0px 40px;
+    padding: 0px 20px;
+}
+
+.titleProxConsultas{
+    font-size: 20px;
+    font-weight: bold;
+    color: #303030;
+}
+
+.divInfosProxConsultas{
+    display: flex;
+    align-items: center;
+}
+
+.dataProxConsultas{
+    font-size: 12px;
+    background-color: #D0FBFF;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.docProxConsultas{
+    color: #383838;
+    margin-left: 10px;
 }

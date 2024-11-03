@@ -11,8 +11,8 @@ function App() {
       <AuthProvider>
         <div className="App">
           <Login />
-          {/* <Sidebar />
-      <Dashboard /> */}
+          {/*<Sidebar />
+          <Dashboard />*/}
         </div>
       </AuthProvider>
     </Router>
