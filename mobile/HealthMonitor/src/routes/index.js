@@ -25,7 +25,7 @@ export default function Routes() {
   return (
     <NavigationContainer>
       {loggedIn ? (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="TabRoutes">
           <Stack.Screen name="TabRoutes" component={TabRoutes} />
         </Stack.Navigator>
       ) : (

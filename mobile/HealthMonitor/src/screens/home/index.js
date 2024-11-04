@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import Footer from "../../components/Footer";
 import { LinearGradient } from "expo-linear-gradient";
 import CurrentDate from "../../components/CurrentDate";
 import Icon from "../../components/Icons";
@@ -18,7 +17,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.textWelcome}>Seja bem vindo!</Text>
           <CurrentDate />
         </View>
-        <TouchableOpacity style={styles.divOpt}>
+        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Smartwatch")}>
           <Icon.Ionicons name="watch-outline" size={40} color={"#000"} />
           <Text style={styles.textOpt}>Monitore seu corpo em tempo real</Text>
         </TouchableOpacity>
