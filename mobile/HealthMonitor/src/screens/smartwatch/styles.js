@@ -1,34 +1,42 @@
 // styles.js
-import { StyleSheet, StatusBar, Platform } from "react-native";
-
-const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : 0;
+import { StyleSheet } from "react-native";
 
 const smartwatchStyles = StyleSheet.create({
-  background: {
-    height: "100%",
-    width: "100%",
-  },
   container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
+    display: 'flex',
+    marginTop: 16,
     alignItems: 'center',
-    paddingTop: statusBarHeight + 32,
-    paddingHorizontal: 16,
   },
-  backButton: {
-    zIndex: 1, // Ensures the back button is on top if needed
-  },
-  title: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: 'bold',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: statusBarHeight + 32,
+  subtitle: {
+    fontSize: 16,
+    color: '#FFF',
+    marginBottom: 32,
     textAlign: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    alignItems: 'center', // Alinha o input e botão verticalmente
+  },
+  input: {
+    backgroundColor: '#4A4949',
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    fontSize: 16,
+    color: '#FFF',
+    paddingVertical: 10,
+    height: 40,
+  },
+  button: {
+    backgroundColor: '#000000',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

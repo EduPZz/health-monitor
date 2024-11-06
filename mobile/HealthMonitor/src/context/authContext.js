@@ -25,8 +25,8 @@ const isLogged = () => {
 const loginUser = () => {
   return async (email, password) => {
     const { data } = await api.post("auth/login", {
-      email: email,
-      password: password,
+      email,
+      password,
     });
 
     await AsyncStorage.setItem("accessToken", data.access_token);
@@ -45,6 +45,17 @@ const signupUser = () => {
     await AsyncStorage.setItem("accessToken", tokenInformation.access_token);
   };
 };
+
+// Função para carregar o token do AsyncStorage e definir no axios
+const loadAuthToken = async () => {
+  const token = await AsyncStorage.getItem("accessToken");
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+};
+
+// Carrega o token ao iniciar o contexto
+loadAuthToken();
 
 export const { Context, Provider } = createContext(
   reducer,
