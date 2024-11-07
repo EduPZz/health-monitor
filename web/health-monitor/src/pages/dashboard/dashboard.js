@@ -2,6 +2,8 @@ import React from "react";
 import "./dashboard.css";
 import { FaThermometer, FaHeartbeat } from "react-icons/fa";
 import { MdBloodtype } from "react-icons/md";
+import { useState, useEffect } from "react";
+import api from "../../services/api";
 import {
     AreaChart,
     Area,
@@ -120,6 +122,24 @@ function Dashboard() {
             musculacao: 60,
         }
     ];
+
+    const [dados, setDados] = useState([]);
+
+    useEffect(() => {
+        const fetchDados = async () => {
+            try{
+                const { data } = await api.get("/body-measure/");
+                setDados(data);
+                console.log("dentro do fetchdados",data);
+            } catch(error) {
+                console.log("erro dentro do catch",error.message);
+            }
+        };
+        
+        fetchDados();
+    }, []);
+
+    console.log("Dados", dados);
 
     return (
         <div className="container">

@@ -1,1 +1,0 @@
-API_URL=https://api-health.edupzz.com
