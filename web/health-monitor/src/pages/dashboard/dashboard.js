@@ -4,9 +4,7 @@ import { FaThermometer, FaHeartbeat } from "react-icons/fa";
 import { MdBloodtype } from "react-icons/md";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import {
-    AreaChart,
-    Area,
+import {    
     ResponsiveContainer,
     BarChart,
     Bar,
@@ -45,39 +43,6 @@ function CurrentDate() {
 }
 
 function Dashboard() {
-    const dataWatch = [
-        {
-            name: 'Page A',
-            uv: 1000,
-            pv: 1400,
-            amt: 2100,
-        },
-        {
-            name: 'Page B',
-            uv: 1400,
-            pv: 1600,
-            amt: 2210,
-        },
-        {
-            name: 'Page C',
-            uv: 1200,
-            pv: 1500,
-            amt: 2290,
-        },
-        {
-            name: 'Page D',
-            uv: 1700,
-            pv: 3908,
-            amt: 2000,
-        },
-        {
-            name: 'Page E',
-            uv: 1300,
-            pv: 4800,
-            amt: 2181,
-        },
-    ];
-
     const dataExercicios = [
         {
             name: 'Segunda',
@@ -168,26 +133,6 @@ function Dashboard() {
                         <div className="divStatus" style={{ backgroundColor: "#F8DEBD" }}>
                             Normal
                         </div>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
-                                width={200}
-                                height={60}
-                                data={dataWatch}
-                                margin={{
-                                    top: 10,
-                                    right: 20,
-                                    left: 20,
-                                    bottom: 10,
-                                }}
-                            >
-                                <Area
-                                    type="monotone"
-                                    dataKey="uv"
-                                    stroke="#F3A53F"
-                                    fill="#F8DEBD"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
                     </div>
                     <div className="divMonitoramento">
                         <header className="headerMonitoramento">
@@ -206,26 +151,6 @@ function Dashboard() {
                         <div className="divStatus" style={{ backgroundColor: "#FBF0F3" }}>
                             Normal
                         </div>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
-                                width={200}
-                                height={60}
-                                data={dataWatch}
-                                margin={{
-                                    top: 10,
-                                    right: 20,
-                                    left: 20,
-                                    bottom: 10,
-                                }}
-                            >
-                                <Area
-                                    type="monotone"
-                                    dataKey="uv"
-                                    stroke="#CA6B6E"
-                                    fill="#E28F92"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
                     </div>
                     <div className="divMonitoramento">
                         <header className="headerMonitoramento">
@@ -244,26 +169,6 @@ function Dashboard() {
                         <div className="divStatus" style={{ backgroundColor: "#D0FBFF" }}>
                             Normal
                         </div>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
-                                width={200}
-                                height={60}
-                                data={dataWatch}
-                                margin={{
-                                    top: 10,
-                                    right: 20,
-                                    left: 20,
-                                    bottom: 10,
-                                }}
-                            >
-                                <Area
-                                    type="monotone"
-                                    dataKey="uv"
-                                    stroke="#478F96"
-                                    fill="#D0FBFF"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
                     </div>
                 </div>
                 <div className="divEvolucaoExe">

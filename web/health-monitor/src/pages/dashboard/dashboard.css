@@ -6,7 +6,6 @@
   font-family: "Mulish", serif;
   height: 100vh;
   display: flex;
-  overflow: hidden;
 }
 
 .content {
