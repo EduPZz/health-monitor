@@ -40,6 +40,8 @@
 .divMonitoramentosWatch{
     display: flex;
     margin: 0px 10px;
+    width: 98%;
+    height: 20%;
     align-items: center;
     justify-content: space-between;
 }
@@ -48,7 +50,7 @@
     display: flex;
     flex-direction: column;
     width: 220px;
-    height: 260px;
+    height: 100%;
     background-color: #FFF;
     border-radius: 12px;
     border: 1px solid #E8E7E7;
@@ -109,8 +111,8 @@
 
 .divEvolucaoExe{
     margin: 20px 40px;
-    height: 410px;
     background-color: #FFF;
+    height: 400px;
     border-radius: 12px;
 }
 
