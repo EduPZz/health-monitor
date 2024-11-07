@@ -11,17 +11,18 @@ export class SmartwatchesService {
   ) {}
 
   async findOrCreate(code: string, userId: number) {
-    await this.usersService.registerSmartWatch(userId, code);
-
     const smartwatch = await this.prisma.smartwatch.findFirst({
       where: { code },
     });
 
     if (smartwatch) return smartwatch;
 
-    return this.prisma.smartwatch.create({
+    const watch = await this.prisma.smartwatch.create({
       data: { code, ...generateFakeSmartwatchData() },
     });
+
+    await this.usersService.registerSmartWatch(userId, code);
+    return watch;
   }
 
   async updateAllValues() {
