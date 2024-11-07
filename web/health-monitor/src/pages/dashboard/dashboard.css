@@ -3,59 +3,61 @@
   height: 100%;
   background-color: #8d8d8d;
   display: flex;
-  font-family: "Mulish", serif;
-  height: 100vh;
-  display: flex;
+  font-family: "Roboto-mono", sans-serif;
+  min-height: 100vh;
 }
 
 .content {
-  width: 60%;
-  height: 100%;
+  width: 100%;
+  height: auto;
+  padding: 20px;
 }
 
 .divWelcome {
-  margin: 40px;
+  margin: 20px;
 }
 
 .title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
   color: #fff;
   margin: 0;
 }
 
 .subTitle {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #fff;
 }
 
 .divMetricas {
-  width: 60%;
-  height: 100%;
+  width: 100%;
+  height: auto;
   background-color: #303030;
-  border-radius: 40px 0px 0px 40px;
+  border-radius: 40px 0 0 40px;
+  margin-top: 0;
 }
 
-.divMonitoramentosWatch{
-    display: flex;
-    margin: 0px 10px;
-    width: 98%;
-    height: 20%;
-    align-items: center;
-    justify-content: space-between;
+.divMonitoramentosWatch {
+  display: flex;
+  margin: 20px;
+  width: 100% - 20px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
 }
 
-.divMonitoramento{
-    display: flex;
-    flex-direction: column;
-    width: 220px;
-    height: 100%;
-    background-color: #FFF;
-    border-radius: 12px;
-    border: 1px solid #E8E7E7;
-    margin: 0px 30px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+.divMonitoramento {
+  flex: 0 0 30%;
+  max-width: 220px;
+  height: 100%;
+  background-color: #FFF;
+  border-radius: 12px;
+  border: 1px solid #E8E7E7;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 .headerMonitoramento {
@@ -64,107 +66,108 @@
 }
 
 .iconMonitoramento {
-  width: 60px;
-  height: 60px;
+  width: 3vw;
+  height: 3vw;
   align-items: center;
   display: flex;
   justify-content: center;
   border-radius: 12px;
-  margin: 20px 20px 10px 20px;
+  margin: 10%;
 }
 
 .titleMonitoramento {
-  font-size: 16px;
-  font-weight: 600;
-  width: 80px;
+  font-size: 1vw;
+  font-weight: bold;
+  flex: 1;
 }
 
 .divDados {
   display: flex;
-  margin: 0px 20px;
+  margin: 0 20px;
   align-items: center;
 }
 
 .numberDados {
-  font-size: 32px;
-  margin: 0px;
+  font-size: 24px;
+  margin: 0;
 }
 
 .tipoDado {
-  font-size: 16px;
+  font-size: 14px;
   color: #818181;
   font-weight: bold;
   padding-left: 5px;
 }
 
-.divStatus{
-    font-size: 12px;
-    font-weight: 600;
-    margin: 0px 20px;
-    width: 60px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
+.divStatus {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 10px 20px;
+  width: auto;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
 }
 
-.divEvolucaoExe{
-    margin: 20px 40px;
-    background-color: #FFF;
-    height: 400px;
-    border-radius: 12px;
+.divEvolucaoExe {
+  margin: 20px;
+  background-color: #fff;
+  height: 400px;
+  border-radius: 12px;
+  padding: 20px;
 }
 
-.headerEvolucao{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
+.headerEvolucao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
 }
 
-.titleEvolucao{
-    font-size: 20px;
-    font-weight: bold;
-    color: #303030;
+.titleEvolucao {
+  font-size: 18px;
+  font-weight: bold;
+  color: #303030;
 }
 
-.selectEvolucao{
-    border: 1px solid #E1E1E1;
-    background-color: #FFF;
-    padding: 15px 20px;
-    border-radius: 12px;
+.selectEvolucao {
+  border: 1px solid #e1e1e1;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 12px;
 }
 
-.divProxConsultas{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #FFF;
-    border-radius: 12px;
-    margin: 0px 40px;
-    padding: 0px 20px;
+.divProxConsultas {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FFF;
+  border-radius: 12px;
+  margin: 20px;
+  padding: 0px 20px;
 }
 
-.titleProxConsultas{
-    font-size: 20px;
-    font-weight: bold;
-    color: #303030;
+.titleProxConsultas {
+  font-size: 20px;
+  font-weight: bold;
+  color: #303030;
 }
 
-.divInfosProxConsultas{
-    display: flex;
-    align-items: center;
+.divInfosProxConsultas {
+  display: flex;
+  align-items: center;
 }
 
-.dataProxConsultas{
-    font-size: 12px;
-    background-color: #D0FBFF;
-    border-radius: 12px;
-    padding: 10px;
+.dataProxConsultas {
+  font-size: 12px;
+  background-color: #D0FBFF;
+  border-radius: 12px;
+  padding: 10px;
 }
 
-.docProxConsultas{
-    color: #383838;
-    margin-left: 10px;
+.docProxConsultas {
+  color: #383838;
+  margin-left: 10px;
 }
