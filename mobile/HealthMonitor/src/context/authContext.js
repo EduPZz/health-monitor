@@ -30,6 +30,7 @@ const loginUser = () => {
     });
 
     await AsyncStorage.setItem("accessToken", data.access_token);
+    await loadAuthToken();
   };
 };
 
@@ -43,10 +44,10 @@ const signupUser = () => {
     });
 
     await AsyncStorage.setItem("accessToken", tokenInformation.access_token);
+    await loadAuthToken();
   };
 };
 
-// Função para carregar o token do AsyncStorage e definir no axios
 const loadAuthToken = async () => {
   const token = await AsyncStorage.getItem("accessToken");
   if (token) {
@@ -54,7 +55,6 @@ const loadAuthToken = async () => {
   }
 };
 
-// Carrega o token ao iniciar o contexto
 loadAuthToken();
 
 export const { Context, Provider } = createContext(
