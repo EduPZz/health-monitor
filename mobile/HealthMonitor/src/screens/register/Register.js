@@ -24,7 +24,6 @@ const Register = ({ navigation }) => {
 
   const isFormValid = email && password && name && timezone;
 
-  // Automatically detect timezone on component mount
   useEffect(() => {
     const detectedTimezone =
       Intl?.DateTimeFormat()?.resolvedOptions()?.timeZone ?? "UTC";

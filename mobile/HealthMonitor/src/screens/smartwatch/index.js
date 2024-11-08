@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout";
 import Icons from "../../components/Icons";
-import styles from './styles';
-import { Text, View, TouchableOpacity, TextInput, ActivityIndicator, Alert } from "react-native";
+import styles from "./styles";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import SmartwatchCards from "../../components/SmartWatchCard";
 import api from "../../api";
 
 const Smartwatch = ({ navigation }) => {
   const goBack = () => navigation.goBack();
 
-  const [watchCode, setWatchCode] = useState('');
+  const [watchCode, setWatchCode] = useState("");
   const [smartwatch, setSmartwatch] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchWatchCode = async () => {
       try {
-        const { data: { smartwatchCode } } = await api.get('auth/profile');
+        const {
+          data: { smartwatchCode },
+        } = await api.get("auth/profile");
         setWatchCode(smartwatchCode ?? "");
 
         if (smartwatchCode) handlePairing(smartwatchCode ?? "", true);
@@ -37,11 +46,11 @@ const Smartwatch = ({ navigation }) => {
     if (smartwatch && watchCode) {
       interval = setInterval(() => {
         handlePairing(watchCode, false);
-      }, 10000); // Call every 10 seconds
+      }, 10000);
     }
 
     return () => {
-      if (interval) clearInterval(interval); // Clear interval on unmount or dependency change
+      if (interval) clearInterval(interval);
     };
   }, [smartwatch, watchCode]);
 
@@ -58,16 +67,17 @@ const Smartwatch = ({ navigation }) => {
   };
 
   return (
-    <Layout goBackFunction={goBack} title={'Smartwatch'}>
+    <Layout goBackFunction={goBack} title={"Smartwatch"}>
       <View style={styles.container}>
         {loading ? (
-          // Display loading indicator while fetching code
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         ) : (
           <>
-            <Text style={styles.subtitle}>Insira o código do seu smartwatch para conectá-lo.</Text>
+            <Text style={styles.subtitle}>
+              Insira o código do seu smartwatch para conectá-lo.
+            </Text>
 
             <View style={styles.inputContainer}>
               <TextInput
@@ -78,8 +88,15 @@ const Smartwatch = ({ navigation }) => {
                 onChangeText={setWatchCode}
                 keyboardType="number-pad"
               />
-              <TouchableOpacity style={styles.button} onPress={() => handlePairing(watchCode, true)}>
-                <Icons.MaterialCommunityIcons name="watch" size={24} color="#FFF" />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handlePairing(watchCode, true)}
+              >
+                <Icons.MaterialCommunityIcons
+                  name="watch"
+                  size={24}
+                  color="#FFF"
+                />
               </TouchableOpacity>
             </View>
 

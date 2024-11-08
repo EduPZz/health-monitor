@@ -1,42 +1,41 @@
-// styles.js
 import { StyleSheet } from "react-native";
 
 const smartwatchStyles = StyleSheet.create({
   container: {
-    display: 'flex',
+    display: "flex",
     marginTop: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
   subtitle: {
     fontSize: 16,
-    color: '#FFF',
+    color: "#FFF",
     marginBottom: 32,
-    textAlign: 'center',
+    textAlign: "center",
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 20,
-    alignItems: 'center', // Alinha o input e botão verticalmente
+    alignItems: "center",
   },
   input: {
-    backgroundColor: '#4A4949',
+    backgroundColor: "#4A4949",
     paddingHorizontal: 12,
     borderRadius: 8,
     fontSize: 16,
-    color: '#FFF',
+    color: "#FFF",
     paddingVertical: 10,
     height: 40,
   },
   button: {
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
   },
   buttonText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

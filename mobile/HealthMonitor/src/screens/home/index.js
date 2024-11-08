@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import CurrentDate from "../../components/CurrentDate";
@@ -17,7 +17,10 @@ const Home = ({ navigation }) => {
           <Text style={styles.textWelcome}>Seja bem vindo!</Text>
           <CurrentDate />
         </View>
-        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Smartwatch")}>
+        <TouchableOpacity
+          style={styles.divOpt}
+          onPress={() => navigation.navigate("Smartwatch")}
+        >
           <Icon.Ionicons name="watch-outline" size={40} color={"#000"} />
           <Text style={styles.textOpt}>Monitore seu corpo em tempo real</Text>
         </TouchableOpacity>
@@ -46,7 +49,7 @@ const Home = ({ navigation }) => {
       </LinearGradient>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
   },
   textWelcome: {
     color: "#fff",
-    fontWeight: "600", // Changed to string
+    fontWeight: "600",
     fontSize: 18,
     paddingBottom: 10,
     fontFamily: "Arial",
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
   },
   textOpt: {
     fontSize: 16,
-    fontWeight: "600", // Changed to string
+    fontWeight: "600",
     textAlign: "center",
     width: "50%",
   },
