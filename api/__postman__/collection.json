@@ -24,7 +24,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/auth/signup"
+						"url": "{{url}}/auth/signup"
 					},
 					"response": []
 				},
@@ -53,14 +53,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"edu@gmail.com\",\r\n    \"password\": \"Edu@123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"edu@hotw12maail.com\",\r\n    \"password\": \"Joao@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:3000/auth/login"
+						"url": "{{url}}/auth/login"
 					},
 					"response": []
 				},
@@ -75,7 +75,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:3000/auth/profile"
+						"url": "{{url}}/auth/profile"
 					},
 					"response": []
 				}
@@ -104,7 +104,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/exercise"
+						"url": "{{url}}/exercise"
 					},
 					"response": []
 				},
@@ -119,7 +119,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:3000/exercise"
+						"url": "{{url}}/exercise"
 					},
 					"response": []
 				},
@@ -143,7 +143,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/exercise/6"
+						"url": "{{url}}/exercise/6"
 					},
 					"response": []
 				},
@@ -167,7 +167,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/exercise/6"
+						"url": "{{url}}/exercise/6"
 					},
 					"response": []
 				},
@@ -182,7 +182,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:3000/exercise/5"
+						"url": "{{url}}/exercise/5"
 					},
 					"response": []
 				}
@@ -211,7 +211,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/body-measure"
+						"url": "{{url}}/body-measure"
 					},
 					"response": []
 				},
@@ -226,7 +226,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:3000/body-measure"
+						"url": "{{url}}/body-measure"
 					},
 					"response": []
 				},
@@ -250,7 +250,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/body-measure/2"
+						"url": "{{url}}/body-measure/2"
 					},
 					"response": []
 				},
@@ -274,7 +274,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:3000/body-measure/3"
+						"url": "{{url}}/body-measure/3"
 					},
 					"response": []
 				},
@@ -289,7 +289,134 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:3000/body-measure/4"
+						"url": "{{url}}/body-measure/4"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consultations",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"scheduleDate\": \"2024-10-23T12:00:00Z\",\r\n  \"doctorName\": \"Fulano\",\r\n  \"description\": \"Somente retirada de sangue\",\r\n  \"specialization\": \"Rotina\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/consultation"
+					},
+					"response": []
+				},
+				{
+					"name": "FindMy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/consultation"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"scheduleDate\": \"2024-10-23T14:00:00Z\",\r\n  \"doctorName\": \"Fulano\",\r\n  \"description\": \"Somente retirada de sangue\",\r\n  \"specialization\": \"Rotina\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/consultation/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/consultation/1"
+					},
+					"response": []
+				},
+				{
+					"name": "FindOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/consultation/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Smartwatches",
+			"item": [
+				{
+					"name": "FindOrCreate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/smartwatch/1232"
 					},
 					"response": []
 				}
@@ -325,7 +452,7 @@
 			"type": "string"
 		},
 		{
-			"key": "abc",
+			"key": "url",
 			"value": ""
 		}
 	]
