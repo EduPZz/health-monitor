@@ -8,7 +8,7 @@ export class SmartwatchesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
-  ) { }
+  ) {}
 
   async findOrCreate(code: string, userId: number) {
     const smartwatch = await this.prisma.smartwatch.findFirst({
@@ -17,8 +17,8 @@ export class SmartwatchesService {
 
     if (smartwatch) {
       await this.usersService.registerSmartWatch(userId, code);
-      return smartwatch
-    };
+      return smartwatch;
+    }
 
     const watch = await this.prisma.smartwatch.create({
       data: { code, ...generateFakeSmartwatchData() },
@@ -44,6 +44,6 @@ export class SmartwatchesService {
   onModuleInit() {
     setInterval(async () => {
       await this.updateAllValues();
-    }, 10000);
+    }, 5000);
   }
 }
