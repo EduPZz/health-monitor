@@ -38,7 +38,7 @@ const MeasureForm = ({
       <KeyboardAwareScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
-        extraHeight={100} // Adjust this value as needed
+        extraHeight={100}
       >
         <Text style={styles.title}>{title}</Text>
 

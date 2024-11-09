@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#4A4949',
     paddingVertical: 4,
+    paddingHorizontal: 8,
     borderRadius: 4
   },
   specialtyTags: {
