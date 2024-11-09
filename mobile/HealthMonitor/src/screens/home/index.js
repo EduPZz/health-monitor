@@ -42,7 +42,7 @@ const Home = ({ navigation }) => {
           />
           <Text style={styles.textOpt}>Acompanhar suas medidas corporais</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.divOpt}>
+        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Consultations")}>
           <Icon.Ionicons name="calendar-outline" size={40} color={"#000"} />
           <Text style={styles.textOpt}>Consultas marcadas</Text>
         </TouchableOpacity>
