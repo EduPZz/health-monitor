@@ -70,9 +70,7 @@ const Smartwatch = ({ navigation }) => {
     <Layout goBackFunction={goBack} title={"Smartwatch"}>
       <View style={styles.container}>
         {loading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
+          <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <>
             <Text style={styles.subtitle}>

@@ -12,6 +12,7 @@ import registerStyle from "./registerStyle";
 import { useState, useEffect, useContext } from "react";
 import Feather from "@expo/vector-icons/Feather";
 import { Context } from "../../context/authContext";
+import { Link } from "@react-navigation/native";
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -109,6 +110,8 @@ const Register = ({ navigation }) => {
             </View>
           </View>
 
+          
+
           <TouchableOpacity
             style={[
               registerStyle.registerButtom,
@@ -119,6 +122,10 @@ const Register = ({ navigation }) => {
           >
             <Text style={registerStyle.textButtom}>Cadastrar</Text>
           </TouchableOpacity>
+
+          <Link to={{screen: 'Login'}} style={registerStyle.textEmphasis}>
+            Já tem uma conta? Entrar
+          </Link >
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

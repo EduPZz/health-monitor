@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
             Registrar e acompanhar os exercícios físicos
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.divOpt}>
+        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Measures")}>
           <Icon.MaterialCommunityIcons
             name="ruler-square-compass"
             size={40}

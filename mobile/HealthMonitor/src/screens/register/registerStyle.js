@@ -71,7 +71,13 @@ const registerStyle = StyleSheet.create({
         backgroundColor: '#000',
         borderRadius: 50,
         marginTop: 40
-    }
+    },
+    textEmphasis: {
+        fontFamily: 'Poppins_400Regular',
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginTop: 8
+    },
 });
 
 export default registerStyle;
