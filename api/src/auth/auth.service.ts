@@ -39,6 +39,6 @@ export class AuthService {
   async profile(userFromReq: any) {
     const user = await this.usersService.findById(userFromReq.sub);
 
-    return { ...userFromReq, smartwatchCode: user.smartwatchCode };
+    return { ...userFromReq, smartwatchCode: user.smartwatchCode, timezone: user.timezone };
   }
 }
