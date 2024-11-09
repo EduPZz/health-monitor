@@ -109,7 +109,7 @@ function Dashboard() {
         if (smartwatch && watchCode) {
             interval = setInterval(() => {
                 handlePairing(watchCode, false);
-            }, 10000);
+            }, 5000);
         }
 
         return () => {
