@@ -1,10 +1,11 @@
 import React from "react";
 import "./dashboard.css";
-import { FaThermometer, FaHeartbeat } from "react-icons/fa";
-import { MdBloodtype } from "react-icons/md";
+import SmartwatchCard from "../../components/SmartwatchCard";
+import CurrentDate from "../../components/CurrentDate";
+import { FaChevronRight } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import {    
+import {
     ResponsiveContainer,
     BarChart,
     Bar,
@@ -14,33 +15,6 @@ import {
     Tooltip,
     Legend
 } from "recharts";
-
-function CurrentDate() {
-    const currentDate = new Date();
-
-    const monthNames = [
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro",
-    ];
-
-    const day = currentDate.getDate();
-    const month = monthNames[currentDate.getMonth()];
-    const year = currentDate.getFullYear();
-
-    const fullDate = `${day} de ${month} de ${year}`;
-
-    return fullDate;
-}
 
 function Dashboard() {
     const dataExercicios = [
@@ -92,19 +66,74 @@ function Dashboard() {
 
     useEffect(() => {
         const fetchDados = async () => {
-            try{
+            try {
                 const { data } = await api.get("/body-measure/");
                 setDados(data);
-                console.log("dentro do fetchdados",data);
-            } catch(error) {
-                console.log("erro dentro do catch",error.message);
+                console.log("dentro do fetchdados", data);
+            } catch (error) {
+                console.log("erro dentro do catch", error.message);
             }
         };
-        
+
         fetchDados();
     }, []);
 
     console.log("Dados", dados);
+
+    const [watchCode, setWatchCode] = useState("");
+    const [smartwatch, setSmartwatch] = useState({});
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchWatchCode = async () => {
+            try {
+                const {
+                    data: { smartwatchCode },
+                } = await api.get("auth/profile");
+                setWatchCode(smartwatchCode ?? "");
+
+                if (smartwatchCode) handlePairing(smartwatchCode ?? "", true);
+            } catch (error) {
+                console.error("Erro ao buscar o código do smartwatch:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchWatchCode();
+    }, []);
+
+    useEffect(() => {
+        let interval;
+
+        if (smartwatch && watchCode) {
+            interval = setInterval(() => {
+                handlePairing(watchCode, false);
+            }, 10000);
+        }
+
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [smartwatch, watchCode]);
+
+    const handlePairing = async (watchCode, shouldShowLoading) => {
+        try {
+            if (shouldShowLoading) setLoading(true);
+            const { data } = await api.get(`smartwatch/${watchCode}`);
+            setSmartwatch(data);
+        } catch (error) {
+            console.error("Erro", "Não foi possível sincronizar o código");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const [valueInputWatchCode, setValueInputWatchCode] = useState('');
+    const [haveCode, setHaveCode] = useState(false);
+    const handleClickWatchCode = () => {
+        setHaveCode(true)
+    }
 
     return (
         <div className="container">
@@ -115,62 +144,20 @@ function Dashboard() {
                         <CurrentDate />
                     </p>
                 </div>
-                <div className="divMonitoramentosWatch">
-                    <div className="divMonitoramento">
-                        <header className="headerMonitoramento">
-                            <div
-                                className="iconMonitoramento"
-                                style={{ backgroundColor: "#F8DEBD" }}
-                            >
-                                <FaThermometer style={{ color: "#E79B38", fontSize: "30px" }} />
-                            </div>
-                            <p className="titleMonitoramento">Glicemia</p>
-                        </header>
-                        <div className="divDados">
-                            <p className="numberDados">80</p>
-                            <p className="tipoDado">mg / dl</p>
-                        </div>
-                        <div className="divStatus" style={{ backgroundColor: "#F8DEBD" }}>
-                            Normal
-                        </div>
+                {haveCode ? (
+                   smartwatch && <SmartwatchCard smartwatch={smartwatch} />
+                ) : (
+                    <div className="divInputWatchcode">
+                        <input
+                            type="number"
+                            className="inputWatchCode"
+                            placeholder="Insira o código do smartwatch"
+                            value={valueInputWatchCode}
+                            onChange={(e) => setValueInputWatchCode(e.target.value)}
+                        />
+                        <FaChevronRight style={{ fontSize: 20 }} onClick={handleClickWatchCode} />
                     </div>
-                    <div className="divMonitoramento">
-                        <header className="headerMonitoramento">
-                            <div
-                                className="iconMonitoramento"
-                                style={{ backgroundColor: "#FBF0F3" }}
-                            >
-                                <FaHeartbeat style={{ color: "#CA6B6E", fontSize: "30px" }} />
-                            </div>
-                            <p className="titleMonitoramento">Batimento cardíaco</p>
-                        </header>
-                        <div className="divDados">
-                            <p className="numberDados">98</p>
-                            <p className="tipoDado">bpm</p>
-                        </div>
-                        <div className="divStatus" style={{ backgroundColor: "#FBF0F3" }}>
-                            Normal
-                        </div>
-                    </div>
-                    <div className="divMonitoramento">
-                        <header className="headerMonitoramento">
-                            <div
-                                className="iconMonitoramento"
-                                style={{ backgroundColor: "#D0FBFF" }}
-                            >
-                                <MdBloodtype style={{ color: "#478F96", fontSize: "30px" }} />
-                            </div>
-                            <p className="titleMonitoramento">Batimento cardíaco</p>
-                        </header>
-                        <div className="divDados">
-                            <p className="numberDados">102</p>
-                            <p className="tipoDado">/ 72 mmhg</p>
-                        </div>
-                        <div className="divStatus" style={{ backgroundColor: "#D0FBFF" }}>
-                            Normal
-                        </div>
-                    </div>
-                </div>
+                )}
                 <div className="divEvolucaoExe">
                     <header className="headerEvolucao">
                         <p className="titleEvolucao">Evolução de exercícios</p>

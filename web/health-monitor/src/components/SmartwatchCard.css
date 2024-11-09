@@ -1,0 +1,72 @@
+.divMonitoramentosWatch {
+    display: flex;
+    margin: 20px;
+    width: calc(100% - 40px);
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+}
+
+.divMonitoramento {
+    flex: 0 0 30%;
+    max-width: 220px;
+    height: 100%;
+    background-color: #FFF;
+    border-radius: 12px;
+    border: 1px solid #E8E7E7;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.headerMonitoramento {
+    display: flex;
+    align-items: center;
+}
+
+.iconMonitoramento {
+    width: 3vw;
+    height: 3vw;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border-radius: 12px;
+    margin: 10%;
+}
+
+.titleMonitoramento {
+    font-size: 1vw;
+    font-weight: bold;
+    flex: 1;
+}
+
+.divDados {
+    display: flex;
+    margin: 0 20px;
+    align-items: center;
+}
+
+.numberDados {
+    font-size: 24px;
+    margin: 0;
+}
+
+.tipoDado {
+    font-size: 14px;
+    color: #818181;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+.divStatus {
+    font-size: 12px;
+    font-weight: 600;
+    margin: 10px 20px;
+    width: auto;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
