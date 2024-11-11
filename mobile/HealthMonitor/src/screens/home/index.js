@@ -24,7 +24,7 @@ const Home = ({ navigation }) => {
           <Icon.Ionicons name="watch-outline" size={40} color={"#000"} />
           <Text style={styles.textOpt}>Monitore seu corpo em tempo real</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.divOpt}>
+        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Exercices")}>
           <Icon.MaterialCommunityIcons
             name="dumbbell"
             size={40}
