@@ -1,0 +1,83 @@
+/* src/components/bodyMeasurements.css */
+
+.bodyMeasurements {
+  border-radius: 10px;
+  color: #ffffff;
+  width: 100%;
+  padding-left: 50px;
+}
+
+.bodyMeasurements h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.bodyMeasurements h5 {
+  margin-bottom: 20px;
+  color: #cacaca;
+}
+
+.bodyMeasurements ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bodyMeasurements li {
+  font-size: 0.9rem;
+  padding: 16px;
+  margin: 8px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  align-items: "center";
+  color: black;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.bodyMeasurements p {
+  text-align: center;
+  color: #5f5f5f;
+  font-weight: bold;
+  font-size: 16;
+  margin: 0;
+}
+
+.bodyMeasurements li:last-child {
+  border-bottom: none;
+}
+
+.bodyMeasurements .increase {
+  color: #4caf50; /* Green for increase */
+}
+
+.bodyMeasurements .decrease {
+  color: #f44336; /* Red for decrease */
+}
+
+.measurementsCardContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two equal columns */  
+}
+
+.measurementsEditButton {
+  background-color: #5F5F5F;
+  border-radius: 8px;
+  padding: 8px;
+  font-weight: bold;
+  text-align: center;
+  width: fit-content;
+  border: none;
+  color: white;
+}
+
+.align-start {
+  justify-self: start;
+}
+
+.align-end {
+  justify-self: end;
+}

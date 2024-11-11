@@ -15,6 +15,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import BodyMeasurements from "./components/measures";
 
 function Dashboard() {
   const dataExercicios = [
@@ -61,24 +62,6 @@ function Dashboard() {
       musculacao: 60,
     },
   ];
-
-  const [dados, setDados] = useState([]);
-
-  useEffect(() => {
-    const fetchDados = async () => {
-      try {
-        const { data } = await api.get("/body-measure/");
-        setDados(data);
-        console.log("dentro do fetchdados", data);
-      } catch (error) {
-        console.log("erro dentro do catch", error.message);
-      }
-    };
-
-    fetchDados();
-  }, []);
-
-  console.log("Dados", dados);
 
   const [watchCode, setWatchCode] = useState("");
   const [smartwatch, setSmartwatch] = useState({});
@@ -203,7 +186,9 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="divMetricas"></div>
+      <div className="divMetricas">
+        <BodyMeasurements />
+      </div>
     </div>
   );
 }

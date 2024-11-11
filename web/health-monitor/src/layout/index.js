@@ -27,9 +27,6 @@ function Layout() {
           <div className="icon">
             <FaCalendarDay style={{ color: "#707070" }} />
           </div>
-          <div className="icon">
-            <FaGear style={{ color: "#707070" }} />
-          </div>
         </div>
         <div className="logoutIcon" onClick={handleLogout}>
           <FaSignOutAlt style={{ color: "#fff", cursor: "pointer" }} />
