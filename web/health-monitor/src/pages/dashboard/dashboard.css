@@ -168,23 +168,30 @@
 
 .divProxConsultas {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   background-color: #FFF;
   border-radius: 12px;
   margin: 20px;
-  padding: 0px 20px;
+  padding: 20px;
 }
 
 .titleProxConsultas {
   font-size: 20px;
   font-weight: bold;
   color: #303030;
+  margin-bottom: 10px;
 }
 
 .divInfosProxConsultas {
   display: flex;
+  flex-direction: column;
+}
+
+.consultaItem {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .dataProxConsultas {
@@ -192,9 +199,82 @@
   background-color: #D0FBFF;
   border-radius: 12px;
   padding: 10px;
+  margin-right: 10px;
 }
 
 .docProxConsultas {
   color: #383838;
-  margin-left: 10px;
+}
+
+.addConsultasButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.modal input,
+.modal select {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.modal button {
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.modal button.ok {
+  background-color: #4CAF50 !important;
+  color: white;
+}
+
+.modal button.cancel {
+  background-color: #f44336 !important;
+  color: white;
+}
+
+.modal button.cancel {
+  margin-top: 10px;
 }

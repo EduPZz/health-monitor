@@ -126,6 +126,50 @@ function Dashboard() {
     setHaveCode(true);
   };
 
+  const [consultas, setConsultas] = useState([
+    {
+      data: new Date("2024-10-01"),
+      doutor: "Dr. Fulano",
+      especializacao: "Nutricionista",
+    },
+  ]);
+  const [showModal, setShowModal] = useState(false);
+  const [novaConsulta, setNovaConsulta] = useState({
+    doutor: "",
+    especializacao: "",
+    data: "",
+  });
+
+  const formatarData = (data) => {
+    return data.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNovaConsulta({
+      ...novaConsulta,
+      [name]: value,
+    });
+  };
+
+  const addConsulta = () => {
+    const novaData = new Date(novaConsulta.data);
+    setConsultas([
+      ...consultas,
+      { data: novaData, doutor: novaConsulta.doutor, especializacao: novaConsulta.especializacao },
+    ]);
+    setShowModal(false);
+    setNovaConsulta({
+      doutor: "",
+      especializacao: "",
+      data: "",
+    });
+  };
+
   return (
     <div className="container">
       <div className="content">
@@ -181,12 +225,55 @@ function Dashboard() {
           </ResponsiveContainer>
         </div>
         <div className="divProxConsultas">
-          <p className="titleProxConsultas">Próximas consultas</p>
-          <div className="divInfosProxConsultas">
-            <p className="dataProxConsultas">01 de outubro de 2024</p>
-            <p className="docProxConsultas">Consulta com Dr.Fulano</p>
+        <p className="titleProxConsultas">Próximas consultas</p>
+        <div className="divInfosProxConsultas">
+          {consultas.map((consulta, index) => (
+            <div key={index} className="consultaItem">
+              <p className="dataProxConsultas">
+                {formatarData(consulta.data)}
+              </p>
+              <p className="docProxConsultas">
+                {consulta.doutor} - {consulta.especializacao}
+              </p>
+            </div>
+          ))}
+        </div>
+        <button className="addConsultasButton" onClick={() => setShowModal(true)}>
+          +
+        </button>
+      </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Adicionar Consulta</h2>
+            <input
+              type="text"
+              name="doutor"
+              placeholder="Nome do doutor"
+              value={novaConsulta.doutor}
+              onChange={handleInputChange}
+            />
+            <select
+              name="especializacao"
+              value={novaConsulta.especializacao}
+              onChange={handleInputChange}
+            >
+              <option value="">Selecione a especialização</option>
+              <option value="Nutricionista">Nutricionista</option>
+              <option value="Cardiologista">Cardiologista</option>
+            </select>
+            <input
+              type="date"
+              name="data"
+              value={novaConsulta.data}
+              onChange={handleInputChange}
+            />
+            <button className="ok" onClick={addConsulta}>Adicionar</button>
+            <button className="cancel" onClick={() => setShowModal(false)}>Cancelar</button>
           </div>
         </div>
+      )}
       </div>
       <div className="divMetricas">
         <PostProvider>
