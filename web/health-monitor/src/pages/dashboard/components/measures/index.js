@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./styles.css";
 import api from "../../../../services/api";
-import {PostContext} from '../../../../context/PostContext'
+import { PostContext } from "../../../../context/PostContext";
 
 const measurementsModel = {
   chest: "",
@@ -16,7 +16,8 @@ const measurementsModel = {
 
 function BodyMeasurements() {
   const [lastMeasurements, setLastMeasurements] = useState(measurementsModel);
-  const [penultimateMeasurements, setPenultimateMeasurements] = useState(measurementsModel);
+  const [penultimateMeasurements, setPenultimateMeasurements] =
+    useState(measurementsModel);
   const [measureNotCreatedYet, setMeasurementNotCreatedYet] = useState(true);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -92,14 +93,14 @@ function BodyMeasurements() {
 
   const serializedLastMeasurements = (measurement) => {
     return {
-      chest: measurement.chest,
-      arm: measurement.arm,
-      thigh: measurement.thigh,
-      hip: measurement.hip,
-      calf: measurement.calf,
+      chest: +measurement.chest,
+      arm: +measurement.arm,
+      thigh: +measurement.thigh,
+      hip: +measurement.hip,
+      calf: +measurement.calf,
       weight: measurement.weight,
       height: measurement.height,
-      waist: measurement.waist,
+      waist: +measurement.waist,
     };
   };
 
@@ -115,19 +116,27 @@ function BodyMeasurements() {
   };
 
   const daysSinceLastUpdate = lastMeasurements.createdAt
-    ? (new Date().toDateString() === new Date(lastMeasurements.createdAt).toDateString())
+    ? new Date().toDateString() ===
+      new Date(lastMeasurements.createdAt).toDateString()
       ? "Editado hoje"
-      : `Ultima atualização há ${Math.floor((new Date() - new Date(lastMeasurements.createdAt)) / (1000 * 60 * 60 * 24))} dias`
+      : `Ultima atualização há ${Math.floor(
+          (new Date() - new Date(lastMeasurements.createdAt)) /
+            (1000 * 60 * 60 * 24)
+        )} dias`
     : null;
 
   return (
     <div className="bodyMeasurements">
       {loading ? <p>Loading...</p> : null}
       <h3>Medidas Corporais</h3>
-      <h5>{daysSinceLastUpdate || "N/A"}</h5>
+      {daysSinceLastUpdate && <h5>{daysSinceLastUpdate}</h5>}
       {isEditing ? (
         <div className="editMeasuresButtons">
-          <button className="measurementsEditButton" onClick={handleSave} disabled={loading}>
+          <button
+            className="measurementsEditButton"
+            onClick={handleSave}
+            disabled={loading}
+          >
             Salvar
           </button>
           <button className="measurementsEditButton" onClick={handleCancel}>
@@ -135,46 +144,64 @@ function BodyMeasurements() {
           </button>
         </div>
       ) : (
-        <button className="measurementsEditButton" onClick={() => setIsEditing(true)} disabled={loading}>
+        <button
+          className="measurementsEditButton"
+          onClick={() => setIsEditing(true)}
+          disabled={loading}
+        >
           Editar medidas
         </button>
       )}
       <ul className="measurementsCardContainer">
-        {Object.keys(serializedLastMeasurements(lastMeasurements)).map((key) => (
-          <li
-            key={key}
-            className={
-              key === "chest" || key === "thigh" || key === "calf" || key === "height"
-                ? "align-end"
-                : "align-start"
-            }
-          >
-            <p>{measurementTranslate[key]}</p>
-            {isEditing ? (
-              <input
-                type="text"
-                name={key}
-                value={editMeasurements[key]}
-                onChange={handleChange}
-              />
-            ) : (
-              <p>
-                {lastMeasurements[key]}{" "}
-                {getIndicator(lastMeasurements[key], penultimateMeasurements[key]) && (
-                  <span
-                    className={
-                      getIndicator(lastMeasurements[key], penultimateMeasurements[key]) === "↑"
-                        ? "indicatorIncrease"
-                        : "indicatorDecrease"
-                    }
-                  >
-                    {getIndicator(lastMeasurements[key], penultimateMeasurements[key])}
-                  </span>
-                )}
-              </p>
-            )}
-          </li>
-        ))}
+        {Object.keys(serializedLastMeasurements(lastMeasurements)).map(
+          (key) => (
+            <li
+              key={key}
+              className={
+                key === "chest" ||
+                key === "thigh" ||
+                key === "calf" ||
+                key === "height"
+                  ? "align-end"
+                  : "align-start"
+              }
+            >
+              <p>{measurementTranslate[key]}</p>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name={key}
+                  value={editMeasurements[key]}
+                  onChange={handleChange}
+                />
+              ) : (
+                <p>
+                  {lastMeasurements[key]}{" "}
+                  {getIndicator(
+                    lastMeasurements[key],
+                    penultimateMeasurements[key]
+                  ) && (
+                    <span
+                      className={
+                        getIndicator(
+                          lastMeasurements[key],
+                          penultimateMeasurements[key]
+                        ) === "↑"
+                          ? "indicatorIncrease"
+                          : "indicatorDecrease"
+                      }
+                    >
+                      {getIndicator(
+                        lastMeasurements[key],
+                        penultimateMeasurements[key]
+                      )}
+                    </span>
+                  )}
+                </p>
+              )}
+            </li>
+          )
+        )}
       </ul>
     </div>
   );

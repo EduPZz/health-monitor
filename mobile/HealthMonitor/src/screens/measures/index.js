@@ -90,14 +90,14 @@ const Measures = ({ navigation }) => {
 
   const serializedLastMeasurements = (measurement) => {
     return {
-      chest: measurement.chest,
-      arm: measurement.arm,
-      thigh: measurement.thigh,
-      hip: measurement.hip,
-      calf: measurement.calf,
+      chest: +measurement.chest,
+      arm: +measurement.arm,
+      thigh: +measurement.thigh,
+      hip: +measurement.hip,
+      calf: +measurement.calf,
       weight: measurement.weight,
       height: measurement.height,
-      waist: measurement.waist,
+      waist: +measurement.waist,
     };
   };
 

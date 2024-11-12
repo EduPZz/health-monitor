@@ -46,7 +46,7 @@ function CalcImc() {
 
     }, [isPostSuccessful, setIsPostSuccessful, height, weight]);
 
-    const imc = height && weight ? (weight / ((height / 100) ** 2)).toFixed(1) : null;
+    const imc = height && weight ? (weight / (height ** 2)).toFixed(1) : null;
 
     return (
         <div className="imc-calculator">
@@ -54,7 +54,7 @@ function CalcImc() {
             <div className="input-section">
                 <div className="input-box height-box">
                     <p>Altura</p>
-                    <h2>{height ? `${height} cm` : 'Carregando...'}</h2>
+                    <h2>{height ? `${height} m` : 'Carregando...'}</h2>
                 </div>
                 <div className="input-box weight-box">
                     <p>Peso</p>
