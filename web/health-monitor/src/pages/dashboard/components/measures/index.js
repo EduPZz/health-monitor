@@ -115,26 +115,25 @@ function BodyMeasurements() {
   };
 
   const daysSinceLastUpdate = lastMeasurements.createdAt
-    ? Math.floor(
-        (new Date() - new Date(lastMeasurements.createdAt)) /
-          (1000 * 60 * 60 * 24)
-      )
+    ? (new Date().toDateString() === new Date(lastMeasurements.createdAt).toDateString())
+      ? "Editado hoje"
+      : `Ultima atualização há ${Math.floor((new Date() - new Date(lastMeasurements.createdAt)) / (1000 * 60 * 60 * 24))} dias`
     : null;
 
   return (
     <div className="bodyMeasurements">
       {loading ? <p>Loading...</p> : null}
       <h3>Medidas Corporais</h3>
-      <h5>Ultima atualização há {daysSinceLastUpdate || "N/A"} dias</h5>
+      <h5>{daysSinceLastUpdate || "N/A"}</h5>
       {isEditing ? (
-        <>
+        <div className="editMeasuresButtons">
           <button className="measurementsEditButton" onClick={handleSave} disabled={loading}>
             Salvar
           </button>
           <button className="measurementsEditButton" onClick={handleCancel}>
             Cancelar
           </button>
-        </>
+        </div>
       ) : (
         <button className="measurementsEditButton" onClick={() => setIsEditing(true)} disabled={loading}>
           Editar medidas

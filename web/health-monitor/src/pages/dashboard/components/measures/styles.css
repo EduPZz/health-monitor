@@ -63,6 +63,12 @@
   grid-template-columns: repeat(2, 1fr); /* Two equal columns */  
 }
 
+.measurementsCardContainer input {
+  border-radius: 8px;
+  border: none;
+  padding: 2px;
+}
+
 .measurementsEditButton {
   background-color: #5F5F5F;
   border-radius: 8px;
@@ -80,4 +86,14 @@
 
 .align-end {
   justify-self: end;
+}
+
+.editMeasuresButtons {
+  flex-direction: row;
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  cursor: pointer;
 }
