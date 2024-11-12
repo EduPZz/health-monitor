@@ -53,6 +53,7 @@ const ExercicesStyle = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 10,
         elevation: 5,
+        marginBottom: 16
     },
     title: {
         fontSize: 18,
