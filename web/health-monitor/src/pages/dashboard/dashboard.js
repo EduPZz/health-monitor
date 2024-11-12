@@ -16,6 +16,8 @@ import {
   Legend,
 } from "recharts";
 import BodyMeasurements from "./components/measures";
+import CalcImc from "./components/calcImc";
+import {PostProvider} from '../../context/PostContext';
 
 function Dashboard() {
   const dataExercicios = [
@@ -187,7 +189,10 @@ function Dashboard() {
         </div>
       </div>
       <div className="divMetricas">
-        <BodyMeasurements />
+        <PostProvider>
+          <BodyMeasurements />
+          <CalcImc />
+        </PostProvider>
       </div>
     </div>
   );

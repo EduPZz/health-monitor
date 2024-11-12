@@ -1,0 +1,50 @@
+.imc-result {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+h1 {
+    color: #4caf50;
+    font-size: 2.5rem;
+    margin: 10px 0;
+}
+
+.status-button {
+    background-color: #b2fab4;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    cursor: default;
+}
+
+.imc-bar {
+    position: relative;
+    height: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+    background-color: #444;
+    overflow: hidden;
+}
+
+.bar-gradient {
+    height: 100%;
+    background: linear-gradient(to right, #4a90e2, #50e3c2, #f8e71c, #f5a623, #d0021b);
+}
+
+.indicator {
+    position: absolute;
+    top: -4px;
+    width: 10px;
+    height: 18px;
+    background-color: #f44336;
+    border-radius: 50%;
+    transform: translateX(-50%);
+}

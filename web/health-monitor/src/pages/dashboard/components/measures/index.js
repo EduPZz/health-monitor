@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./styles.css";
 import api from "../../../../services/api";
+import {PostContext} from '../../../../context/PostContext'
 
 const measurementsModel = {
   chest: "",
@@ -20,6 +21,7 @@ function BodyMeasurements() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editMeasurements, setEditMeasurements] = useState(measurementsModel);
+  const { setIsPostSuccessful } = useContext(PostContext);
 
   useEffect(() => {
     const fetchMeasures = async () => {
@@ -62,6 +64,7 @@ function BodyMeasurements() {
       setEditMeasurements(data);
       setMeasurementNotCreatedYet(false);
       setIsEditing(false);
+      setIsPostSuccessful(true);
     } catch (error) {
       console.log("Erro", "Não foi possível salvar as medidas");
     } finally {

@@ -1,0 +1,45 @@
+.imc-calculator {
+    width: 70%;
+    background-color: #333;
+    border-radius: 8px;
+    padding: 20px;
+    color: white;
+    margin: 10px;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.period-selector button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.input-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.input-box {
+    border-radius: 8px;
+    text-align: center;
+    width: 48%;
+    margin: 5px;
+}
+
+.height-box {
+    background-color: #f8c291;
+}
+
+.weight-box {
+    background-color: #82ccdd;
+}
