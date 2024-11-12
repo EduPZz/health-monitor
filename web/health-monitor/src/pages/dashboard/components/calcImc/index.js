@@ -17,7 +17,7 @@ function CalcImc() {
                     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
                 );
 
-                setHeight(sortedBodyMeasure[0].height);
+                setHeight((sortedBodyMeasure[0].height / 100).toFixed(2));
                 setWeight(sortedBodyMeasure[0].weight);
     
             } catch (error) {
@@ -31,6 +31,8 @@ function CalcImc() {
         }
 
     }, [isPostSuccessful, setIsPostSuccessful, height, weight]);
+
+    console.log("measure", height, weight)
 
     const imc = height && weight ? (weight / (height ** 2)).toFixed(1) : null;
 
