@@ -7,30 +7,16 @@ import { PostContext } from "../../../../context/PostContext";
 function CalcImc() {
     const [height, setHeight] = useState();
     const [weight, setWeight] = useState();
-    const [lastMeasurements, setLastMeasurements] = useState();
-    const [editMeasurements, setEditMeasurements] = useState();
-    const [measurementNotCreatedYet, setMeasurementNotCreatedYet] = useState();
-    const [penultimateMeasurements, setPenultimateMeasurements] = useState();
     const { isPostSuccessful, setIsPostSuccessful } = useContext(PostContext);
 
     useEffect(() => {
         const pickMeasures = async () => {
             try {
                 const { data } = await api.get("body-measure");
-                console.log(data)
-                console.log(data[1].height)
                 const sortedBodyMeasure = data.sort(
                     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
                 );
-    
-                setLastMeasurements(sortedBodyMeasure[0]);
-                setEditMeasurements(sortedBodyMeasure[0]);
-                setMeasurementNotCreatedYet(false);
-    
-                if (sortedBodyMeasure.length > 1) {
-                    setPenultimateMeasurements(sortedBodyMeasure[1]);
-                }
-    
+
                 setHeight(sortedBodyMeasure[0].height);
                 setWeight(sortedBodyMeasure[0].weight);
     

@@ -1,0 +1,126 @@
+.divProxConsultas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 12px;
+  margin: 20px;
+  padding: 0px 20px;
+}
+
+.titleProxConsultas {
+  font-size: 20px;
+  font-weight: bold;
+  color: #303030;
+}
+
+.divInfosProxConsultas {
+  display: flex;
+  align-items: center;
+}
+
+.dataProxConsultas {
+  font-size: 12px;
+  background-color: #d0fbff;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.docProxConsultas {
+  color: #383838;
+  margin-left: 10px;
+}
+
+.addConsultationButton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  max-height: 44px;
+  width: fit-content;
+  align-self: flex-end;
+  margin-bottom: 8px;
+}
+
+.addConsultationButton:hover {
+  background-color: #45a049;
+}
+
+.proxConsultasDetalhes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modalContent h2 {
+  margin-top: 0;
+}
+
+.modalContent form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContent label {
+  margin: 10px 0;
+}
+
+.modalContent input[type="date"],
+.modalContent input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.modalContent button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.closeModalButton {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.closeModalButton:hover {
+  background-color: #d32f2f;
+}

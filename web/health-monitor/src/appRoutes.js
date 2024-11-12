@@ -7,6 +7,7 @@ import Login from "./pages/login";
 import Dashboard from "./pages/dashboard/dashboard";
 import LoggedInLayout from "./layout";
 import Signup from "./pages/signup"
+import ConsultationsWeb from "./pages/consultation";
 
 function LogedRoutes() {
   const { loading, authenticated } = useContext(Context);
@@ -30,6 +31,7 @@ export default function AppRoutes() {
       <Route element={<LogedRoutes />}>
         <Route element={<LoggedInLayout />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/consultations" element={<ConsultationsWeb />} />
         </Route>
       </Route>
     </Routes>

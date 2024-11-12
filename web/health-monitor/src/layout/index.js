@@ -8,6 +8,14 @@ import { FaSignOutAlt } from "react-icons/fa";
 function Layout() {
   const navigate = useNavigate();
 
+  const goToHome = () => {
+    navigate("/");
+  }
+
+  const goToConsultations = () => {
+    navigate("/consultations");
+  }
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -21,10 +29,10 @@ function Layout() {
           <img className="imgLogo" src={logo} alt="imagem logo" />
         </div>
         <div className="divIcons">
-          <div className="icon">
+          <div className="icon" onClick={goToHome}>
             <FaHouseChimney style={{ color: "#707070" }} />
           </div>
-          <div className="icon">
+          <div className="icon" onClick={goToConsultations}>
             <FaCalendarDay style={{ color: "#707070" }} />
           </div>
         </div>
