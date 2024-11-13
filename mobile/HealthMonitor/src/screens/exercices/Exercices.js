@@ -103,7 +103,7 @@ const Exercices = ({ navigation }) => {
       return (
         <G key={index} x={(index + 1) * spacing + index * barWidth}>
           {Object.keys(day).map((exercise) => {
-            if (isNaN(day[exercise])) {
+            if(isNaN(day[exercise])) {
               return
             }
             const color = generateRandomColor();
@@ -111,7 +111,7 @@ const Exercices = ({ navigation }) => {
             const value = day[exercise] || 0; // Garante que o valor seja 0 caso não exista
             const barHeight = !maxDuration ? 0 : (value / maxDuration) * maxBarHeight;
             yOffset -= barHeight;
-            console.log(exercise, maxBarHeight, yOffset, barWidth, barHeight, color)
+            console.log(exercise, maxBarHeight,yOffset, barWidth, barHeight, color)
             console.log(typeof exercise, typeof maxBarHeight, typeof yOffset, typeof barWidth, typeof barHeight, typeof color)
 
             return (

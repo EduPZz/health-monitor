@@ -17,7 +17,7 @@ function CalcImc() {
                     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
                 );
 
-                setHeight((sortedBodyMeasure[0].height / 100).toFixed(2));
+                setHeight(sortedBodyMeasure[0].height);
                 setWeight(sortedBodyMeasure[0].weight);
     
             } catch (error) {

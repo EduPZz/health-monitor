@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 18,
     paddingBottom: 10,
-    fontFamily: "Arial",
+    fontFamily: "Roboto",
   },
   divOpt: {
     marginTop: 15,

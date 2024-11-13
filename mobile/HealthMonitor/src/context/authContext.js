@@ -55,10 +55,35 @@ const loadAuthToken = async () => {
   }
 };
 
+const user = () => {
+  return async () => {
+    try {
+      const {
+        data
+      } = await api.get("auth/profile");
+      console.log({ data })
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch user", error);
+    }
+  }
+}
+
+const loggout = (afterLoggoutAction) => {
+  return async () => {
+    try {
+      await AsyncStorage.removeItem("accessToken");
+      afterLoggoutAction();
+    } catch (error) {
+      console.error("Failed to Loggout", error);
+    }
+  }
+}
+
 loadAuthToken();
 
 export const { Context, Provider } = createContext(
   reducer,
-  { loginUser, isLogged, signupUser },
+  { loginUser, isLogged, signupUser, user, loggout },
   initialState
 );
