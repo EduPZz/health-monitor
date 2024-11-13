@@ -5,14 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  Modal,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ExercicesStyle from "../exercicesStyle";
-import api from "../../../api/index";
+import api from "../../../api/index.js"; // Importação da API
 
-const AddExerciseForm = ({ userId }) => {
-  const [exerciseType, setExerciseType] = useState(null);
+const AddExerciseForm = ({ userId, onAddExercise }) => {
+  const [exerciseType, setExerciseType] = useState("");
   const [beginTime, setBeginTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [showBeginDatePicker, setShowBeginDatePicker] = useState(false);
@@ -34,25 +33,29 @@ const AddExerciseForm = ({ userId }) => {
 
     try {
       setLoading(true);
-      const { data } = await api.post("exercise", {
+      const newExerciseData = {
         beginTime,
         endTime,
         type: exerciseType,
         userId,
-      });
-      // onAddExercise(data);
+      };
+      
+      // Enviando dados para a API
+      const { data } = await api.post("exercise", newExerciseData);
+
+      // Chamando a função passada como prop para atualizar o gráfico no componente pai
+      onAddExercise(data);
+
       setBeginTime(null);
       setEndTime(null);
-      setExerciseType(null);
+      setExerciseType("");
       Alert.alert("Sucesso", "Exercício adicionado com sucesso");
     } catch (error) {
-      Alert.alert("Erro", "não foi possível adicionar o exercício");
+      Alert.alert("Erro", "Não foi possível adicionar o exercício");
+      console.error("Erro ao adicionar exercício:", error);
     } finally {
       setLoading(false);
     }
-    setExerciseType(null);
-    setBeginTime(null);
-    setEndTime(null);
   };
 
   return (
