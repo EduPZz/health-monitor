@@ -1,19 +1,27 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Modal,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ExercicesStyle from "../exercicesStyle";
 import api from "../../../api/index";
 
-const AddExerciseForm = ({ userId, onAddExercise }) => {
+const AddExerciseForm = ({ userId }) => {
   const [exerciseType, setExerciseType] = useState(null);
   const [beginTime, setBeginTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [showBeginDatePicker, setShowBeginDatePicker] = useState(false);
   const [showBeginTimePicker, setShowBeginTimePicker] = useState(false);
+  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
-  const handleAddExercise = () => {
+  const handleAddExercise = async () => {
     if (!exerciseType || !beginTime || !endTime) {
       Alert.alert("Erro", "Por favor, preencha todos os campos.");
       return;
@@ -24,12 +32,24 @@ const AddExerciseForm = ({ userId, onAddExercise }) => {
       return;
     }
 
-    onAddExercise({
-      exerciseType,
-      beginTime,
-      endTime,
-    });
-
+    try {
+      setLoading(true);
+      const { data } = await api.post("exercise", {
+        beginTime,
+        endTime,
+        type: exerciseType,
+        userId,
+      });
+      // onAddExercise(data);
+      setBeginTime(null);
+      setEndTime(null);
+      setExerciseType(null);
+      Alert.alert("Sucesso", "Exercício adicionado com sucesso");
+    } catch (error) {
+      Alert.alert("Erro", "não foi possível adicionar o exercício");
+    } finally {
+      setLoading(false);
+    }
     setExerciseType(null);
     setBeginTime(null);
     setEndTime(null);
@@ -53,20 +73,58 @@ const AddExerciseForm = ({ userId, onAddExercise }) => {
         <Text style={ExercicesStyle.label}>Início</Text>
         <TouchableOpacity
           style={ExercicesStyle.picker}
-          onPress={() => setShowBeginTimePicker(true)}
+          onPress={() => setShowBeginDatePicker(true)}
         >
-          <Text style={beginTime ? ExercicesStyle.pickerText : ExercicesStyle.pickerPlaceholder}>
+          <Text
+            style={
+              beginTime
+                ? ExercicesStyle.pickerText
+                : ExercicesStyle.pickerPlaceholder
+            }
+          >
             {beginTime ? beginTime.toLocaleString() : "Selecionar início"}
           </Text>
         </TouchableOpacity>
+        {showBeginDatePicker && (
+          <DateTimePicker
+            value={beginTime || new Date()}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              setShowBeginDatePicker(false);
+              if (selectedDate) {
+                setBeginTime(
+                  (prev) =>
+                    new Date(
+                      selectedDate.setHours(
+                        prev?.getHours() || 0,
+                        prev?.getMinutes() || 0
+                      )
+                    )
+                );
+                setShowBeginTimePicker(true);
+              }
+            }}
+          />
+        )}
         {showBeginTimePicker && (
           <DateTimePicker
             value={beginTime || new Date()}
-            mode="datetime"
+            mode="time"
             display="default"
-            onChange={(event, selectedDate) => {
+            onChange={(event, selectedTime) => {
               setShowBeginTimePicker(false);
-              if (selectedDate) setBeginTime(selectedDate);
+              if (selectedTime) {
+                setBeginTime(
+                  (prev) =>
+                    new Date(
+                      prev.setHours(
+                        selectedTime.getHours(),
+                        selectedTime.getMinutes()
+                      )
+                    )
+                );
+              }
             }}
           />
         )}
@@ -76,20 +134,58 @@ const AddExerciseForm = ({ userId, onAddExercise }) => {
         <Text style={ExercicesStyle.label}>Fim</Text>
         <TouchableOpacity
           style={ExercicesStyle.picker}
-          onPress={() => setShowEndTimePicker(true)}
+          onPress={() => setShowEndDatePicker(true)}
         >
-          <Text style={endTime ? ExercicesStyle.pickerText : ExercicesStyle.pickerPlaceholder}>
+          <Text
+            style={
+              endTime
+                ? ExercicesStyle.pickerText
+                : ExercicesStyle.pickerPlaceholder
+            }
+          >
             {endTime ? endTime.toLocaleString() : "Selecionar fim"}
           </Text>
         </TouchableOpacity>
+        {showEndDatePicker && (
+          <DateTimePicker
+            value={endTime || new Date()}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              setShowEndDatePicker(false);
+              if (selectedDate) {
+                setEndTime(
+                  (prev) =>
+                    new Date(
+                      selectedDate.setHours(
+                        prev?.getHours() || 0,
+                        prev?.getMinutes() || 0
+                      )
+                    )
+                );
+                setShowEndTimePicker(true);
+              }
+            }}
+          />
+        )}
         {showEndTimePicker && (
           <DateTimePicker
             value={endTime || new Date()}
-            mode="datetime"
+            mode="time"
             display="default"
-            onChange={(event, selectedDate) => {
+            onChange={(event, selectedTime) => {
               setShowEndTimePicker(false);
-              if (selectedDate) setEndTime(selectedDate);
+              if (selectedTime) {
+                setEndTime(
+                  (prev) =>
+                    new Date(
+                      prev.setHours(
+                        selectedTime.getHours(),
+                        selectedTime.getMinutes()
+                      )
+                    )
+                );
+              }
             }}
           />
         )}
