@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ExercicesStyle from "../exercicesStyle";
-import api from "../../../api/index.js"; // Importação da API
+import api from "../../../api/index.js";
 
 const AddExerciseForm = ({ userId, onAddExercise }) => {
   const [exerciseType, setExerciseType] = useState("");
@@ -40,10 +40,8 @@ const AddExerciseForm = ({ userId, onAddExercise }) => {
         userId,
       };
       
-      // Enviando dados para a API
       const { data } = await api.post("exercise", newExerciseData);
 
-      // Chamando a função passada como prop para atualizar o gráfico no componente pai
       onAddExercise(data);
 
       setBeginTime(null);

@@ -19,6 +19,7 @@ const ExercicesStyle = StyleSheet.create({
         fontSize: 16,
         letterSpacing: 0.7,
         fontWeight: '600',
+        paddingBottom: 25
     },
     legendContainer: {
         flexDirection: 'row',
@@ -139,25 +140,28 @@ const ExercicesStyle = StyleSheet.create({
     },
     legendContainer: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'center',
-        alignItems: 'center',
         marginTop: 10,
-    },
-    legendItem: {
+        marginBottom: 20,
+      },
+      legendItem: {
         flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 10,
-    },
-    legendColor: {
+        marginBottom: 10,
+      },
+      legendColor: {
         width: 10,
         height: 10,
         borderRadius: 5,
         marginRight: 5,
-    },
-    legendText: {
+      },
+      legendText: {
         fontSize: 14,
         color: '#666',
-    },
+      },      
+    
 });
 
 export default ExercicesStyle;

@@ -13,13 +13,9 @@ const barCount = 9;
 const barWidth = (chartWidth * 0.9) / (barCount * 1.5);
 const spacing = (chartWidth - barCount * barWidth) / (barCount + 1);
 
-const colors = { cardio: "#FF6666", musculacao: "#33CC99", judo: "#FF9933", descanso: "#66CC33" };
-
 const Exercices = ({ navigation }) => {
   const goBack = () => navigation.goBack();
-
   const [data, setData] = useState([]);
-
   const [visibleMiniCard, setVisibleMiniCard] = useState(false);
   const [selectedExerciseInfo, setSelectedExerciseInfo] = useState({
     duration: 0,
@@ -27,8 +23,6 @@ const Exercices = ({ navigation }) => {
     y: 0,
   });
   const [loading, setLoading] = useState(true);
-
-
   const maxBarHeight = 200;
 
   const generateRandomColor = () => {
@@ -39,7 +33,16 @@ const Exercices = ({ navigation }) => {
     }
     return color;
   };
-  // Função para transformar dados do banco de dados para o formato do gráfico
+
+  colors = {}
+  data.forEach(function (exercices) {
+    Object.keys(exercices).forEach(function (exercice) {
+      if (!(exercice in colors)) {
+        colors[exercice] = generateRandomColor()
+      }
+    })
+  })
+
   const transformDataForChart = (exercises) => {
     const dailyData = {};
 
@@ -48,7 +51,7 @@ const Exercices = ({ navigation }) => {
       const duration = (new Date(exercise.endTime) - new Date(exercise.beginTime)) / (1000 * 60); // duração em minutos
 
       if (!dailyData[date]) {
-        dailyData[date] = { cardio: 0, musculacao: 0, judo: 0, descanso: 0, label: date };
+        dailyData[date] = { label: date };
       }
       if (!dailyData[date][exercise.type]) {
         dailyData[date][exercise.type] = 0
@@ -57,11 +60,9 @@ const Exercices = ({ navigation }) => {
         dailyData[date][exercise.type] += duration;
       }
     });
-
     return Object.values(dailyData);
   };
 
-  // Função para buscar dados da API
   const fetchExercises = async () => {
     try {
       setLoading(true);
@@ -80,7 +81,6 @@ const Exercices = ({ navigation }) => {
     fetchExercises();
   }, []);
 
-  // Verifica se há dados para mostrar
   if (data.length === 0) {
     return (
       <Layout goBackFunction={goBack} title="Exercices">
@@ -93,7 +93,6 @@ const Exercices = ({ navigation }) => {
     );
   }
 
-  // Calcula o valor máximo da duração de todos os exercícios
   const renderChartData = () => {
     return data.map((day, index) => {
       maxDuration = 0;
@@ -103,16 +102,14 @@ const Exercices = ({ navigation }) => {
       return (
         <G key={index} x={(index + 1) * spacing + index * barWidth}>
           {Object.keys(day).map((exercise) => {
-            if(isNaN(day[exercise])) {
+            if (isNaN(day[exercise])) {
               return
             }
-            const color = generateRandomColor();
+            const color = colors[exercise];
 
-            const value = day[exercise] || 0; // Garante que o valor seja 0 caso não exista
+            const value = day[exercise] || 0;
             const barHeight = !maxDuration ? 0 : (value / maxDuration) * maxBarHeight;
             yOffset -= barHeight;
-            console.log(exercise, maxBarHeight,yOffset, barWidth, barHeight, color)
-            console.log(typeof exercise, typeof maxBarHeight, typeof yOffset, typeof barWidth, typeof barHeight, typeof color)
 
             return (
               <Rect
@@ -142,31 +139,46 @@ const Exercices = ({ navigation }) => {
     });
   };
 
-  // Função para adicionar um novo exercício e atualizar o gráfico
   const handleAddExercise = async (newExerciseData) => {
     try {
       await api.post("exercise", newExerciseData);
-      fetchExercises(); // Recarrega os dados para atualizar o gráfico
+      fetchExercises();
     } catch (error) {
       console.error("Erro ao adicionar exercício:", error);
       Alert.alert("Erro", "Não foi possível adicionar o exercício.");
     }
   };
-  console.log(maxBarHeight, chartWidth)
+
+  const renderLegend = () => {
+    const exercises = Object.keys(colors);
+    return exercises.map((exercise) => {
+      return (
+        <View key={exercise} style={ExercicesStyle.legendItem}>
+          <View style={[ExercicesStyle.legendColor, { backgroundColor: colors[exercise] }]} />
+          <Text style={ExercicesStyle.legendText}>
+            {exercise.charAt(0).toUpperCase() + exercise.slice(1)}
+          </Text>
+        </View>
+      );
+    });
+  };
+
   return (
     <Layout goBackFunction={goBack} title="Exercices">
       <KeyboardAwareScrollView>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
-          <View style={[ExercicesStyle.containerGrafico, { paddingHorizontal: 20, paddingVertical: 20 }]}>
+          <View style={ExercicesStyle.containerGrafico}>
             <Text style={ExercicesStyle.textTitles}>Evolução de exercícios</Text>
             <Svg width={chartWidth} height={maxBarHeight + 40} style={{ alignSelf: "center" }}>
-              {
-                renderChartData()}
+              {renderChartData()}
             </Svg>
+            <View style={ExercicesStyle.legendContainer}>
+              {renderLegend()}
+            </View>
           </View>
+          <AddExerciseForm onAddExercise={fetchExercises} />
         </View>
       </KeyboardAwareScrollView>
-      <AddExerciseForm onAddExercise={fetchExercises} />
     </Layout>
   );
 };
