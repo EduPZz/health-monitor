@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Dimensions, TouchableWithoutFeedback, Alert } from "react-native";
+import {
+  Text,
+  View,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Alert,
+} from "react-native";
 import Svg, { Rect, G, Text as SVGText } from "react-native-svg";
 import Layout from "../../components/layout";
 import ExercicesStyle from "./exercicesStyle";
@@ -34,27 +40,32 @@ const Exercices = ({ navigation }) => {
     return color;
   };
 
-  colors = {}
+  colors = {};
   data.forEach(function (exercices) {
     Object.keys(exercices).forEach(function (exercice) {
       if (!(exercice in colors)) {
-        colors[exercice] = generateRandomColor()
+        colors[exercice] = generateRandomColor();
       }
-    })
-  })
+    });
+  });
 
   const transformDataForChart = (exercises) => {
     const dailyData = {};
 
     exercises.forEach((exercise) => {
-      const date = new Date(exercise.beginTime).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-      const duration = (new Date(exercise.endTime) - new Date(exercise.beginTime)) / (1000 * 60); // duração em minutos
+      const date = new Date(exercise.beginTime).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      const duration =
+        (new Date(exercise.endTime) - new Date(exercise.beginTime)) /
+        (1000 * 60); // duração em minutos
 
       if (!dailyData[date]) {
         dailyData[date] = { label: date };
       }
       if (!dailyData[date][exercise.type]) {
-        dailyData[date][exercise.type] = 0
+        dailyData[date][exercise.type] = 0;
       }
       if (dailyData[date][exercise.type] !== undefined) {
         dailyData[date][exercise.type] += duration;
@@ -86,7 +97,7 @@ const Exercices = ({ navigation }) => {
       <Layout goBackFunction={goBack} title="Exercices">
         <KeyboardAwareScrollView>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <Text>Não há dados de exercícios para exibir.</Text>
+            <AddExerciseForm onAddExercise={fetchExercises} />
           </View>
         </KeyboardAwareScrollView>
       </Layout>
@@ -96,19 +107,25 @@ const Exercices = ({ navigation }) => {
   const renderChartData = () => {
     return data.map((day, index) => {
       maxDuration = 0;
-      Object.values(day).forEach(function (value) { if (!isNaN(value)) { maxDuration += value } })
+      Object.values(day).forEach(function (value) {
+        if (!isNaN(value)) {
+          maxDuration += value;
+        }
+      });
       yOffset = maxBarHeight;
 
       return (
         <G key={index} x={(index + 1) * spacing + index * barWidth}>
           {Object.keys(day).map((exercise) => {
             if (isNaN(day[exercise])) {
-              return
+              return;
             }
             const color = colors[exercise];
 
             const value = day[exercise] || 0;
-            const barHeight = !maxDuration ? 0 : (value / maxDuration) * maxBarHeight;
+            const barHeight = !maxDuration
+              ? 0
+              : (value / maxDuration) * maxBarHeight;
             yOffset -= barHeight;
 
             return (
@@ -119,7 +136,9 @@ const Exercices = ({ navigation }) => {
                 height={barHeight}
                 fill={color}
                 onPress={() =>
-                  console.log(`Exercício ${exercise} com duração ${value} minutos`)
+                  console.log(
+                    `Exercício ${exercise} com duração ${value} minutos`
+                  )
                 }
               />
             );
@@ -154,7 +173,12 @@ const Exercices = ({ navigation }) => {
     return exercises.map((exercise) => {
       return (
         <View key={exercise} style={ExercicesStyle.legendItem}>
-          <View style={[ExercicesStyle.legendColor, { backgroundColor: colors[exercise] }]} />
+          <View
+            style={[
+              ExercicesStyle.legendColor,
+              { backgroundColor: colors[exercise] },
+            ]}
+          />
           <Text style={ExercicesStyle.legendText}>
             {exercise.charAt(0).toUpperCase() + exercise.slice(1)}
           </Text>
@@ -168,13 +192,17 @@ const Exercices = ({ navigation }) => {
       <KeyboardAwareScrollView>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <View style={ExercicesStyle.containerGrafico}>
-            <Text style={ExercicesStyle.textTitles}>Evolução de exercícios</Text>
-            <Svg width={chartWidth} height={maxBarHeight + 40} style={{ alignSelf: "center" }}>
+            <Text style={ExercicesStyle.textTitles}>
+              Evolução de exercícios
+            </Text>
+            <Svg
+              width={chartWidth}
+              height={maxBarHeight + 40}
+              style={{ alignSelf: "center" }}
+            >
               {renderChartData()}
             </Svg>
-            <View style={ExercicesStyle.legendContainer}>
-              {renderLegend()}
-            </View>
+            <View style={ExercicesStyle.legendContainer}>{renderLegend()}</View>
           </View>
           <AddExerciseForm onAddExercise={fetchExercises} />
         </View>
