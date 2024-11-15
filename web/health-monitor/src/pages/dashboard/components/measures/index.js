@@ -67,7 +67,7 @@ function BodyMeasurements() {
       setIsEditing(false);
       setIsPostSuccessful(true);
     } catch (error) {
-      console.log("Erro", "Não foi possível salvar as medidas");
+      console.error("Erro", "Não foi possível salvar as medidas");
     } finally {
       setLoading(false);
     }

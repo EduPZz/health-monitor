@@ -32,8 +32,6 @@ function CalcImc() {
 
     }, [isPostSuccessful, setIsPostSuccessful, height, weight]);
 
-    console.log("measure", height, weight)
-
     const imc = height && weight ? (weight / (height ** 2)).toFixed(1) : null;
 
     return (

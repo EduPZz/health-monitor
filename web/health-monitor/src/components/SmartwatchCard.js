@@ -27,7 +27,6 @@ function HealthCard({ value, unit, label, icon, color, description }) {
 }
 
 const SmartwatchCards = ({ smartwatch }) => {
-    console.log('smartwatch dentro do componente', smartwatch)
     const getBloodGlucoseStatus = (value) => {
         if (value < 70) return "Baixo";
         if (value > 140) return "Alto";

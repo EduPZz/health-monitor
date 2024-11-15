@@ -11,50 +11,7 @@ import ConsultationsPrev from "./components/consultantsPrev";
 import ExerciseChart from "./components/exercises";
 
 function Dashboard() {
-  const dataExercicios = [
-    {
-      name: "Segunda",
-      cardio: 30,
-      judo: 80,
-      musculacao: 80,
-    },
-    {
-      name: "Terça",
-      cardio: 30,
-      judo: 60,
-      musculacao: 60,
-    },
-    {
-      name: "Quarta",
-      cardio: 30,
-      judo: 60,
-      musculacao: 60,
-    },
-    {
-      name: "Quinta",
-      cardio: 30,
-      judo: 60,
-      musculacao: 60,
-    },
-    {
-      name: "Sexta",
-      cardio: 30,
-      judo: 60,
-      musculacao: 60,
-    },
-    {
-      name: "Sábado",
-      cardio: 30,
-      judo: 60,
-      musculacao: 60,
-    },
-    {
-      name: "Domingo",
-      cardio: 30,
-      judo: 60,
-      musculacao: 60,
-    },
-  ];
+
 
   const [watchCode, setWatchCode] = useState("");
   const [smartwatch, setSmartwatch] = useState({});
@@ -141,7 +98,7 @@ function Dashboard() {
           />
         </div>
         {haveCode && smartwatch && <SmartwatchCard smartwatch={smartwatch} />}
-        <ExerciseChart data={dataExercicios} />
+        <ExerciseChart />
         <ConsultationsPrev />
       </div>
       <div className="divMetricas">

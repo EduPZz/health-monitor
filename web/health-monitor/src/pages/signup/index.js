@@ -16,8 +16,6 @@ const Signup = () => {
   const userTimeZone =
     Intl?.DateTimeFormat()?.resolvedOptions()?.timeZone ?? "UTC";
 
-  console.log(userTimeZone);
-
   const successMessage = (success) => {
     messageApi.open({
       type: "success",
