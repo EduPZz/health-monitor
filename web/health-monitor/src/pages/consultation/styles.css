@@ -7,40 +7,58 @@
   min-height: 100vh;
 }
 
-.consultations-web {
-  padding: 20px;
-  max-width: 600px;
-  margin: auto;
-}
-
-.consultations-web h1 {
-  color: #fff;
-}
-
+/* Consultations list */
 .consultations-list {
-  margin-top: 20px;
-  color: #fff;
+  padding-top: 30px;
+  text-align: left;
 }
 
 .consultation-item {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  position: relative;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
-button {
+.delete-consultation {
+  position: absolute;
+  bottom: 25px;
+  right: 10px;
+  font-size: 18px;
+}
+
+.delete-consultation:hover {
+  color: #d13a30;;
+}
+
+.addConsultation {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  margin-left: 0;
+}
+
+.addConsultation:hover {
+  background-color: #45a049;
+}
+
+.cancelConsultationAdd {
   padding: 8px 16px;
   margin: 10px 0;
-  background-color: #4CAF50;
+  background-color: #f44336;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #45a049;
+.cancelConsultationAdd:hover {
+  background-color: #d13a30;
 }
 
 /* Modal styles */
@@ -64,6 +82,10 @@ button:hover {
   max-width: 400px;
   width: 100%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
 }
 
 .modal-content h2 {
@@ -73,6 +95,7 @@ button:hover {
 .modal-content form {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .modal-content label {
@@ -84,4 +107,79 @@ button:hover {
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-top: 5px;
+  width: 100%;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  text-align: center;
+}
+
+.modal-content button.cancelConsultationAdd {
+  background-color: #f44336;
+}
+
+/* Consultations web */
+.consultations-web {
+  position: static;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.consultations-web h1 {
+  color: #fff;
+}
+
+/* Calendar styles */
+.calendar-container {
+  width: auto;
+  text-align: center;
+  top: 10px;
+  left: 50%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.days,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day,
+.empty {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.day.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.day.has-consultation {
+  background-color: #ffd700;
+  color: black;
+}
+
+.day:hover {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
 }
