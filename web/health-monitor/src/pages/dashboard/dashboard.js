@@ -1,24 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import SmartwatchCard from "../../components/SmartwatchCard";
 import CurrentDate from "../../components/CurrentDate";
 import { FaChevronRight } from "react-icons/fa";
-import { useState, useEffect } from "react";
 import api from "../../services/api";
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
 import BodyMeasurements from "./components/measures";
 import CalcImc from "./components/calcImc";
-import {PostProvider} from '../../context/PostContext';
+import { PostProvider } from '../../context/PostContext';
 import ConsultationsPrev from "./components/consultantsPrev";
+import ExerciseChart from "./components/exercises";
 
 function Dashboard() {
   const dataExercicios = [
@@ -151,36 +141,7 @@ function Dashboard() {
           />
         </div>
         {haveCode && smartwatch && <SmartwatchCard smartwatch={smartwatch} />}
-        <div className="divEvolucaoExe">
-          <header className="headerEvolucao">
-            <p className="titleEvolucao">Evolução de exercícios</p>
-            <select className="selectEvolucao">
-              <option>Jan 2024</option>
-            </select>
-          </header>
-          <ResponsiveContainer width="100%" height="75%">
-            <BarChart
-              width={500}
-              height={300}
-              data={dataExercicios}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="judo" stackId="a" fill="#8884d8" />
-              <Bar dataKey="cardio" stackId="a" fill="#82ca9d" />
-              <Bar dataKey="musculacao" fill="#ffc658" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <ExerciseChart data={dataExercicios} />
         <ConsultationsPrev />
       </div>
       <div className="divMetricas">
