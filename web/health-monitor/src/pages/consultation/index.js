@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 import "./styles.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 // Function to adjust the date for the UTC-3 timezone (only for display)
 const adjustForTimezone = (date) => {
@@ -172,7 +174,7 @@ const ConsultationsWeb = () => {
                       {adjustForTimezone(consultation.scheduleDate).toLocaleDateString("pt-BR")}
                     </p>
                     <button className="delete-consultation" onClick={() => handleDelete(consultation.id)}>
-                      🗑️
+                      <FontAwesomeIcon icon={faTrashCan} />
                     </button>
                   </div>
                 ))

@@ -26,10 +26,28 @@
   bottom: 25px;
   right: 10px;
   font-size: 18px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .delete-consultation:hover {
-  color: #d13a30;;
+  background-color: #d13a30;
+  transform: scale(1.1);
+}
+
+.delete-consultation:active {
+  transform: scale(0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .addConsultation {
