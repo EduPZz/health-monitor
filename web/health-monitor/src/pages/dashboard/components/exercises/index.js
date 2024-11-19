@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import api from "../../../../services/api";
 import useExerciseData from "../../../../hooks/useExerciseData";
+import { Button } from "antd";
 
 const generateColorForTypes = (types) => {
   const colors = [
@@ -104,7 +105,7 @@ const ExerciseChart = () => {
     <div className="divEvolucaoExe">
       <header className="headerEvolucao">
         <p className="titleEvolucao">Evolução de exercícios</p>
-        <button onClick={() => setIsModalOpen(true)}>Add Exercise</button>
+        <Button color="success" variant="solid" onClick={() => setIsModalOpen(true)}>Add Exercise</Button>
       </header>
 
       {exercises.length ? (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../../../services/api";
 import "./styles.css";
 import { MdAdd } from "react-icons/md";
-import { Alert } from "antd";
+import { Alert, Button } from "antd";
 
 const ConsultationsPrev = () => {
   const [latestConsultation, setLatestConsultation] = useState(null);
@@ -98,9 +98,9 @@ const ConsultationsPrev = () => {
             <p>
               Nenhuma consulta encontrada, mas você pode adicionar uma aqui:
             </p>
-            <button className="addConsultationButton" onClick={openModal}>
+            <Button color="success" variant="solid" onClick={openModal}>
               <MdAdd size={24} />
-            </button>
+            </Button>
           </>
         )}
       </div>
