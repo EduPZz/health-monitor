@@ -105,7 +105,7 @@ const ExerciseChart = () => {
     <div className="divEvolucaoExe">
       <header className="headerEvolucao">
         <p className="titleEvolucao">Evolução de exercícios</p>
-        <Button color="success" variant="solid" onClick={() => setIsModalOpen(true)}>Add Exercise</Button>
+        <Button color="success" variant="solid" onClick={() => setIsModalOpen(true)}>Adicionar exercício</Button>
       </header>
 
       {exercises.length ? (
