@@ -1,1 +1,1 @@
-REACT_APP_BACKEND_URL=https://api_url
+VITE_BACKEND_URL=https://api_url
