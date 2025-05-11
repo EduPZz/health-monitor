@@ -13,17 +13,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum CompanionRequestStatus {
+  pending
+  accepted
+  rejected
+}
+
 model User {
-  id             Int            @id @default(autoincrement())
-  password       String
-  email          String         @unique
-  name           String
-  timezone       String         @default("UTC")
-  smartwatchCode String?
-  smartwatch     smartwatch?     @relation(fields: [smartwatchCode], references: [code])
-  Exercise       Exercise[]
-  BodyMeasure    BodyMeasure[]
-  consultation   consultation[]
+  id                         Int                  @id @default(autoincrement())
+  password                   String
+  email                      String               @unique
+  name                       String
+  timezone                   String               @default("UTC")
+  birthdate                  DateTime
+  Exercise                   Exercise[]
+  BodyMeasure                BodyMeasure[]
+  consultation               consultation[]
+  createdAt                  DateTime             @default(now())
+  updatedAt                  DateTime             @updatedAt
+  accompaniedBy              UserCompanion[]      @relation("accompaniedBy")
+  accompanying               UserCompanion[]      @relation("accompanying")
+  sentCompanionRequest       CompanionRequest[]   @relation("sentCompanionRequest")
+  receivedCompanionRequest   CompanionRequest[]   @relation("receivedCompanionRequest")
+  measurementEvents          MeasurementEvents[]
+  executedMeasurementSession MeasurementSession[] @relation("measurementExecuter")
+  measurementSession         MeasurementSession[] @relation("measuredUser")
+  BluetoothScales            BluetoothScales[]
+}
+
+model UserCompanion {
+  id              Int      @id @default(autoincrement())
+  accompaniedById Int
+  accompaniedBy   User     @relation("accompaniedBy", fields: [accompaniedById], references: [id], onDelete: Cascade)
+  accompanyingId  Int
+  accompanying    User     @relation("accompanying", fields: [accompanyingId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model CompanionRequest {
+  id             Int                    @id @default(autoincrement())
+  status         CompanionRequestStatus @default(pending)
+  message        String
+  inviterId      Int
+  inviter        User                   @relation("sentCompanionRequest", fields: [inviterId], references: [id], onDelete: Cascade)
+  invitedId      Int
+  invited        User                   @relation("receivedCompanionRequest", fields: [invitedId], references: [id], onDelete: Cascade)
+  expirationDate DateTime
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
 }
 
 model Exercise {
@@ -33,6 +71,8 @@ model Exercise {
   type      String
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BodyMeasure {
@@ -45,9 +85,10 @@ model BodyMeasure {
   calf      Int // Calf circumference in cm
   weight    Decimal // kg
   height    Decimal // Meters
-  createdAt DateTime @default(now()) // Timestamp for tracking when the measurements were taken
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model consultation {
@@ -58,13 +99,55 @@ model consultation {
   specialization String
   userId         Int
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
-model smartwatch {
-  code         String @id
-  bloodGlucose Int
-  heartbeat    Int
-  systolic     Int
-  diastolic    Int
-  User         User[]
+model MeasurementEvents {
+  id                 Int                  @id @default(autoincrement())
+  userId             Int
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime
+  measurementSession MeasurementSession[]
+}
+
+model MeasurementSession {
+  id                      Int                       @id @default(autoincrement())
+  eventId                 Int?
+  event                   MeasurementEvents?        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  executerId              Int
+  executer                User                      @relation("measurementExecuter", fields: [executerId], references: [id], onDelete: Cascade)
+  measuredUserId          Int
+  measuredUser            User                      @relation("measuredUser", fields: [measuredUserId], references: [id], onDelete: Cascade)
+  BioimpedanceMeasurement BioimpedanceMeasurement[]
+}
+
+model BioimpedanceMeasurement {
+  id                   Int                @id @default(autoincrement())
+  measurementSessionId Int                @unique
+  weight               Decimal
+  bodyFatPercentage    Decimal
+  muscleMass           Decimal
+  boneMass             Decimal
+  waterPercentage      Decimal
+  visceralFat          Int
+  metabolicAge         Int
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  measurementSession   MeasurementSession @relation(fields: [measurementSessionId], references: [id], onDelete: Cascade)
+}
+
+model BluetoothScales {
+  id                Int      @id @default(autoincrement())
+  status            String
+  userId            Int
+  macAddress        String
+  name              String
+  model             String
+  brand             String
+  supportsImpedance Boolean
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
