@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "CompanionRequestStatus" AS ENUM ('pending', 'accepted', 'rejected');
 
+-- CreateEnum
+CREATE TYPE "MeasurementTypes" AS ENUM ('scale', 'form');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -72,7 +75,7 @@ CREATE TABLE "BodyMeasure" (
 );
 
 -- CreateTable
-CREATE TABLE "consultation" (
+CREATE TABLE "Consultation" (
     "id" SERIAL NOT NULL,
     "scheduleDate" TIMESTAMP(3) NOT NULL,
     "doctorName" TEXT NOT NULL,
@@ -82,7 +85,7 @@ CREATE TABLE "consultation" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "consultation_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Consultation_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -101,6 +104,9 @@ CREATE TABLE "MeasurementSession" (
     "eventId" INTEGER,
     "executerId" INTEGER NOT NULL,
     "measuredUserId" INTEGER NOT NULL,
+    "anonymous" BOOLEAN NOT NULL DEFAULT false,
+    "measurementType" "MeasurementTypes" NOT NULL DEFAULT 'scale',
+    "bluetoothScaleId" INTEGER,
 
     CONSTRAINT "MeasurementSession_pkey" PRIMARY KEY ("id")
 );
@@ -163,7 +169,7 @@ ALTER TABLE "Exercise" ADD CONSTRAINT "Exercise_userId_fkey" FOREIGN KEY ("userI
 ALTER TABLE "BodyMeasure" ADD CONSTRAINT "BodyMeasure_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "consultation" ADD CONSTRAINT "consultation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Consultation" ADD CONSTRAINT "Consultation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MeasurementEvents" ADD CONSTRAINT "MeasurementEvents_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -176,6 +182,9 @@ ALTER TABLE "MeasurementSession" ADD CONSTRAINT "MeasurementSession_executerId_f
 
 -- AddForeignKey
 ALTER TABLE "MeasurementSession" ADD CONSTRAINT "MeasurementSession_measuredUserId_fkey" FOREIGN KEY ("measuredUserId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MeasurementSession" ADD CONSTRAINT "MeasurementSession_bluetoothScaleId_fkey" FOREIGN KEY ("bluetoothScaleId") REFERENCES "BluetoothScales"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "BioimpedanceMeasurement" ADD CONSTRAINT "BioimpedanceMeasurement_measurementSessionId_fkey" FOREIGN KEY ("measurementSessionId") REFERENCES "MeasurementSession"("id") ON DELETE CASCADE ON UPDATE CASCADE;

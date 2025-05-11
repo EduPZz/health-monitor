@@ -19,6 +19,11 @@ enum CompanionRequestStatus {
   rejected
 }
 
+enum MeasurementTypes {
+  scale
+  form
+}
+
 model User {
   id                         Int                  @id @default(autoincrement())
   password                   String
@@ -28,7 +33,7 @@ model User {
   birthdate                  DateTime
   Exercise                   Exercise[]
   BodyMeasure                BodyMeasure[]
-  consultation               consultation[]
+  consultation               Consultation[]
   createdAt                  DateTime             @default(now())
   updatedAt                  DateTime             @updatedAt
   accompaniedBy              UserCompanion[]      @relation("accompaniedBy")
@@ -91,7 +96,7 @@ model BodyMeasure {
   updatedAt DateTime @updatedAt
 }
 
-model consultation {
+model Consultation {
   id             Int      @id @default(autoincrement())
   scheduleDate   DateTime
   doctorName     String
@@ -120,7 +125,11 @@ model MeasurementSession {
   executer                User                      @relation("measurementExecuter", fields: [executerId], references: [id], onDelete: Cascade)
   measuredUserId          Int
   measuredUser            User                      @relation("measuredUser", fields: [measuredUserId], references: [id], onDelete: Cascade)
-  BioimpedanceMeasurement BioimpedanceMeasurement[]
+  anonymous               Boolean                   @default(false)
+  measurementType         MeasurementTypes          @default(scale)
+  bluetoothScaleId        Int?
+  bluetoothScale          BluetoothScales?          @relation(fields: [bluetoothScaleId], references: [id], onDelete: Cascade)
+  bioimpedanceMeasurement BioimpedanceMeasurement[]
 }
 
 model BioimpedanceMeasurement {
@@ -139,15 +148,16 @@ model BioimpedanceMeasurement {
 }
 
 model BluetoothScales {
-  id                Int      @id @default(autoincrement())
-  status            String
-  userId            Int
-  macAddress        String
-  name              String
-  model             String
-  brand             String
-  supportsImpedance Boolean
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 Int                  @id @default(autoincrement())
+  status             String
+  userId             Int
+  macAddress         String
+  name               String
+  model              String
+  brand              String
+  supportsImpedance  Boolean
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  measurementSession MeasurementSession[]
 }
