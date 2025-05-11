@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsDateString, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -14,4 +14,7 @@ export class CreateUserDto {
 
   @IsString()
   timezone: string;
+
+  @IsDateString()
+  birthDate: Date;
 }

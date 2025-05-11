@@ -8,8 +8,6 @@ import { AuthGuard } from './auth/auth.guard';
 import { ExercisesModule } from './exercises/exercises.module';
 import { BodyMeasuresModule } from './body-measures/body-measures.module';
 import { ConsultationsModule } from './consultations/consultations.module';
-import { SmartwatchesModule } from './smartwatches/smartwatches.module';
-
 @Module({
   imports: [
     UsersModule,
@@ -17,7 +15,6 @@ import { SmartwatchesModule } from './smartwatches/smartwatches.module';
     ExercisesModule,
     BodyMeasuresModule,
     ConsultationsModule,
-    SmartwatchesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "BioimpedanceMeasurement" ALTER COLUMN "weight" DROP NOT NULL,
+ALTER COLUMN "bodyFatPercentage" DROP NOT NULL,
+ALTER COLUMN "muscleMass" DROP NOT NULL,
+ALTER COLUMN "boneMass" DROP NOT NULL,
+ALTER COLUMN "waterPercentage" DROP NOT NULL,
+ALTER COLUMN "visceralFat" DROP NOT NULL,
+ALTER COLUMN "metabolicAge" DROP NOT NULL;

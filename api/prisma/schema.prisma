@@ -30,7 +30,7 @@ model User {
   email                      String               @unique
   name                       String
   timezone                   String               @default("UTC")
-  birthdate                  DateTime
+  birthDate                  DateTime
   Exercise                   Exercise[]
   BodyMeasure                BodyMeasure[]
   consultation               Consultation[]
@@ -135,13 +135,13 @@ model MeasurementSession {
 model BioimpedanceMeasurement {
   id                   Int                @id @default(autoincrement())
   measurementSessionId Int                @unique
-  weight               Decimal
-  bodyFatPercentage    Decimal
-  muscleMass           Decimal
-  boneMass             Decimal
-  waterPercentage      Decimal
-  visceralFat          Int
-  metabolicAge         Int
+  weight               Decimal?
+  bodyFatPercentage    Decimal?
+  muscleMass           Decimal?
+  boneMass             Decimal?
+  waterPercentage      Decimal?
+  visceralFat          Int?
+  metabolicAge         Int?
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
   measurementSession   MeasurementSession @relation(fields: [measurementSessionId], references: [id], onDelete: Cascade)

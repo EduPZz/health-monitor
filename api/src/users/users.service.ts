@@ -30,8 +30,4 @@ export class UsersService {
       data: createUserDto,
     });
   }
-
-  async registerSmartWatch(id: number, smartwatchCode: string) {
-    return this.prisma.user.update({ where: { id }, data: { smartwatchCode } });
-  }
 }
