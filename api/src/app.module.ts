@@ -8,6 +8,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { ExercisesModule } from './exercises/exercises.module';
 import { BodyMeasuresModule } from './body-measures/body-measures.module';
 import { ConsultationsModule } from './consultations/consultations.module';
+import { BluetoothScalesModule } from './bluetooth-scales/bluetooth-scales.module';
 @Module({
   imports: [
     UsersModule,
@@ -15,6 +16,7 @@ import { ConsultationsModule } from './consultations/consultations.module';
     ExercisesModule,
     BodyMeasuresModule,
     ConsultationsModule,
+    BluetoothScalesModule,
   ],
   controllers: [AppController],
   providers: [

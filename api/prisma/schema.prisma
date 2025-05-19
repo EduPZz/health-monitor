@@ -24,6 +24,11 @@ enum MeasurementTypes {
   form
 }
 
+enum BluetoothScalesStatus {
+  connected
+  disconnected
+}
+
 model User {
   id                         Int                  @id @default(autoincrement())
   password                   String
@@ -148,16 +153,16 @@ model BioimpedanceMeasurement {
 }
 
 model BluetoothScales {
-  id                 Int                  @id @default(autoincrement())
-  status             String
+  id                 Int                   @id @default(autoincrement())
+  status             BluetoothScalesStatus @default(disconnected)
   userId             Int
   macAddress         String
   name               String
   model              String
   brand              String
   supportsImpedance  Boolean
-  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
+  user               User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
   measurementSession MeasurementSession[]
 }
