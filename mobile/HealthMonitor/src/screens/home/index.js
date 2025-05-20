@@ -7,15 +7,23 @@ import Icon from "../../components/Icons";
 const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={["#282828", "#ffcd43"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={styles.background}
-      >
         <View style={styles.divWelcome}>
-          <Text style={styles.textWelcome}>Seja bem vindo!</Text>
-          <CurrentDate />
+          <View style={styles.divUser}>
+            <View style={styles.profileImg}>
+              <View style={styles.divIconPeople}>
+                <Icon.FontAwesome6 name="people-arrows" size={20} color={"#000"} />
+              </View>
+            </View>
+            <Text style={styles.textWelcome}>Name User</Text>
+          </View>
+          <Icon.FontAwesome6 name="bell" size={30} color={"#000"} />
+        </View>
+        <View style={styles.divAddBalance}>
+          <Icon.FontAwesome6 name="weight-scale" size={60} color={"#F5B041"} />
+          <Text style={styles.subtitle}>Bem-vindo! Por favor, adicione um dispositivo primeiro</Text>
+          <TouchableOpacity style={styles.btnAddBalance} onPress={() => navigation.navigate("Smartwatch")}>
+            <Text style={styles.textBtn}>Conectar dispositivo</Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={styles.divOpt}
@@ -24,29 +32,6 @@ const Home = ({ navigation }) => {
           <Icon.Ionicons name="watch-outline" size={40} color={"#000"} />
           <Text style={styles.textOpt}>Monitore seu corpo em tempo real</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Exercices")}>
-          <Icon.MaterialCommunityIcons
-            name="dumbbell"
-            size={40}
-            color={"#000"}
-          />
-          <Text style={styles.textOpt}>
-            Registrar e acompanhar os exercícios físicos
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Measures")}>
-          <Icon.MaterialCommunityIcons
-            name="ruler-square-compass"
-            size={40}
-            color={"#000"}
-          />
-          <Text style={styles.textOpt}>Acompanhar suas medidas corporais</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.divOpt} onPress={() => navigation.navigate("Consultations")}>
-          <Icon.Ionicons name="calendar-outline" size={40} color={"#000"} />
-          <Text style={styles.textOpt}>Consultas marcadas</Text>
-        </TouchableOpacity>
-      </LinearGradient>
     </View>
   );
 };
@@ -54,20 +39,48 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFE18E",
+    fontFamily: "Roboto"
   },
   background: {
     height: "100%",
     width: "100%",
   },
+  divUser: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  profileImg: {
+    width: 65,
+    height: 65,
+    borderRadius: "50%",
+    backgroundColor: "#000",
+    marginRight: 20,
+  },
+  divIconPeople: {
+    backgroundColor: "#FFF",
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    width: 30,
+    height: 30,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%"
+  },
   divWelcome: {
-    padding: 30,
+    padding: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   textWelcome: {
-    color: "#fff",
+    color: "#000",
     fontWeight: "600",
-    fontSize: 18,
-    paddingBottom: 10,
-    fontFamily: "Roboto",
+    fontSize: 16,
   },
   divOpt: {
     marginTop: 15,
@@ -95,6 +108,36 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "50%",
   },
+  divAddBalance: {
+    height: 250,
+    margin: 20,
+    backgroundColor: "#FFF",
+    borderRadius: 20,
+    display: "flex",
+    alignItems: "center",
+    padding: 20,
+  },
+  subtitle: {
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign: "center",
+    padding: 30
+  },
+  btnAddBalance: {
+    backgroundColor: "#F5B041",
+    height: 50,
+    borderRadius: 30,
+    width: "90%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  textBtn: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16
+  }
 });
 
 export default Home;

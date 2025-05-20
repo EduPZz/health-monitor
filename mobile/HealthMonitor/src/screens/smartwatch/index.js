@@ -16,91 +16,9 @@ import api from "../../api";
 const Smartwatch = ({ navigation }) => {
   const goBack = () => navigation.goBack();
 
-  const [watchCode, setWatchCode] = useState("");
-  const [smartwatch, setSmartwatch] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchWatchCode = async () => {
-      try {
-        const {
-          data: { smartwatchCode },
-        } = await api.get("auth/profile");
-        setWatchCode(smartwatchCode ?? "");
-
-        if (smartwatchCode) handlePairing(smartwatchCode ?? "", true);
-      } catch (error) {
-        console.error("Erro ao buscar o código do smartwatch:", error);
-        Alert.alert("Erro", "Não foi possível buscar o código do smartwatch.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWatchCode();
-  }, []);
-
-  useEffect(() => {
-    let interval;
-
-    if (smartwatch && watchCode) {
-      interval = setInterval(() => {
-        handlePairing(watchCode, false);
-      }, 5000);
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [smartwatch, watchCode]);
-
-  const handlePairing = async (watchCode, shouldShowLoading) => {
-    try {
-      if (shouldShowLoading) setLoading(true);
-      const { data } = await api.get(`smartwatch/${watchCode}`);
-      setSmartwatch(data);
-    } catch (error) {
-      Alert.alert("Erro", "Não foi possível sincronizar o código");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <Layout goBackFunction={goBack} title={"Smartwatch"}>
+    <Layout goBackFunction={goBack} title={"Conectar dispositivo"}>
       <View style={styles.container}>
-        {loading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
-        ) : (
-          <>
-            <Text style={styles.subtitle}>
-              Insira o código do seu smartwatch para conectá-lo.
-            </Text>
-
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Código do relógio"
-                placeholderTextColor="#A5A5A5"
-                value={watchCode}
-                onChangeText={setWatchCode}
-                keyboardType="number-pad"
-              />
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => handlePairing(watchCode, true)}
-              >
-                <Icons.MaterialCommunityIcons
-                  name="watch"
-                  size={24}
-                  color="#FFF"
-                />
-              </TouchableOpacity>
-            </View>
-
-            {smartwatch && <SmartwatchCards smartwatch={smartwatch} />}
-          </>
-        )}
       </View>
     </Layout>
   );

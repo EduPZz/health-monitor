@@ -15,23 +15,16 @@ const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
 const Layout = ({ goBackFunction, title, children }) => {
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={["#282828", "#ffcd43"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={styles.background}
-      >
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={goBackFunction}
           >
-            <Icons.Ionicons name="arrow-back" size={24} color={"#fff"} />
+            <Icons.Ionicons name="chevron-back-outline" size={30} color={"#000"} />
           </TouchableOpacity>
           <Text style={styles.title}>{ title }</Text>
         </View>
         {children}
-      </LinearGradient>
     </View>
   );
 };
@@ -43,6 +36,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: "#FFE18E"
   },
   header: {
     flexDirection: "row",
@@ -54,13 +48,12 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   title: {
-    color: "#fff",
+    color: "#000",
     fontSize: 18,
     fontWeight: "bold",
     position: "absolute",
     left: 0,
     right: 0,
-    top: statusBarHeight + 32,
     textAlign: "center",
   },
 });

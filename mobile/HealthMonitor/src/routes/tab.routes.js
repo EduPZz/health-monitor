@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Calculator from "../screens/calculator";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icons from "../components/Icons";
 import { HomeStackNavigator } from "./stack.routes";
+import Home from "../screens/home";
 
 const Tab = createBottomTabNavigator();
 
@@ -10,7 +11,7 @@ export default function TabRoutes() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { height: 60 },
+        tabBarStyle: { height: 100 },
         tabBarActiveTintColor: '#000',
         tabBarInactiveTintColor: '#282828'
       }}
@@ -20,10 +21,25 @@ export default function TabRoutes() {
         component={HomeStackNavigator}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
-            <Icon
+            <Icons.Ionicons
               name={focused ? "home" : "home-outline"}
               size={size}
               color={color}
+            />
+          ),
+          tabBarLabel: '',
+        }}
+      />
+
+      <Tab.Screen 
+        name="options"
+        component={HomeStackNavigator}
+        options={{
+          tabBarIcon: () => (
+            <Icons.FontAwesome6
+              name="circle-plus"
+              size={50}
+              color={"#F5B041"}
             />
           ),
           tabBarLabel: '',
@@ -35,8 +51,8 @@ export default function TabRoutes() {
         component={Calculator}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
-            <Icon
-              name={focused ? "calculator" : "calculator-outline"}
+            <Icons.Ionicons
+              name={focused ? "person" : "person-outline"}
               size={size}
               color={color}
             />
