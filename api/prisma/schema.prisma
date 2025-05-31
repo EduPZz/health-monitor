@@ -29,6 +29,11 @@ enum BluetoothScalesStatus {
   disconnected
 }
 
+enum UserSex {
+  male
+  female
+}
+
 model User {
   id                         Int                  @id @default(autoincrement())
   password                   String
@@ -36,6 +41,7 @@ model User {
   name                       String
   timezone                   String               @default("UTC")
   birthDate                  DateTime
+  sex                        UserSex
   Exercise                   Exercise[]
   BodyMeasure                BodyMeasure[]
   consultation               Consultation[]

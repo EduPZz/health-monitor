@@ -1,4 +1,11 @@
-import { IsDateString, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
+import { UserSex } from '@prisma/client';
 
 export class CreateUserDto {
   @IsString()
@@ -17,4 +24,7 @@ export class CreateUserDto {
 
   @IsDateString()
   birthDate: Date;
+
+  @IsEnum(UserSex)
+  sex: UserSex;
 }
