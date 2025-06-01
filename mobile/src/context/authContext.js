@@ -35,12 +35,16 @@ const loginUser = () => {
 };
 
 const signupUser = () => {
-  return async ({ password, email, name, timezone }) => {
-    const { data: { tokenInformation } } = await api.post("auth/signup", {
-      password,
+  return async ({ email, password, name, timezone, sex, birthDate }) => {
+    const {
+      data: { tokenInformation },
+    } = await api.post("auth/signup", {
       email,
+      password,
       name,
       timezone,
+      sex,
+      birthDate,
     });
 
     await AsyncStorage.setItem("accessToken", tokenInformation.access_token);
@@ -58,16 +62,14 @@ const loadAuthToken = async () => {
 const user = () => {
   return async () => {
     try {
-      const {
-        data
-      } = await api.get("auth/profile");
-      console.log({ data })
+      const { data } = await api.get("auth/profile");
+      console.log({ data });
       return data;
     } catch (error) {
       console.error("Failed to fetch user", error);
     }
-  }
-}
+  };
+};
 
 const loggout = (afterLoggoutAction) => {
   return async () => {
@@ -77,8 +79,8 @@ const loggout = (afterLoggoutAction) => {
     } catch (error) {
       console.error("Failed to Loggout", error);
     }
-  }
-}
+  };
+};
 
 loadAuthToken();
 

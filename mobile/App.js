@@ -5,6 +5,8 @@ import { Provider } from "./src/context/authContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts, Poppins_400Regular, Poppins_100Thin_Italic } from "@expo-google-fonts/poppins";
 import * as SplashScreen from "expo-splash-screen";
+import { TamaguiProvider } from 'tamagui'
+import config from './tamagui.config'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,10 +34,12 @@ const App = () => {
 
 export default () => {
   return (
-    <Provider>
-      <SafeAreaProvider>
-        <App />
-      </SafeAreaProvider>
-    </Provider>
+    <TamaguiProvider config={config}>
+      <Provider>
+        <SafeAreaProvider>
+          <App />
+        </SafeAreaProvider>
+      </Provider>
+    </TamaguiProvider>
   );
 };
