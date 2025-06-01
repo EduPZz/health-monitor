@@ -44,16 +44,6 @@ const Register = ({ navigation }) => {
   }) => {
     try {
       const convertedBirthDate = birthDate.toISOString();
-      console.log("Sign up data:", {
-        email,
-        password,
-        name,
-        timezone,
-        sex,
-        birthDate: convertedBirthDate,
-      });
-
-      console.log("Converted birth date:", convertedBirthDate);
       await signupUser({
         email,
         password,

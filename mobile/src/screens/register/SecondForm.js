@@ -21,7 +21,6 @@ const SecondForm = ({ onSignup, userData }) => {
     setShowDatePicker(false);
     if (selectedDate) {
       setBirthDate(selectedDate);
-      console.log("Selected date:", birthDate);
     }
   };
 
