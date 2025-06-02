@@ -4,6 +4,7 @@ import Smartwatch from "../screens/smartwatch";
 import Exercices from "../screens/exercices/Exercices";
 import Measures from "../screens/measures";
 import Consultations from "../screens/consultations";
+import Weighting from "../screens/weighting";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Exercices" component={Exercices} />
       <HomeStack.Screen name="Measures" component={Measures} />
       <HomeStack.Screen name="Consultations" component={Consultations} />
+      <HomeStack.Screen name="Weighting" component={Weighting} />
     </HomeStack.Navigator>
   );
 }

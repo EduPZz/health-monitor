@@ -27,7 +27,7 @@ const Home = ({ navigation }) => {
         </View>
         <TouchableOpacity
           style={styles.divOpt}
-          onPress={() => navigation.navigate("Smartwatch")}
+          onPress={() => navigation.navigate("Weighting")}
         >
           <Icon.Ionicons name="watch-outline" size={40} color={"#000"} />
           <Text style={styles.textOpt}>Monitore seu corpo em tempo real</Text>
