@@ -4,7 +4,7 @@ import Calculator from "../screens/calculator";
 import Icons from "../components/Icons";
 import { HomeStackNavigator } from "./stack.routes";
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
@@ -23,76 +23,72 @@ export default function TabRoutes() {
 
   return (
     <GestureHandlerRootView>
-      <NavigationContainer
-        independent={true}
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: { height: 100 },
+          tabBarActiveTintColor: '#000',
+          tabBarInactiveTintColor: '#282828'
+        }}
       >
-        <Tab.Navigator
-          screenOptions={{
-            headerShown: false,
-            tabBarStyle: { height: 100 },
-            tabBarActiveTintColor: '#000',
-            tabBarInactiveTintColor: '#282828'
+        <Tab.Screen
+          name="HomeStack"
+          component={HomeStackNavigator}
+          options={{
+            tabBarIcon: ({ focused, size, color }) => (
+              <Icons.Ionicons
+                name={focused ? "home" : "home-outline"}
+                size={size}
+                color={color}
+              />
+            ),
+            tabBarLabel: '',
           }}
-        >
-          <Tab.Screen
-            name="HomeStack"
-            component={HomeStackNavigator}
-            options={{
-              tabBarIcon: ({ focused, size, color }) => (
-                <Icons.Ionicons
-                  name={focused ? "home" : "home-outline"}
-                  size={size}
-                  color={color}
-                />
-              ),
-              tabBarLabel: '',
-            }}
-          />
+        />
 
-          <Tab.Screen
-            name="options"
-            component={() => null}
-            options={{
-              tabBarIcon: () => (
+        <Tab.Screen
+          name="options"
+          component={() => null}
+          options={{
+            tabBarIcon: () => (
+              <Icons.FontAwesome6
+                name="circle-plus"
+                size={50}
+                color={"#F5B041"}
+              />
+            ),
+            tabBarLabel: '',
+            tabBarButton: (props) => (
+              <TouchableOpacity
+                {...props}
+                onPress={handleOpenSheet}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+              >
                 <Icons.FontAwesome6
                   name="circle-plus"
                   size={50}
                   color={"#F5B041"}
                 />
-              ),
-              tabBarLabel: '',
-              tabBarButton: (props) => (
-                <TouchableOpacity
-                  {...props}
-                  onPress={handleOpenSheet}
-                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <Icons.FontAwesome6
-                    name="circle-plus"
-                    size={50}
-                    color={"#F5B041"}
-                  />
-                </TouchableOpacity>
-              )
-            }}
-          />
+              </TouchableOpacity>
+            )
+          }}
+        />
 
-          <Tab.Screen
-            name="Calculator"
-            component={Calculator}
-            options={{
-              tabBarIcon: ({ focused, size, color }) => (
-                <Icons.Ionicons
-                  name={focused ? "person" : "person-outline"}
-                  size={size}
-                  color={color}
-                />
-              ),
-              tabBarLabel: '',
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
+        <Tab.Screen
+          name="Calculator"
+          component={Calculator}
+          options={{
+            tabBarIcon: ({ focused, size, color }) => (
+              <Icons.Ionicons
+                name={focused ? "person" : "person-outline"}
+                size={size}
+                color={color}
+              />
+            ),
+            tabBarLabel: '',
+          }}
+        />
+      </Tab.Navigator>
 
       <BottomSheet
         ref={bottomSheetRef}
