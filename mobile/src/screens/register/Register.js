@@ -79,11 +79,14 @@ const Register = ({ navigation }) => {
           />
         </View>
       </ScrollView>
-      {step === 1 && <FirstFrom onFillFirstForm={onFillFirstForm} />}
+      {step === 1 && (
+        <FirstFrom onFillFirstForm={onFillFirstForm} navigation={navigation} />
+      )}
       {step === 2 && (
         <SecondForm
           onSignup={signup}
           userData={{ email, password, name, timezone }}
+          navigation={navigation}
         />
       )}
     </KeyboardAvoidingView>

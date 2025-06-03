@@ -1,26 +1,36 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import CurrentDate from "../../components/CurrentDate";
 import Icon from "../../components/Icons";
 
 const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
-        <View style={styles.divWelcome}>
-          <View style={styles.divUser}>
-            <View style={styles.profileImg}>
-              <View style={styles.divIconPeople}>
-                <Icon.FontAwesome6 name="people-arrows" size={20} color={"#000"} />
-              </View>
+      <View style={styles.divWelcome}>
+        <View style={styles.divUser}>
+          <View style={styles.profileImg}>
+            <View style={styles.divIconPeople}>
+              <Icon.FontAwesome6
+                name="people-arrows"
+                size={20}
+                color={"#000"}
+              />
             </View>
-            <Text style={styles.textWelcome}>Name User</Text>
           </View>
-          <Icon.FontAwesome6 name="bell" size={30} color={"#000"} />
+          <Text style={styles.textWelcome}>Name User</Text>
         </View>
+        <Icon.FontAwesome6 name="bell" size={30} color={"#000"} />
+      </View>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.divAddBalance}>
           <Icon.FontAwesome6 name="weight-scale" size={60} color={"#F5B041"} />
-          <Text style={styles.subtitle}>Bem-vindo! Por favor, adicione um dispositivo primeiro</Text>
-          <TouchableOpacity style={styles.btnAddBalance} onPress={() => navigation.navigate("ConnectScale")}>
+          <Text style={styles.subtitle}>
+            Bem-vindo! Por favor, adicione um dispositivo primeiro
+          </Text>
+          <TouchableOpacity
+            style={styles.btnAddBalance}
+            onPress={() => navigation.navigate("ConnectScale")}
+          >
             <Text style={styles.textBtn}>Conectar dispositivo</Text>
           </TouchableOpacity>
         </View>
@@ -42,7 +52,11 @@ const Home = ({ navigation }) => {
           style={styles.divOpt}
           onPress={() => navigation.navigate("Measures")}
         >
-          <Icon.MaterialCommunityIcons name="tape-measure" size={40} color={"#000"} />
+          <Icon.MaterialCommunityIcons
+            name="tape-measure"
+            size={40}
+            color={"#000"}
+          />
           <Text style={styles.textOpt}>Medidas</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -52,6 +66,7 @@ const Home = ({ navigation }) => {
           <Icon.FontAwesome6 name="dumbbell" size={40} color={"#000"} />
           <Text style={styles.textOpt}>Exercicios</Text>
         </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -60,7 +75,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFE18E",
-    fontFamily: "Roboto"
+    fontFamily: "Roboto",
+  },
+  scrollView: {
+    flex: 1,
   },
   background: {
     height: "100%",
@@ -88,14 +106,14 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   divWelcome: {
     padding: 20,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   textWelcome: {
     color: "#000",
@@ -141,7 +159,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     textAlign: "center",
-    padding: 30
+    padding: 30,
   },
   btnAddBalance: {
     backgroundColor: "#F5B041",
@@ -156,8 +174,8 @@ const styles = StyleSheet.create({
   textBtn: {
     color: "#FFF",
     fontWeight: "bold",
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });
 
 export default Home;

@@ -38,10 +38,13 @@ const Login = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={loginStyle.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -10}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -10}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={loginStyle.topSection}>
           <Image
             style={{ width: 100, height: 100, margin: 50 }}
@@ -106,9 +109,11 @@ const Login = ({ navigation }) => {
             <Text style={loginStyle.textButtom}>Login</Text>
           </TouchableOpacity>
 
-          <Link to={{screen: 'Register'}} style={loginStyle.textEmphasis}>
-            Não tem uma conta? Cadastre-se
-          </Link >
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            <Text style={loginStyle.textEmphasis}>
+              Não tem uma conta? Cadastre-se
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

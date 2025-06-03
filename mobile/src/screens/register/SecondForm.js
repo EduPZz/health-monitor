@@ -5,7 +5,7 @@ import { Link } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 
-const SecondForm = ({ onSignup, userData }) => {
+const SecondForm = ({ navigation, onSignup, userData }) => {
   const [sex, setSex] = useState("");
   const [birthDate, setBirthDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -85,9 +85,11 @@ const SecondForm = ({ onSignup, userData }) => {
         <Text style={registerStyle.textButtom}>Finalizar Cadastro</Text>
       </TouchableOpacity>
 
-      <Link to={{ screen: "Login" }} style={registerStyle.textEmphasis}>
-        Já tem uma conta? Entrar
-      </Link>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text style={registerStyle.textEmphasis}>
+          Já tem uma conta? Entrar
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

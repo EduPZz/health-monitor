@@ -40,7 +40,12 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION"
       ],
-      "package": "com.edupzz.HealthMonitor"
+      "package": "com.edupzz.HealthMonitor",
+      "buildType": "apk",
+      "enableProguardInReleaseBuilds": false,
+      "enableShrinkResourcesInReleaseBuilds": false,
+      "enablePngCrunchInReleaseBuilds": false,
+      "useLegacyPackaging": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

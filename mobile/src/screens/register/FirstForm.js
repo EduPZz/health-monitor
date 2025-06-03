@@ -4,7 +4,7 @@ import registerStyle from "./registerStyle";
 import { useState } from "react";
 import { Link } from "@react-navigation/native";
 
-const FirstForm = ({ onFillFirstForm }) => {
+const FirstForm = ({ navigation, onFillFirstForm }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,9 +75,11 @@ const FirstForm = ({ onFillFirstForm }) => {
         <Text style={registerStyle.textButtom}>Cadastrar</Text>
       </TouchableOpacity>
 
-      <Link to={{ screen: "Login" }} style={registerStyle.textEmphasis}>
-        Já tem uma conta? Entrar
-      </Link>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text style={registerStyle.textEmphasis}>
+          Já tem uma conta? Entrar
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
