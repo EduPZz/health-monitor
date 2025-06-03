@@ -6,6 +6,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts, Poppins_400Regular, Poppins_100Thin_Italic } from "@expo-google-fonts/poppins";
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { TamaguiProvider } from 'tamagui'
+import config from './tamagui.config'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,12 +35,14 @@ const App = () => {
 
 export default () => {
   return (
-    <Provider>
-      <SafeAreaProvider>
-        <GestureHandlerRootView>
-          <App />
-        </GestureHandlerRootView>
-      </SafeAreaProvider>
-    </Provider>
+    <TamaguiProvider config={config}>
+      <Provider>
+        <SafeAreaProvider>
+          <GestureHandlerRootView>
+            <App />
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
+      </Provider>
+    </TamaguiProvider>
   );
 };
