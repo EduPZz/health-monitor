@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const smartwatchStyles = StyleSheet.create({
+const connectScaleStyles = StyleSheet.create({
   container: {
     display: "flex",
     marginTop: 16,
@@ -8,4 +8,4 @@ const smartwatchStyles = StyleSheet.create({
   },
 });
 
-export default smartwatchStyles;
+export default connectScaleStyles;

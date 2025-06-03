@@ -20,7 +20,7 @@ const Home = ({ navigation }) => {
         <View style={styles.divAddBalance}>
           <Icon.FontAwesome6 name="weight-scale" size={60} color={"#F5B041"} />
           <Text style={styles.subtitle}>Bem-vindo! Por favor, adicione um dispositivo primeiro</Text>
-          <TouchableOpacity style={styles.btnAddBalance} onPress={() => navigation.navigate("Smartwatch")}>
+          <TouchableOpacity style={styles.btnAddBalance} onPress={() => navigation.navigate("ConnectScale")}>
             <Text style={styles.textBtn}>Conectar dispositivo</Text>
           </TouchableOpacity>
         </View>
