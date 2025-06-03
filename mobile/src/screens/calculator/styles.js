@@ -5,6 +5,7 @@ const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFE18E"
   },
   background: {
     height: "100%",

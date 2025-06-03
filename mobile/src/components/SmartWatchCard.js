@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Icons from '../components/Icons';
+import Icons from './Icons';
 
 const HealthCard = ({ value, unit, label, icon, color, description }) => (
   <View style={[styles.card, { borderColor: color }]}>

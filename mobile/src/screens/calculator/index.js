@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import styles from "./styles";
 import Icons from "../../components/Icons";
 
@@ -41,12 +40,6 @@ const Calculator = () => {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={["#282828", "#ffcd43"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={styles.background}
-      />
 
       <Text style={styles.header}>Cálculo de IMC</Text>
 
@@ -116,12 +109,6 @@ const Calculator = () => {
         </View>
 
         <View style={styles.rangeBar}>
-          <LinearGradient
-            colors={["#80c1ff", "#80ffd4", "#ffad60", "#ff6060"]}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-            style={styles.gradientBar}
-          />
           <View style={[styles.pointer, { left: `${pointerPosition}%` }]} />
           <View style={styles.rangeLabels}>
             <Text style={styles.rangeLabel}>15</Text>

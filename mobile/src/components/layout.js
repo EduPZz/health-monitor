@@ -7,7 +7,6 @@ import {
   StatusBar,
   Platform,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import Icons from "./Icons";
 
 const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;

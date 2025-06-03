@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import CurrentDate from "../../components/CurrentDate";
 import Icon from "../../components/Icons";
 
@@ -29,8 +28,29 @@ const Home = ({ navigation }) => {
           style={styles.divOpt}
           onPress={() => navigation.navigate("Weighting")}
         >
-          <Icon.Ionicons name="watch-outline" size={40} color={"#000"} />
-          <Text style={styles.textOpt}>Monitore seu corpo em tempo real</Text>
+          <Icon.FontAwesome6 name="weight-scale" size={40} color={"#000"} />
+          <Text style={styles.textOpt}>Pesagem</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.divOpt}
+          onPress={() => navigation.navigate("Consultations")}
+        >
+          <Icon.FontAwesome6 name="user-doctor" size={40} color={"#000"} />
+          <Text style={styles.textOpt}>Consultas médicas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.divOpt}
+          onPress={() => navigation.navigate("Measures")}
+        >
+          <Icon.MaterialCommunityIcons name="tape-measure" size={40} color={"#000"} />
+          <Text style={styles.textOpt}>Medidas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.divOpt}
+          onPress={() => navigation.navigate("Exercices")}
+        >
+          <Icon.FontAwesome6 name="dumbbell" size={40} color={"#000"} />
+          <Text style={styles.textOpt}>Exercicios</Text>
         </TouchableOpacity>
     </View>
   );
