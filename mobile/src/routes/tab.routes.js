@@ -5,10 +5,12 @@ import Icons from "../components/Icons";
 import { HomeStackNavigator } from "./stack.routes";
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const Tab = createBottomTabNavigator();
+
+const EmptyScreen = () => null;
 
 export default function TabRoutes() {
   const bottomSheetRef = useRef(null);
@@ -22,13 +24,13 @@ export default function TabRoutes() {
   };
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
           tabBarStyle: { height: 100 },
-          tabBarActiveTintColor: '#000',
-          tabBarInactiveTintColor: '#282828'
+          tabBarActiveTintColor: "#000",
+          tabBarInactiveTintColor: "#282828",
         }}
       >
         <Tab.Screen
@@ -42,13 +44,13 @@ export default function TabRoutes() {
                 color={color}
               />
             ),
-            tabBarLabel: '',
+            tabBarLabel: "",
           }}
         />
 
         <Tab.Screen
           name="options"
-          component={() => null}
+          component={EmptyScreen}
           options={{
             tabBarIcon: () => (
               <Icons.FontAwesome6
@@ -57,12 +59,16 @@ export default function TabRoutes() {
                 color={"#F5B041"}
               />
             ),
-            tabBarLabel: '',
+            tabBarLabel: "",
             tabBarButton: (props) => (
               <TouchableOpacity
                 {...props}
                 onPress={handleOpenSheet}
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
                 <Icons.FontAwesome6
                   name="circle-plus"
@@ -70,7 +76,7 @@ export default function TabRoutes() {
                   color={"#F5B041"}
                 />
               </TouchableOpacity>
-            )
+            ),
           }}
         />
 
@@ -85,7 +91,7 @@ export default function TabRoutes() {
                 color={color}
               />
             ),
-            tabBarLabel: '',
+            tabBarLabel: "",
           }}
         />
       </Tab.Navigator>
@@ -98,22 +104,29 @@ export default function TabRoutes() {
         index={-1}
       >
         <BottomSheetView style={styles.container}>
-            <TouchableOpacity style={styles.optContainer} onPress={() => {}}>
-              <View style={styles.firstOptContainer}>
-                <Icons.FontAwesome6 name="weight-scale" size={30} color={"#000"} />
-                <Text style={styles.textOpt}>Pesagem</Text>
-              </View>
-              <Icons.FontAwesome6 name="chevron-right" size={20} color={"#000"} />
-            </TouchableOpacity>
-        </BottomSheetView>
-        <BottomSheetView style={styles.container}>
-            <TouchableOpacity style={styles.optContainer} onPress={() => {}}>
-              <View style={styles.firstOptContainer}>
-                <Icons.FontAwesome6 name="people-group" size={30} color={"#000"} />
-                <Text style={styles.textOpt}>Amigos</Text>
-              </View>
-              <Icons.FontAwesome6 name="chevron-right" size={20} color={"#000"} />
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.optContainer} onPress={() => {}}>
+            <View style={styles.firstOptContainer}>
+              <Icons.FontAwesome6
+                name="weight-scale"
+                size={30}
+                color={"#000"}
+              />
+              <Text style={styles.textOpt}>Pesagem</Text>
+            </View>
+            <Icons.FontAwesome6 name="chevron-right" size={20} color={"#000"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.optContainer} onPress={() => {}}>
+            <View style={styles.firstOptContainer}>
+              <Icons.FontAwesome6
+                name="people-group"
+                size={30}
+                color={"#000"}
+              />
+              <Text style={styles.textOpt}>Amigos</Text>
+            </View>
+            <Icons.FontAwesome6 name="chevron-right" size={20} color={"#000"} />
+          </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
@@ -125,24 +138,23 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   optContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 30,
     borderBottomWidth: 1,
-    borderColor: '#E2E8F0',
-    marginTop: 10
+    borderColor: "#E2E8F0",
+    marginTop: 10,
   },
   firstOptContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   textOpt: {
     paddingLeft: 20,
     fontSize: 18,
-  }
-})
+  },
+});
