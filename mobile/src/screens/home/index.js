@@ -1,11 +1,20 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
 import CurrentDate from "../../components/CurrentDate";
 import Icon from "../../components/Icons";
 
 const Home = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar backgroundColor="#FFE18E" barStyle="dark-content" />
       <View style={styles.divWelcome}>
         <View style={styles.divUser}>
           <View style={styles.profileImg}>
@@ -19,8 +28,12 @@ const Home = ({ navigation }) => {
           </View>
           <Text style={styles.textWelcome}>Name User</Text>
         </View>
-        <Icon.FontAwesome6 name="bell" size={30} color={"#000"} />
+
+        <View style={styles.bellContainer}>
+          <Icon.FontAwesome6 name="bell" size={20} color="#000" solid />
+        </View>
       </View>
+
       <ScrollView style={styles.scrollView}>
         <View style={styles.divAddBalance}>
           <Icon.FontAwesome6 name="weight-scale" size={60} color={"#F5B041"} />
@@ -67,16 +80,25 @@ const Home = ({ navigation }) => {
           <Text style={styles.textOpt}>Exercicios</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: "#FFE18E",
     fontFamily: "Roboto",
   },
+  bellContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   scrollView: {
     flex: 1,
   },
@@ -109,7 +131,9 @@ const styles = StyleSheet.create({
     borderRadius: "50%",
   },
   divWelcome: {
-    padding: 20,
+    paddingHorizontal: 24,
+    paddingBottom: 8,
+    paddingTop: 8,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

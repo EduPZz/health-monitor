@@ -23,6 +23,8 @@ export default function TabRoutes() {
     bottomSheetRef.current?.expand();
   };
 
+  const navigation = useNavigation();
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Tab.Navigator
@@ -108,24 +110,30 @@ export default function TabRoutes() {
             <View style={styles.firstOptContainer}>
               <Icons.FontAwesome6
                 name="weight-scale"
-                size={30}
+                size={24}
                 color={"#000"}
               />
               <Text style={styles.textOpt}>Pesagem</Text>
             </View>
-            <Icons.FontAwesome6 name="chevron-right" size={20} color={"#000"} />
+            <Icons.FontAwesome6 name="chevron-right" size={16} color={"#000"} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.optContainer} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.optContainer}
+            onPress={() => {
+              bottomSheetRef.current?.close();
+              navigation.navigate("ShareMedicalRecords");
+            }}
+          >
             <View style={styles.firstOptContainer}>
               <Icons.FontAwesome6
                 name="file-medical"
-                size={30}
+                size={24}
                 color={"#000"}
               />
               <Text style={styles.textOpt}>Compartilhar</Text>
             </View>
-            <Icons.FontAwesome6 name="chevron-right" size={20} color={"#000"} />
+            <Icons.FontAwesome6 name="chevron-right" size={16} color={"#000"} />
           </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
@@ -143,7 +151,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 30,
+    padding: 24,
     borderBottomWidth: 1,
     borderColor: "#E2E8F0",
     marginTop: 10,
@@ -155,6 +163,6 @@ const styles = StyleSheet.create({
   },
   textOpt: {
     paddingLeft: 20,
-    fontSize: 18,
+    fontSize: 16,
   },
 });

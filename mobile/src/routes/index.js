@@ -6,6 +6,7 @@ import Register from "../screens/register/Register";
 import Login from "../screens/signin/Login";
 import { Context } from "../context/authContext";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ShareMedicalRecords from "../screens/share-medical-records";
 
 export default function Routes() {
   const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ export default function Routes() {
       {loggedIn ? (
         <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="TabRoutes">
           <Stack.Screen name="TabRoutes" component={TabRoutes} />
+          <Stack.Screen name="ShareMedicalRecords" component={ShareMedicalRecords} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator
@@ -35,7 +37,6 @@ export default function Routes() {
         >
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="TabRoutes" component={TabRoutes} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
