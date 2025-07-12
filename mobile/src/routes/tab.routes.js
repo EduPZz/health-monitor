@@ -28,7 +28,7 @@ export default function TabRoutes() {
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
-          tabBarStyle: { height: 100 },
+          tabBarStyle: { height: 75 },
           tabBarActiveTintColor: "#000",
           tabBarInactiveTintColor: "#282828",
         }}
@@ -52,10 +52,10 @@ export default function TabRoutes() {
           name="options"
           component={EmptyScreen}
           options={{
-            tabBarIcon: () => (
+            tabBarIcon: ({ size }) => (
               <Icons.FontAwesome6
                 name="circle-plus"
-                size={50}
+                size={size}
                 color={"#F5B041"}
               />
             ),
@@ -72,7 +72,7 @@ export default function TabRoutes() {
               >
                 <Icons.FontAwesome6
                   name="circle-plus"
-                  size={50}
+                  size={30}
                   color={"#F5B041"}
                 />
               </TouchableOpacity>
@@ -119,11 +119,11 @@ export default function TabRoutes() {
           <TouchableOpacity style={styles.optContainer} onPress={() => {}}>
             <View style={styles.firstOptContainer}>
               <Icons.FontAwesome6
-                name="people-group"
+                name="file-medical"
                 size={30}
                 color={"#000"}
               />
-              <Text style={styles.textOpt}>Amigos</Text>
+              <Text style={styles.textOpt}>Compartilhar</Text>
             </View>
             <Icons.FontAwesome6 name="chevron-right" size={20} color={"#000"} />
           </TouchableOpacity>
