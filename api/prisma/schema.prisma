@@ -34,6 +34,11 @@ enum UserSex {
   female
 }
 
+enum CompanionRequestType {
+  to_share
+  to_receive
+}
+
 model User {
   id                         Int                  @id @default(autoincrement())
   password                   String
@@ -76,6 +81,7 @@ model CompanionRequest {
   invitedId      Int
   invited        User                   @relation("receivedCompanionRequest", fields: [invitedId], references: [id], onDelete: Cascade)
   expirationDate DateTime
+  type           CompanionRequestType   @default(to_share)
   createdAt      DateTime               @default(now())
   updatedAt      DateTime               @updatedAt
 }
