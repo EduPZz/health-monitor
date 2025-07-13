@@ -40,22 +40,28 @@ export class UsersService {
       return [];
     }
 
-    const where: any = {};
+    const conditions = [];
     if (name) {
-      where.name = {
-        contains: name,
-        mode: 'insensitive',
-      };
+      conditions.push({
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      });
     }
     if (email) {
-      where.email = {
-        contains: email,
-        mode: 'insensitive',
-      };
+      conditions.push({
+        email: {
+          contains: email,
+          mode: 'insensitive',
+        },
+      });
     }
 
     return this.prisma.user.findMany({
-      where,
+      where: {
+        OR: conditions,
+      },
       select: {
         id: true,
         name: true,
