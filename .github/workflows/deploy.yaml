@@ -17,23 +17,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Debug EC2_HOST value
-      run: echo "Host is ${{ secrets.EC2_HOST }}"
-
     - name: Set up SSH
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-        - name: Deploy API to EC2
-          run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd /home/ubuntu/health-monitor/api
-            git fetch origin
-            git reset --hard origin/main
-            git pull origin main
-            npm install
-            npm run build
-            pm2 restart nestjs-api
-          EOF
+    - name: Deploy API to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          cd /home/ubuntu/health-monitor/api
+          git fetch origin
+          git reset --hard origin/main
+          git pull origin main
+          npm install
+          npm run build
+          pm2 restart nestjs-api
+        EOF
