@@ -43,14 +43,15 @@
     "react-native-date-picker": "^5.0.12",
     "react-native-gesture-handler": "^2.24.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-modal": "^14.0.0-rc.1",
+    "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "^5.1.0",
     "react-native-screens": "^4.9.1",
     "react-native-svg": "^15.11.2",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "^0.20.0",
     "tamagui": "^1.126.13",
-    "victory-native": "^41.17.3",
-    "react-native-reanimated": "~3.17.4"
+    "victory-native": "^41.17.3"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",

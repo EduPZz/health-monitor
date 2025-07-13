@@ -33,7 +33,6 @@ export class UsersService {
   }
 
   async search(searchUserDto: SearchUserDto) {
-    console.log('Searching users with criteria:', searchUserDto);
     const { name, email } = searchUserDto;
 
     if (!name && !email) {
@@ -66,6 +65,10 @@ export class UsersService {
         id: true,
         name: true,
         email: true,
+      },
+      take: 10,
+      orderBy: {
+        name: 'asc',
       },
     });
   }

@@ -17,7 +17,7 @@ const isLogged = () => {
       const token = await AsyncStorage.getItem("accessToken");
       return !!token;
     } catch (e) {
-      console.log(e);
+      // Ignore error
     }
   };
 };
@@ -63,7 +63,6 @@ const user = () => {
   return async () => {
     try {
       const { data } = await api.get("auth/profile");
-      console.log({ data });
       return data;
     } catch (error) {
       console.error("Failed to fetch user", error);
