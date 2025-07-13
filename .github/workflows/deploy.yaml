@@ -7,6 +7,8 @@ on:
     paths:
       - 'api/**'
 
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,7 +27,7 @@ jobs:
 
     - name: Deploy API to EC2
       run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
           cd /home/ubuntu/health-monitor/api
           git fetch origin
           git reset --hard origin/main
