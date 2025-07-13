@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -8,10 +8,29 @@ import {
   SafeAreaView,
   StatusBar,
 } from "react-native";
-import CurrentDate from "../../components/CurrentDate";
 import Icon from "../../components/Icons";
+import { Context } from "../../context/authContext";
 
 const Home = ({ navigation }) => {
+  const { user } = useContext(Context);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await user(onErrorToFetchUser);
+      setUserName(userData.name);
+    };
+    fetchUser();
+  }, []);
+
+  const onErrorToFetchUser = (error) => {
+    console.error("Failed to fetch user", error);
+    if (error) {
+      navigation.navigate("Login");
+    }
+    ToastAndroid.show("Erro ao carregar usuário", ToastAndroid.SHORT);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#FFE18E" barStyle="dark-content" />
@@ -26,7 +45,7 @@ const Home = ({ navigation }) => {
               />
             </View>
           </View>
-          <Text style={styles.textWelcome}>Name User</Text>
+          <Text style={styles.textWelcome}>{ userName }</Text>
         </View>
 
         <View style={styles.bellContainer}>
@@ -116,7 +135,7 @@ const styles = StyleSheet.create({
     height: 65,
     borderRadius: "50%",
     backgroundColor: "#000",
-    marginRight: 20,
+    marginRight: 8,
   },
   divIconPeople: {
     backgroundColor: "#FFF",

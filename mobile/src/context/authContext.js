@@ -59,22 +59,26 @@ const loadAuthToken = async () => {
   }
 };
 
-const user = () => {
+const user = (onErrorToFetchUser) => {
   return async () => {
     try {
       const { data } = await api.get("auth/profile");
       return data;
     } catch (error) {
-      console.error("Failed to fetch user", error);
+      if (error.response && error.response.status === 401) {
+        await AsyncStorage.removeItem("accessToken");
+        onErrorToFetchUser();
+      }
+      onErrorToFetchUser(error);
     }
   };
 };
 
-const loggout = (afterLoggoutAction) => {
+const logout = (afterLogoutAction) => {
   return async () => {
     try {
       await AsyncStorage.removeItem("accessToken");
-      afterLoggoutAction();
+      afterLogoutAction();
     } catch (error) {
       console.error("Failed to Loggout", error);
     }
@@ -85,6 +89,6 @@ loadAuthToken();
 
 export const { Context, Provider } = createContext(
   reducer,
-  { loginUser, isLogged, signupUser, user, loggout },
+  { loginUser, isLogged, signupUser, user, logout },
   initialState
 );
