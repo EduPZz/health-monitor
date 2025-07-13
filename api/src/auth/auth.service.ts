@@ -43,6 +43,7 @@ export class AuthService {
       ...userFromReq,
       sex: user.sex,
       timezone: user.timezone,
+      name: user.name,
     };
   }
 }
