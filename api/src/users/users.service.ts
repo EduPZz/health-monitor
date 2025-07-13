@@ -35,6 +35,8 @@ export class UsersService {
   async search(searchUserDto: SearchUserDto) {
     const { name, email } = searchUserDto;
 
+    console.log('Searching users with:', { name, email });
+
     if (!name && !email) {
       return [];
     }
