@@ -6,7 +6,7 @@ import { UsersModule } from 'src/users/users.module';
 import { UserCompanionsModule } from 'src/user-companions/user-companions.module';
 
 @Module({
-  imports: [UsersModule, UserCompanionsModule, UserCompanionsModule],
+  imports: [UsersModule, UserCompanionsModule],
   controllers: [CompanionRequestsController],
   providers: [PrismaService, CompanionRequestsService],
 })

@@ -123,14 +123,14 @@ export class CompanionRequestsService {
       where: { id },
     });
 
-    if (request.inviterId !== userId || request.invitedId !== userId) {
+    if (!request) {
+      throw new NotFoundException('Pedido de companhia não encontrado.');
+    }
+
+    if (request.inviterId !== userId && request.invitedId !== userId) {
       throw new NotFoundException(
         'Você não tem permissão para remover este pedido de companhia.',
       );
-    }
-
-    if (!request) {
-      throw new NotFoundException('Pedido de companhia não encontrado.');
     }
 
     return this.prisma.companionRequest.delete({

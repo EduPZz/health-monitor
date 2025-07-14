@@ -1,9 +1,16 @@
 import { CompanionRequestType } from '@prisma/client';
-import { IsEnum, IsNumber, IsString, IsNotEmpty } from 'class-validator';
+import {
+  IsEnum,
+  IsNumber,
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateCompanionRequestDto {
+  @IsOptional()
   @IsString()
-  message: string;
+  message?: string;
 
   @IsNumber()
   @IsNotEmpty()
