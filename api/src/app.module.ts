@@ -9,6 +9,8 @@ import { ExercisesModule } from './exercises/exercises.module';
 import { BodyMeasuresModule } from './body-measures/body-measures.module';
 import { ConsultationsModule } from './consultations/consultations.module';
 import { BluetoothScalesModule } from './bluetooth-scales/bluetooth-scales.module';
+import { CompanionRequestsModule } from './companion-requests/companion-requests.module';
+import { UserCompanionsModule } from './user-companions/user-companions.module';
 @Module({
   imports: [
     UsersModule,
@@ -17,6 +19,8 @@ import { BluetoothScalesModule } from './bluetooth-scales/bluetooth-scales.modul
     BodyMeasuresModule,
     ConsultationsModule,
     BluetoothScalesModule,
+    CompanionRequestsModule,
+    UserCompanionsModule,
   ],
   controllers: [AppController],
   providers: [

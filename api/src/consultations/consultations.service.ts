@@ -21,7 +21,9 @@ export class ConsultationsService {
     });
 
     if (!consultation) {
-      throw new NotFoundException('Consultation not found or not authorized');
+      throw new NotFoundException(
+        'Consulta não encontrada ou você não tem permissão para acessá-la.',
+      );
     }
 
     return consultation;

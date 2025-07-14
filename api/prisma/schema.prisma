@@ -75,12 +75,12 @@ model UserCompanion {
 model CompanionRequest {
   id             Int                    @id @default(autoincrement())
   status         CompanionRequestStatus @default(pending)
-  message        String
+  message        String?
   inviterId      Int
   inviter        User                   @relation("sentCompanionRequest", fields: [inviterId], references: [id], onDelete: Cascade)
   invitedId      Int
   invited        User                   @relation("receivedCompanionRequest", fields: [invitedId], references: [id], onDelete: Cascade)
-  expirationDate DateTime
+  expirationDate DateTime?
   type           CompanionRequestType   @default(to_share)
   createdAt      DateTime               @default(now())
   updatedAt      DateTime               @updatedAt
