@@ -1,21 +1,47 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid, ActionSheetIOS } from "react-native";
 import Layout from "../../components/layout";
 import Icon from "../../components/Icons"; // Supondo que você tenha um componente de ícones centralizado
 import UserSearchModal from "../../components/UserSearchModal";
 import styles from "./styles";
 import ConfirmRequest from "./confirmRequest";
+import api from "../../api";
+import Toast from 'react-native-toast-message';
 
 export default function ShareMedicalRecords({ navigation }) {
   const goBack = () => navigation.goBack();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [mode, setMode] = useState("share");
+  const [mode, setMode] = useState("to_share");
   const [selectedUser, setSelectedUser] = useState(null);
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);
   };
+
+  const handleConfirm = async (user, message) => {
+    try {
+      await api.post("/companion-requests", {
+        invitedId: user.id,
+        message,
+        type: mode,
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'Solicitação enviada',
+        text2: `Solicitação de ${mode === "to_share" ? "compartilhamento" : "pedido para compartilhar"} enviada com sucesso!`,
+      });
+      navigation.goBack();
+    } catch (error) {
+      console.log("Error sending request:", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao enviar solicitação',
+        text2: error.message || 'Ocorreu um erro ao enviar a solicitação.',
+      });
+      return;
+    }
+  }
 
   return (
     <Layout title="Compartilhar prontuário médico" goBackFunction={goBack}>
@@ -56,7 +82,7 @@ export default function ShareMedicalRecords({ navigation }) {
           <TouchableOpacity
             style={styles.primaryButton}
             onPress={() => {
-              setMode("share");
+              setMode("to_share");
               setModalVisible(true);
             }}
           >
@@ -68,7 +94,7 @@ export default function ShareMedicalRecords({ navigation }) {
           <TouchableOpacity
             style={styles.secondaryButton}
             onPress={() => {
-              setMode("request");
+              setMode("to_receive");
               setModalVisible(true);
             }}
           >
@@ -82,7 +108,7 @@ export default function ShareMedicalRecords({ navigation }) {
       {selectedUser && (
         <ConfirmRequest
           onCancel={() => setSelectedUser(null)}
-          onSuccess={(selectedUser, message) => { console.log("Request sent", selectedUser, message); }}
+          onSuccess={handleConfirm}
           selectedUser={selectedUser}
           requestMode={mode}
         />

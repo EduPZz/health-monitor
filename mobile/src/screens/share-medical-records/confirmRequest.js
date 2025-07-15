@@ -16,12 +16,12 @@ export default function ConfirmRequest({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {requestMode === "share"
+        {requestMode === "to_share"
           ? "Confirmar compartilhamento"
           : "Pedir compartilhamento"}
       </Text>
       <Text style={styles.description}>
-        {requestMode === "share"
+        {requestMode === "to_share"
           ? "Você está prestes a compartilhar seu prontuário médico com esta pessoa."
           : "Você está pedindo para que esta pessoa compartilhe o prontuário médico com você."}
       </Text>
@@ -62,7 +62,7 @@ export default function ConfirmRequest({
         disabled={isSubmitButtonDisabled}
       >
         <Text style={styles.primaryButtonText}>
-          {requestMode === "share" ? "Compartilhar" : "Pedir Compartilhamento"}
+          {requestMode === "to_share" ? "Compartilhar" : "Pedir Compartilhamento"}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.secondaryButton} onPress={onCancel}>

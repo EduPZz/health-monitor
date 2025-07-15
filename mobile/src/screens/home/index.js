@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Icon from "../../components/Icons";
 import { Context } from "../../context/authContext";
+import Toast from 'react-native-toast-message';
 
 const Home = ({ navigation }) => {
   const { user } = useContext(Context);
@@ -28,7 +29,11 @@ const Home = ({ navigation }) => {
     if (error) {
       navigation.navigate("Login");
     }
-    ToastAndroid.show("Erro ao carregar usuário", ToastAndroid.SHORT);
+    Toast.show({
+      type: 'error',
+      text1: 'Erro',
+      text2: 'Erro ao carregar usuário'
+    });
   };
 
   return (
@@ -96,7 +101,7 @@ const Home = ({ navigation }) => {
           onPress={() => navigation.navigate("Exercices")}
         >
           <Icon.FontAwesome6 name="dumbbell" size={40} color={"#000"} />
-          <Text style={styles.textOpt}>Exercicios</Text>
+          <Text style={styles.textOpt}>Exercícios</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
