@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid, ActionSheetIOS } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+  ActionSheetIOS,
+} from "react-native";
 import Layout from "../../components/layout";
 import Icon from "../../components/Icons"; // Supondo que você tenha um componente de ícones centralizado
 import UserSearchModal from "../../components/UserSearchModal";
 import styles from "./styles";
 import ConfirmRequest from "./confirmRequest";
 import api from "../../api";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 
 export default function ShareMedicalRecords({ navigation }) {
   const goBack = () => navigation.goBack();
@@ -27,21 +34,23 @@ export default function ShareMedicalRecords({ navigation }) {
         type: mode,
       });
       Toast.show({
-        type: 'success',
-        text1: 'Solicitação enviada',
-        text2: `Solicitação de ${mode === "to_share" ? "compartilhamento" : "pedido para compartilhar"} enviada com sucesso!`,
+        type: "success",
+        text1: "Solicitação enviada",
+        text2: `Solicitação de ${
+          mode === "to_share" ? "compartilhamento" : "pedido para compartilhar"
+        } enviada com sucesso!`,
       });
       navigation.goBack();
     } catch (error) {
-      console.log("Error sending request:", error);
       Toast.show({
-        type: 'error',
-        text1: 'Erro ao enviar solicitação',
-        text2: error.message || 'Ocorreu um erro ao enviar a solicitação.',
+        type: "error",
+        text1: "Erro ao enviar solicitação",
+        text2:
+          error.response?.data?.message ||
+          "Ocorreu um erro ao enviar a solicitação.",
       });
-      return;
     }
-  }
+  };
 
   return (
     <Layout title="Compartilhar prontuário médico" goBackFunction={goBack}>
