@@ -59,17 +59,23 @@ export class CompanionRequestsService {
     if (type === 'sent') {
       return this.prisma.companionRequest.findMany({
         where: { inviterId: userId },
+        include: { invited: true },
       });
     }
     if (type === 'received') {
       return this.prisma.companionRequest.findMany({
         where: { invitedId: userId },
+        include: { inviter: true },
       });
     }
 
     return this.prisma.companionRequest.findMany({
       where: {
         OR: [{ inviterId: userId }, { invitedId: userId }],
+      },
+      include: {
+        inviter: true,
+        invited: true,
       },
     });
   }
