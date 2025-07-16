@@ -32,10 +32,8 @@ export class UsersService {
     });
   }
 
-  async search(searchUserDto: SearchUserDto) {
+  async search(searchUserDto: SearchUserDto, userId: number) {
     const { name, email } = searchUserDto;
-
-    console.log('Searching users with:', { name, email });
 
     if (!name && !email) {
       return [];
@@ -62,6 +60,9 @@ export class UsersService {
     return this.prisma.user.findMany({
       where: {
         OR: conditions,
+        id: {
+          not: userId,
+        },
       },
       select: {
         id: true,
