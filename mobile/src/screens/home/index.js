@@ -10,17 +10,34 @@ import {
 } from "react-native";
 import Icon from "../../components/Icons";
 import { Context } from "../../context/authContext";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
+import api from "../../api";
+import Notifications from "./notifications";
 
 const Home = ({ navigation }) => {
   const { user } = useContext(Context);
   const [userName, setUserName] = useState("");
+  const [companionRequests, setCompanionRequests] = useState([]);
+  const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       const userData = await user(onErrorToFetchUser);
       setUserName(userData.name);
     };
+    const fetchCompanionRequests = async () => {
+      try {
+        const { data: companionRequests } = await api.get(
+          "/companion-requests?type=received"
+        );
+        setCompanionRequests(
+          companionRequests.filter((req) => req.status === "pending")
+        );
+      } catch (error) {
+        console.error("Failed to fetch companion requests", error);
+      }
+    };
+    fetchCompanionRequests();
     fetchUser();
   }, []);
 
@@ -30,9 +47,9 @@ const Home = ({ navigation }) => {
       navigation.navigate("Login");
     }
     Toast.show({
-      type: 'error',
-      text1: 'Erro',
-      text2: 'Erro ao carregar usuário'
+      type: "error",
+      text1: "Erro",
+      text2: "Erro ao carregar usuário",
     });
   };
 
@@ -50,12 +67,31 @@ const Home = ({ navigation }) => {
               />
             </View>
           </View>
-          <Text style={styles.textWelcome}>{ userName }</Text>
+          <Text style={styles.textWelcome}>{userName}</Text>
         </View>
 
-        <View style={styles.bellContainer}>
+        <TouchableOpacity style={styles.bellContainer} onPress={() => setIsNotificationsVisible(true)}>
           <Icon.FontAwesome6 name="bell" size={20} color="#000" solid />
-        </View>
+          {companionRequests.length > 0 && (
+            <View
+              style={{
+                position: "absolute",
+                right: 0,
+                bottom: -10,
+                backgroundColor: "red",
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ color: "#fff", fontSize: 12 }}>
+                {companionRequests.length}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.scrollView}>
@@ -104,6 +140,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.textOpt}>Exercícios</Text>
         </TouchableOpacity>
       </ScrollView>
+      <Notifications visible={isNotificationsVisible} onClose={() => setIsNotificationsVisible(false)} notifications={companionRequests}/>
     </SafeAreaView>
   );
 };
