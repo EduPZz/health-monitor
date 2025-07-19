@@ -2,10 +2,12 @@ import createContext from "./createContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../api/index";
 
-const initialState = {};
+const initialState = { isAuthenticated: false };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'SET_AUTHENTICATED':
+      return { ...state, isAuthenticated: action.payload };
     default:
       return state;
   }
@@ -22,7 +24,7 @@ const isLogged = () => {
   };
 };
 
-const loginUser = () => {
+const loginUser = (dispatch) => {
   return async (email, password) => {
     const { data } = await api.post("auth/login", {
       email,
@@ -31,10 +33,11 @@ const loginUser = () => {
 
     await AsyncStorage.setItem("accessToken", data.access_token);
     await loadAuthToken();
+    dispatch({ type: 'SET_AUTHENTICATED', payload: true });
   };
 };
 
-const signupUser = () => {
+const signupUser = (dispatch) => {
   return async ({ email, password, name, timezone, sex, birthDate }) => {
     const {
       data: { tokenInformation },
@@ -49,6 +52,7 @@ const signupUser = () => {
 
     await AsyncStorage.setItem("accessToken", tokenInformation.access_token);
     await loadAuthToken();
+    dispatch({ type: 'SET_AUTHENTICATED', payload: true });
   };
 };
 

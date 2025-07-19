@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function Routes() {
   const Stack = createNativeStackNavigator();
   const insets = useSafeAreaInsets();
-  const { isLogged } = useContext(Context);
+  const { isLogged, state } = useContext(Context);
   const [loggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Routes() {
       setLoggedIn(logged);
     };
     checkLoginStatus();
-  }, [isLogged]);
+  }, [isLogged, state.isAuthenticated]);
 
   if (loggedIn === null) return <Text>Loading...</Text>;
 

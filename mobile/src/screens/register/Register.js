@@ -4,13 +4,13 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  ToastAndroid,
 } from "react-native";
 import registerStyle from "./registerStyle";
 import { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/authContext";
 import FirstFrom from "./FirstForm";
 import SecondForm from "./SecondForm";
+import Toast from "react-native-toast-message";
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -52,16 +52,13 @@ const Register = ({ navigation }) => {
         sex,
         birthDate: convertedBirthDate,
       });
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "TabRoutes" }],
-      });
     } catch (error) {
       console.log(error);
-      ToastAndroid.show(
-        `Não foi possível cadastrar o usuário! \n ${error.message}`,
-        ToastAndroid.SHORT
-      );
+      Toast.show({
+        type: "error",
+        text1: "Erro ao cadastrar",
+        text2: error.message || "Ocorreu um erro ao tentar se cadastrar.",
+      });
     }
   };
 

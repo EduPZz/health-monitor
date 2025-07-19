@@ -25,10 +25,6 @@ const Login = ({ navigation }) => {
   const login = async () => {
     try {
       await loginUser(email, senha);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "TabRoutes" }],
-      });
     } catch (error) {
       console.log(error);
       ToastAndroid.show("Não foi possível fazer o login!", ToastAndroid.SHORT);
