@@ -6,17 +6,7 @@ import Icons from "../../components/Icons";
 import { BlurView } from "expo-blur";
 import api from "../../api";
 import Toast from "react-native-toast-message";
-
-const getInitials = (name) => {
-  if (!name) return "";
-  const words = name.trim().split(" ");
-  if (words.length === 1) {
-    const word = words[0];
-    if (word.length < 2) return word.charAt(0).toUpperCase();
-    else return word.charAt(0).toUpperCase() + word.charAt(1).toUpperCase();
-  }
-  return words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase();
-};
+import getInitials from "../../utils/getInitials";
 
 const ItemCard = ({ item, onAccept, onReject }) => {
   return (
@@ -266,7 +256,7 @@ const styles = {
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    lineHeight: 40, // igual à altura da bolinha
+    lineHeight: 40,
   },
 
   glassCard: {
