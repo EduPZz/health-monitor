@@ -19,7 +19,18 @@ const Home = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [companionRequests, setCompanionRequests] = useState([]);
   const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
-
+  const fetchCompanionRequests = async () => {
+    try {
+      const { data: companionRequests } = await api.get(
+        "/companion-requests?type=received"
+      );
+      setCompanionRequests(
+        companionRequests.filter((req) => req.status === "pending")
+      );
+    } catch (error) {
+      console.error("Failed to fetch companion requests", error);
+    }
+  };
   useEffect(() => {
     const fetchUser = async () => {
       const userData = await user(onErrorToFetchUser);
@@ -70,7 +81,10 @@ const Home = ({ navigation }) => {
           <Text style={styles.textWelcome}>{userName}</Text>
         </View>
 
-        <TouchableOpacity style={styles.bellContainer} onPress={() => setIsNotificationsVisible(true)}>
+        <TouchableOpacity
+          style={styles.bellContainer}
+          onPress={() => setIsNotificationsVisible(true)}
+        >
           <Icon.FontAwesome6 name="bell" size={20} color="#000" solid />
           {companionRequests.length > 0 && (
             <View
@@ -140,7 +154,15 @@ const Home = ({ navigation }) => {
           <Text style={styles.textOpt}>Exercícios</Text>
         </TouchableOpacity>
       </ScrollView>
-      <Notifications visible={isNotificationsVisible} onClose={() => setIsNotificationsVisible(false)} notifications={companionRequests}/>
+      <Notifications
+        visible={isNotificationsVisible}
+        onClose={() => setIsNotificationsVisible(false)}
+        notifications={companionRequests}
+        actionCallback={() => {
+          setIsNotificationsVisible(false);
+          fetchCompanionRequests();
+        }}
+      />
     </SafeAreaView>
   );
 };

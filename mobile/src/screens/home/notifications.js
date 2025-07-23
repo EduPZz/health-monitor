@@ -4,6 +4,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Icons from "../../components/Icons";
 import { BlurView } from "expo-blur";
+import api from "../../api";
+import Toast from "react-native-toast-message";
 
 const getInitials = (name) => {
   if (!name) return "";
@@ -19,11 +21,7 @@ const getInitials = (name) => {
 const ItemCard = ({ item, onAccept, onReject }) => {
   return (
     <View style={styles.glassCard}>
-      <BlurView
-        intensity={50} // de 0 a 100
-        tint="light" // "light", "dark" ou "default"
-        style={styles.blurWrapper}
-      />
+      <BlurView intensity={50} tint="light" style={styles.blurWrapper} />
 
       <Text style={styles.cartTitle}>
         <Icons.Octicons
@@ -95,15 +93,51 @@ const ItemCard = ({ item, onAccept, onReject }) => {
   );
 };
 
-export default function Notifications({ onClose, visible, notifications }) {
-  const handleAccept = (item) => {
-    console.log("Aceitou:", item);
-    // Aqui você chama a API ou atualiza estado
+export default function Notifications({
+  onClose,
+  visible,
+  notifications,
+  actionCallback,
+}) {
+  const handleAccept = async (item) => {
+    try {
+      await api.patch(`/companion-requests/${item.id}/accept`);
+      Toast.show({
+        type: "success",
+        text1: "Sucesso",
+        text2: "Pedido aceito com sucesso!",
+      });
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: error.response?.data?.message || "Erro ao aceitar pedido",
+      });
+      onClose();
+    } finally {
+      actionCallback(item);
+    }
   };
 
-  const handleReject = (item) => {
-    console.log("Rejeitou:", item);
-    // Aqui você chama a API ou atualiza estado
+  const handleReject = async (item) => {
+    try {
+      await api.patch(`/companion-requests/${item.id}/reject`);
+      Toast.show({
+        type: "success",
+        text1: "Sucesso",
+        text2: "Pedido rejeitado com sucesso!",
+      });
+      actionCallback(item);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: error.response?.data?.message || "Erro ao rejeitar pedido",
+      });
+      onClose();
+    } finally {
+      actionCallback(item);
+    }
   };
 
   return (
@@ -120,8 +154,8 @@ export default function Notifications({ onClose, visible, notifications }) {
           renderItem={({ item }) => (
             <ItemCard
               item={item}
-              onAccept={handleAccept}
-              onReject={handleReject}
+              onAccept={() => handleAccept(item)}
+              onReject={() => handleReject(item)}
             />
           )}
           ListEmptyComponent={() => (
@@ -247,7 +281,6 @@ const styles = {
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,
     shadowRadius: 20,
-    elevation: 8, // para Android
     overflow: "hidden",
   },
   blurWrapper: {

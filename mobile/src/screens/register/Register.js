@@ -57,7 +57,7 @@ const Register = ({ navigation }) => {
       Toast.show({
         type: "error",
         text1: "Erro ao cadastrar",
-        text2: error.message || "Ocorreu um erro ao tentar se cadastrar.",
+        text2: error.response?.data?.message || "Ocorreu um erro ao tentar se cadastrar.",
       });
     }
   };
