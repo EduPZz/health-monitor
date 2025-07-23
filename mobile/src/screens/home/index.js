@@ -75,10 +75,12 @@ const Home = ({ navigation }) => {
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#FFE18E" barStyle="dark-content" />
       <View style={styles.divWelcome}>
-        <View style={styles.divUser}>
-          <Text style={styles.initials}>{getInitials(userName)}</Text>
+        <View style={styles.userInfo}>
+          <View style={styles.divUser}>
+            <Text style={styles.initials}>{getInitials(userName)}</Text>
+          </View>
+          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{userName}</Text>
         </View>
-
         <TouchableOpacity
           style={styles.bellContainer}
           onPress={() => setIsNotificationsVisible(true)}
@@ -164,9 +166,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   divUser: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: "#ED702F",
     alignItems: "center",
     justifyContent: "center",
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    lineHeight: 60,
+    lineHeight: 40,
   },
   profileImg: {
     width: 65,
@@ -239,7 +241,7 @@ const styles = StyleSheet.create({
   },
   divAddBalance: {
     height: 250,
-    margin: 20,
+    marginHorizontal: 24,
     backgroundColor: "#FFF",
     borderRadius: 20,
     display: "flex",
@@ -281,6 +283,11 @@ const styles = StyleSheet.create({
   badgeText: {
     color: "#fff",
     fontSize: 12,
+  },
+  userInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
 });
 
