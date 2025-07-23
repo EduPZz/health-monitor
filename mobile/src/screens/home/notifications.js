@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import VerticalModal from "../../components/VerticalModal";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -8,7 +8,7 @@ import api from "../../api";
 import Toast from "react-native-toast-message";
 import getInitials from "../../utils/getInitials";
 
-const ItemCard = ({ item, onAccept, onReject }) => {
+const ItemCard = ({ item, onAccept, onReject, isLoading }) => {
   return (
     <View style={styles.glassCard}>
       <BlurView intensity={50} tint="light" style={styles.blurWrapper} />
@@ -55,6 +55,7 @@ const ItemCard = ({ item, onAccept, onReject }) => {
         <TouchableOpacity
           style={styles.actionButton(true)}
           onPress={() => onAccept(item)}
+          disabled={isLoading}
         >
           <View
             style={{
@@ -75,6 +76,7 @@ const ItemCard = ({ item, onAccept, onReject }) => {
         <TouchableOpacity
           style={styles.actionButton(false)}
           onPress={() => onReject(item)}
+          disabled={isLoading}
         >
           <Text style={styles.actionButton(false).text}>Rejeitar</Text>
         </TouchableOpacity>
@@ -89,8 +91,11 @@ export default function Notifications({
   notifications,
   actionCallback,
 }) {
+  const [isUpdatingItem, setIsUpdatingItem] = useState({});
+
   const handleAccept = async (item) => {
     try {
+      setIsUpdatingItem((prev) => ({ ...prev, [item.id]: true }));
       await api.patch(`/companion-requests/${item.id}/accept`);
       Toast.show({
         type: "success",
@@ -105,12 +110,14 @@ export default function Notifications({
       });
       onClose();
     } finally {
+      setIsUpdatingItem((prev) => ({ ...prev, [item.id]: false }));
       actionCallback(item);
     }
   };
 
   const handleReject = async (item) => {
     try {
+      setIsUpdatingItem((prev) => ({ ...prev, [item.id]: true }));
       await api.patch(`/companion-requests/${item.id}/reject`);
       Toast.show({
         type: "success",
@@ -126,6 +133,7 @@ export default function Notifications({
       });
       onClose();
     } finally {
+      setIsUpdatingItem((prev) => ({ ...prev, [item.id]: false }));
       actionCallback(item);
     }
   };
@@ -146,6 +154,7 @@ export default function Notifications({
               item={item}
               onAccept={() => handleAccept(item)}
               onReject={() => handleReject(item)}
+              isLoading={isUpdatingItem[item.id]}
             />
           )}
           ListEmptyComponent={() => (
