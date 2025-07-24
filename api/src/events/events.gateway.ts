@@ -30,6 +30,7 @@ export class EventsGateway implements OnGatewayConnection {
       const token =
         socket.handshake.auth?.token ||
         socket.handshake.headers['authorization'];
+      console.log('token:', token);
       if (!token) {
         console.error('No token provided');
         socket.disconnect();
