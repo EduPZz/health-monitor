@@ -7,6 +7,7 @@ import { CreateCompanionRequestDto } from './dto/create-companion-request.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
 import { UserCompanionsService } from 'src/user-companions/user-companions.service';
+import { EventsGateway } from '../events/events.gateway';
 
 @Injectable()
 export class CompanionRequestsService {
@@ -14,6 +15,7 @@ export class CompanionRequestsService {
     private readonly prisma: PrismaService,
     private usersService: UsersService,
     private userCompanionsService: UserCompanionsService,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   async create(
@@ -50,9 +52,18 @@ export class CompanionRequestsService {
       );
     }
 
-    return this.prisma.companionRequest.create({
+    const request = await this.prisma.companionRequest.create({
       data: { ...createCompanionRequestDto, inviterId: userId },
     });
+
+    // Emitir evento para o usuário convidado
+    this.eventsGateway.emitToUser(
+      createCompanionRequestDto.invitedId,
+      'companion-request',
+      { request }
+    );
+
+    return request;
   }
 
   findAll(userId: number, type?: 'sent' | 'received') {

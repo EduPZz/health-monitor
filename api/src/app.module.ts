@@ -11,6 +11,7 @@ import { ConsultationsModule } from './consultations/consultations.module';
 import { BluetoothScalesModule } from './bluetooth-scales/bluetooth-scales.module';
 import { CompanionRequestsModule } from './companion-requests/companion-requests.module';
 import { UserCompanionsModule } from './user-companions/user-companions.module';
+import { EventsModule } from './events/events.module';
 @Module({
   imports: [
     UsersModule,
@@ -21,6 +22,7 @@ import { UserCompanionsModule } from './user-companions/user-companions.module';
     BluetoothScalesModule,
     CompanionRequestsModule,
     UserCompanionsModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [
