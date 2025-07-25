@@ -18,19 +18,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     height: 110,
-    backgroundColor: "#e0e0e0",
+    backgroundColor: "#b3e5fc", // light blue
     borderRadius: 10,
   },
   circle: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#ccc",
+    backgroundColor: "#81d4fa", // lighter blue
   },
   line: {
     width: "50%",
     height: 20,
-    backgroundColor: "#ccc",
+    backgroundColor: "#81d4fa", // lighter blue
     borderRadius: 5,
   },
 });

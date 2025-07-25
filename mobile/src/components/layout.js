@@ -34,7 +34,7 @@ const Layout = ({ goBackFunction, title, children }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#FFE18E",
+    backgroundColor: "#EEF5FF",
   },
   container: {
     flex: 1,
