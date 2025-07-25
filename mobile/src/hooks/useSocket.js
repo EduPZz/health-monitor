@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@env";
 
-const WS_URL = `${API_URL.replace("https", "ws")}`;
+const WS_URL = API_URL;
 
 const getToken = async () => {
   try {

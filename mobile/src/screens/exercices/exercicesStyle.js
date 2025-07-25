@@ -92,7 +92,7 @@ const ExercicesStyle = StyleSheet.create({
         textAlign: 'center',
     },
     addButton: {
-        backgroundColor: '#FFCD43',
+        backgroundColor: '#176B87',
         borderRadius: 50,
         width: 200,
         height: 50,

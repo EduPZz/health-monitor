@@ -3,13 +3,13 @@ import { Platform, StyleSheet } from "react-native";
 const loginStyle = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#FFCD43",
+        backgroundColor: "#EEF5FF",
     },
     topSection: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFCD43",
+        backgroundColor: "#EEF5FF",
     },
     containerAction: {
         width: '100%',
