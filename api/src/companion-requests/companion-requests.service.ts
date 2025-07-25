@@ -54,13 +54,17 @@ export class CompanionRequestsService {
 
     const request = await this.prisma.companionRequest.create({
       data: { ...createCompanionRequestDto, inviterId: userId },
+      include: {
+        inviter: true,
+        invited: true,
+      },
     });
 
     // Emitir evento para o usuário convidado
     this.eventsGateway.emitToUser(
       createCompanionRequestDto.invitedId,
       'companion-request',
-      { request }
+      { request },
     );
 
     return request;

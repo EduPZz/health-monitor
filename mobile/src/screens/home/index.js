@@ -16,6 +16,7 @@ import api from "../../api";
 import Notifications from "./notifications";
 import getInitials from "../../utils/getInitials";
 import SkeletonCard from "../../components/SkeletonCard";
+import useSocket from '../../hooks/useSocket';
 
 const Home = ({ navigation }) => {
   const { user } = useContext(Context);
@@ -58,6 +59,18 @@ const Home = ({ navigation }) => {
     fetchData();
   }, []);
 
+  // Adiciona o hook para ouvir eventos do WebSocket
+  useSocket({
+    onCompanionRequest: (data) => {
+      // Adiciona a nova notificação ao estado
+      setCompanionRequests((prev) => {
+        // Evita duplicidade
+        if (prev.some((req) => req.id === data.id)) return prev;
+        return [data, ...prev];
+      });
+    },
+  });
+
   const renderCard = (icon, text, screen, iconPack = "FontAwesome6") => {
     const IconComponent = Icon[iconPack];
     return (
@@ -65,7 +78,7 @@ const Home = ({ navigation }) => {
         style={styles.divOpt}
         onPress={() => navigation.navigate(screen)}
       >
-        <IconComponent name={icon} size={40} color={"#000"} />
+        <IconComponent name={icon} size={40} color={"#22313F"} />
         <Text style={styles.textOpt}>{text}</Text>
       </TouchableOpacity>
     );
@@ -73,7 +86,7 @@ const Home = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar backgroundColor="#FFE18E" barStyle="dark-content" />
+      <StatusBar backgroundColor="#979797ff" barStyle="dark-content" />
       <View style={styles.divWelcome}>
         <View style={styles.userInfo}>
           <View style={styles.divUser}>
@@ -85,7 +98,7 @@ const Home = ({ navigation }) => {
           style={styles.bellContainer}
           onPress={() => setIsNotificationsVisible(true)}
         >
-          <Icon.FontAwesome6 name="bell" size={20} color="#000" solid />
+          <Icon.FontAwesome6 name="bell" size={20} color="#E4F1FE" solid />
           {companionRequests.length > 0 && (
             <View style={styles.badge}>
               <Text style={styles.badgeText}>{companionRequests.length}</Text>
@@ -96,7 +109,7 @@ const Home = ({ navigation }) => {
 
       <ScrollView style={styles.scrollView}>
         <View style={styles.divAddBalance}>
-          <Icon.FontAwesome6 name="weight-scale" size={60} color={"#F5B041"} />
+          <Icon.FontAwesome6 name="weight-scale" size={60} color={"#22313F"} />
           <Text style={styles.subtitle}>
             Bem-vindo! Por favor, adicione um dispositivo primeiro
           </Text>
@@ -146,14 +159,14 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#FFE18E",
+    backgroundColor: "#EEF5FF",
     fontFamily: "Roboto",
   },
   bellContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#176B87",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -169,7 +182,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#ED702F",
+    backgroundColor: "#176B87",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -184,7 +197,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: "50%",
-    backgroundColor: "#000",
+    backgroundColor: "#22313F",
     marginRight: 8,
   },
   divIconPeople: {
@@ -209,7 +222,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   textWelcome: {
-    color: "#000",
+    color: "#22313F",
     fontWeight: "600",
     fontSize: 16,
   },
@@ -224,7 +237,7 @@ const styles = StyleSheet.create({
     height: 110,
     backgroundColor: "#FFF",
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: "#22313F",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -255,7 +268,7 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   btnAddBalance: {
-    backgroundColor: "#F5B041",
+    backgroundColor: "#93DA97",
     height: 50,
     borderRadius: 30,
     width: "90%",

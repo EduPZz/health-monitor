@@ -26,7 +26,6 @@ const Login = ({ navigation }) => {
     try {
       await loginUser(email, senha);
     } catch (error) {
-      console.log(error);
       ToastAndroid.show("Não foi possível fazer o login!", ToastAndroid.SHORT);
     }
   };

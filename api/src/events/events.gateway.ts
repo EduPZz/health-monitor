@@ -30,7 +30,6 @@ export class EventsGateway implements OnGatewayConnection {
       const token =
         socket.handshake.auth?.token ||
         socket.handshake.headers['authorization'];
-      console.log('token:', token);
       if (!token) {
         console.error('No token provided');
         socket.disconnect();
@@ -68,7 +67,6 @@ export class EventsGateway implements OnGatewayConnection {
   // Permite emitir evento para um usuário específico
   emitToUser(userId: number, event: string, data: any) {
     const sockets = this.userSockets.get(userId) || [];
-    console.log(`Emitting to user ${userId}:`, event, data);
     for (const socket of sockets) {
       socket.emit(event, data);
     }
@@ -76,7 +74,6 @@ export class EventsGateway implements OnGatewayConnection {
 
   @SubscribeMessage('events')
   handleEvent(@MessageBody() data: string): string {
-    console.log('Received via WS:', data);
     return `Echo: ${data}`;
   }
 }

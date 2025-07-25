@@ -15,9 +15,9 @@ const EmptyScreen = () => null;
 export default function TabRoutes() {
   const bottomSheetRef = useRef(null);
 
-  const handleSheetChanges = useCallback((index) => {
-    console.log("handleSheetChanges", index);
-  }, []);
+  // const handleSheetChanges = useCallback((index) => {
+  //   console.log("handleSheetChanges", index);
+  // }, []);
 
   const handleOpenSheet = () => {
     bottomSheetRef.current?.expand();
@@ -41,7 +41,7 @@ export default function TabRoutes() {
           options={{
             tabBarIcon: ({ focused, size, color }) => (
               <Icons.Ionicons
-                name={focused ? "home" : "home-outline"}
+                name={focused ? "home-sharp" : "home-outline"}
                 size={size}
                 color={color}
               />
@@ -101,7 +101,7 @@ export default function TabRoutes() {
       <BottomSheet
         ref={bottomSheetRef}
         enablePanDownToClose={true}
-        onChange={handleSheetChanges}
+        // onChange={handleSheetChanges}
         snapPoints={["30%", "60%"]}
         index={-1}
       >

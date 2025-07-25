@@ -88,7 +88,6 @@ const logout = (afterLogoutAction) => {
     }
   };
 };
-
 loadAuthToken();
 
 export const { Context, Provider } = createContext(
