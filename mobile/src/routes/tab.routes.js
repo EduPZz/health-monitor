@@ -58,7 +58,7 @@ export default function TabRoutes() {
               <Icons.FontAwesome6
                 name="circle-plus"
                 size={size}
-                color={"#F5B041"}
+                color={"#1976D2"}
               />
             ),
             tabBarLabel: "",
@@ -75,7 +75,7 @@ export default function TabRoutes() {
                 <Icons.FontAwesome6
                   name="circle-plus"
                   size={30}
-                  color={"#F5B041"}
+                  color={"#1976D2"}
                 />
               </TouchableOpacity>
             ),
