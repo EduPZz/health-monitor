@@ -12,6 +12,7 @@ import {
 import loginStyle from "./loginStyle";
 import { useContext, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Context } from "../../context/authContext";
 import { Link } from "@react-navigation/native";
 
@@ -36,10 +37,7 @@ const Login = ({ navigation }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -10}
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-      >
+      <View style={{ flex: 1 }}>
         <View style={loginStyle.topSection}>
           <Image
             style={{ width: 100, height: 100, margin: 50 }}
@@ -49,48 +47,46 @@ const Login = ({ navigation }) => {
 
         <View style={loginStyle.containerAction}>
           <View style={{ width: "100%" }}>
-            <Text style={loginStyle.loginTitle}>Log-in</Text>
-            <Text style={loginStyle.inputTitle}>E-mail</Text>
+            <Text style={loginStyle.welcomeTitle}>Bem-vindo de volta</Text>
+            <Text style={loginStyle.subtitle}>Faça login para entrar</Text>
           </View>
 
-          <View style={loginStyle.blocoInput}>
-            <TextInput
-              style={loginStyle.input}
-              placeholder="Seu melhor e-mail"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              placeholderTextColor="#555"
-            />
+          <View style={{ width: "100%" }}>
+            <Text style={{...loginStyle.inputTitle, width: "100%"}}>E-mail</Text>
+            <View style={loginStyle.inputWrapper}>
+              <MaterialCommunityIcons name="email-outline" size={20} color="#1976D2" style={{ marginRight: 8 }} />
+              <TextInput
+                style={loginStyle.input}
+                placeholder="seuemail@exemplo.com"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                placeholderTextColor="#555"
+                autoCapitalize="none"
+              />
+            </View>
           </View>
 
           <View style={{ width: "100%" }}>
             <Text style={loginStyle.inputTitle}>Senha</Text>
-          </View>
 
-          <View
-            style={[
-              loginStyle.blocoInput,
-              { flexDirection: "row", justifyContent: "space-between" },
-            ]}
-          >
-            <TextInput
-              style={loginStyle.input}
-              placeholder="Sua senha mais segura"
-              value={senha}
-              onChangeText={setSenha}
-              placeholderTextColor="#555"
-              secureTextEntry={!isPasswordVisible}
-            />
-            <TouchableOpacity
-              onPress={() => setPasswordVisible(!isPasswordVisible)}
-            >
-              <Feather
-                name={isPasswordVisible ? "eye-off" : "eye"}
-                size={24}
-                color="black"
+            <View style={loginStyle.inputWrapper}>
+              <TextInput
+                style={[loginStyle.input, { flex: 1 }]}
+                placeholder="Sua senha mais segura"
+                value={senha}
+                onChangeText={setSenha}
+                placeholderTextColor="#555"
+                secureTextEntry={!isPasswordVisible}
               />
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => setPasswordVisible(!isPasswordVisible)}>
+                <Feather
+                  name={isPasswordVisible ? "eye-off" : "eye"}
+                  size={20}
+                  color="#555"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <TouchableOpacity
@@ -106,11 +102,11 @@ const Login = ({ navigation }) => {
 
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={loginStyle.textEmphasis}>
-              Não tem uma conta? Cadastre-se
+              Não tem uma conta? <Text style={{ color: "#1976D2" }}>Cadastrar-se</Text>
             </Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
