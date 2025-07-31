@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../../api';
-import Icons from '../../components/Icons';
-import useSocket from '../../hooks/useSocket';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../../api";
+import Icons from "../../components/Icons";
+import useSocket from "../../hooks/useSocket";
 
 const CompanionsScreen = () => {
   const [companions, setCompanions] = useState([]);
@@ -22,16 +22,11 @@ const CompanionsScreen = () => {
 
   const fetchCompanions = async () => {
     try {
-      const token = await AsyncStorage.getItem('accessToken');
-      const response = await api.get('/user-companions/accompanied-by', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/user-companions/accompanied-by");
       setCompanions(response.data);
     } catch (error) {
-      console.error('Error fetching companions:', error);
-      Alert.alert('Erro', 'Não foi possível carregar os acompanhados');
+      console.error("Error fetching companions:", error);
+      Alert.alert("Erro", "Não foi possível carregar os acompanhados");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -49,7 +44,7 @@ const CompanionsScreen = () => {
 
   // Handle real-time updates from companions
   const handleCompanionUpdate = (data) => {
-    console.log('Companion update received:', data);
+    console.log("Companion update received:", data);
     // Refresh the list when we receive updates
     fetchCompanions();
   };
@@ -63,11 +58,11 @@ const CompanionsScreen = () => {
   });
 
   const renderCompanionItem = ({ item }) => {
-    const companion = item.accompaniedBy;
+    const companion = item.accompanying;
     const initials = companion.name
-      .split(' ')
+      .split(" ")
       .map((n) => n[0])
-      .join('')
+      .join("")
       .toUpperCase()
       .slice(0, 2);
 
@@ -76,7 +71,7 @@ const CompanionsScreen = () => {
         style={styles.companionCard}
         onPress={() => {
           // Navigate to companion details or measurements
-          navigation.navigate('CompanionDetails', { companion });
+          navigation.navigate("CompanionDetails", { companion });
         }}
       >
         <View style={styles.avatarContainer}>
@@ -86,7 +81,9 @@ const CompanionsScreen = () => {
           <Text style={styles.companionName}>{companion.name}</Text>
           <Text style={styles.companionEmail}>{companion.email}</Text>
           <Text style={styles.companionAge}>
-            {new Date().getFullYear() - new Date(companion.birthDate).getFullYear()} anos
+            {new Date().getFullYear() -
+              new Date(companion.birthDate).getFullYear()}{" "}
+            anos
           </Text>
         </View>
         <Icons.Ionicons name="chevron-forward" size={20} color="#666" />
@@ -140,26 +137,26 @@ const CompanionsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 60,
     paddingBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: "#e0e0e0",
   },
   backButton: {
     padding: 8,
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   placeholder: {
     width: 40,
@@ -168,13 +165,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   companionCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
     padding: 16,
     borderRadius: 12,
     marginBottom: 12,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -187,63 +184,63 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#1976D2',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#1976D2",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 16,
   },
   avatarText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   companionInfo: {
     flex: 1,
   },
   companionName: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#000',
+    fontWeight: "600",
+    color: "#000",
     marginBottom: 4,
   },
   companionEmail: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginBottom: 2,
   },
   companionAge: {
     fontSize: 12,
-    color: '#999',
+    color: "#999",
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
   loadingText: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
   },
   emptyContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 60,
   },
   emptyTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#666',
+    fontWeight: "600",
+    color: "#666",
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14,
-    color: '#999',
-    textAlign: 'center',
+    color: "#999",
+    textAlign: "center",
     paddingHorizontal: 40,
   },
 });
 
-export default CompanionsScreen; 
+export default CompanionsScreen;

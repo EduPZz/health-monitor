@@ -7,7 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
-  ActivityIndicator,
+  Button,
 } from "react-native";
 import Icon from "../../components/Icons";
 import { Context } from "../../context/authContext";
@@ -19,7 +19,7 @@ import SkeletonCard from "../../components/SkeletonCard";
 import useSocket from '../../hooks/useSocket';
 
 const Home = ({ navigation }) => {
-  const { user } = useContext(Context);
+  const { user, logout } = useContext(Context);
   const [userName, setUserName] = useState("");
   const [companionRequests, setCompanionRequests] = useState([]);
   const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
@@ -37,6 +37,24 @@ const Home = ({ navigation }) => {
     });
   };
 
+  const disconnect = async () => {
+    try {
+      await logout();
+      Toast.show({
+        type: "success",
+        text1: "Desconectado",
+        text2: "Você foi desconectado com sucesso.",
+      });
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Failed to disconnect", error);
+      Toast.show({
+        type: "error",
+        text1: "Erro ao desconectar",
+        text2: error.response?.data?.message || "Ocorreu um erro ao tentar se desconectar.",
+      });
+    }
+  };
   const fetchData = async () => {
     try {
       const userData = await user(onErrorToFetchUser);
@@ -120,6 +138,7 @@ const Home = ({ navigation }) => {
             <Text style={styles.textBtn}>Conectar dispositivo</Text>
           </TouchableOpacity>
         </View>
+        <Button title="Desconectar" onPress={disconnect}/>
 
         {loading ? (
           <>
@@ -139,6 +158,7 @@ const Home = ({ navigation }) => {
               "MaterialCommunityIcons"
             )}
             {renderCard("dumbbell", "Exercícios", "Exercices")}
+            {renderCard("user", "Exercícios", "Companions")}
           </>
         )}
       </ScrollView>

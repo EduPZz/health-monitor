@@ -10,6 +10,7 @@ import ShareMedicalRecords from "../screens/share-medical-records";
 import CompanionsScreen from "../screens/companions";
 import Toast from "react-native-toast-message";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import CompanionDetails from "../screens/companions/CompanionDetails";
 
 export default function Routes() {
   const Stack = createNativeStackNavigator();
@@ -40,9 +41,10 @@ export default function Routes() {
               name="ShareMedicalRecords"
               component={ShareMedicalRecords}
             />
+            <Stack.Screen name="Companions" component={CompanionsScreen} />
             <Stack.Screen
-              name="Companions"
-              component={CompanionsScreen}
+              name="CompanionDetails"
+              component={CompanionDetails}
             />
           </Stack.Navigator>
           <Toast topOffset={insets.top} />

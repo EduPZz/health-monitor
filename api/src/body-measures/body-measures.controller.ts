@@ -48,4 +48,9 @@ export class BodyMeasuresController {
   remove(@Param('id') id: string, @Request() req) {
     return this.bodyMeasuresService.remove(+id, req.user.sub);
   }
+
+  @Get('/user/:user_id')
+  getFromUserId(@Param('user_id') user_id: string, @Request() req) {
+    return this.bodyMeasuresService.getFromUserId(+req.user.sub, +user_id);
+  }
 }

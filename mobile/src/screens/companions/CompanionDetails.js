@@ -25,12 +25,7 @@ const CompanionDetails = () => {
 
   const fetchCompanionData = async () => {
     try {
-      const token = await AsyncStorage.getItem('accessToken');
-      const response = await api.get(`/body-measures/user/${routeCompanion.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/body-measure/user/${routeCompanion.id}`)
       setMeasurements(response.data);
       setCompanion(routeCompanion);
     } catch (error) {

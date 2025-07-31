@@ -91,4 +91,16 @@ export class BodyMeasuresService {
       userId,
     });
   }
+
+  async getFromUserId(userId: number, ownerId: number) {
+    const companion = await this.prisma.userCompanion.findFirst({
+      where: { accompaniedById: userId, accompanyingId: ownerId },
+    });
+
+    if (!companion) {
+      throw new NotFoundException('Body measure not found or not authorized');
+    }
+
+    return this.prisma.bodyMeasure.findMany({ where: { userId: ownerId } });
+  }
 }
