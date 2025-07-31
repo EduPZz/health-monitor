@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  StatusBar,
 } from "react-native";
 import registerStyle from "./registerStyle";
 import { useState, useEffect, useContext } from "react";
@@ -67,7 +68,9 @@ const Register = ({ navigation }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -10}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <StatusBar backgroundColor="#979797ff" barStyle="dark-content" />
+      
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
         <View style={registerStyle.topSection}>
           <Image
             style={{ width: 100, height: 100, margin: 50 }}

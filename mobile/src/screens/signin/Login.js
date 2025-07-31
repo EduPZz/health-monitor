@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   ToastAndroid,
+  StatusBar,
 } from "react-native";
 import loginStyle from "./loginStyle";
 import { useContext, useState } from "react";
@@ -37,6 +38,7 @@ const Login = ({ navigation }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -10}
     >
+      <StatusBar backgroundColor="#979797ff" barStyle="dark-content" />
       <View style={{ flex: 1 }}>
         <View style={loginStyle.topSection}>
           <Image

@@ -35,11 +35,11 @@ const loginStyle = StyleSheet.create({
         gap: 16,
     },
     loginTitle: {
-        fontFamily: "Poppins_400Regular",
+        fontFamily: "Inter_400Regular",
         fontSize: 38,
     },
     inputTitle: {
-        fontFamily: "Poppins_400Regular",
+        fontFamily: "Inter_400Regular",
         fontSize: 16,
         fontWeight: "600",
         letterSpacing: 1,
@@ -52,12 +52,12 @@ const loginStyle = StyleSheet.create({
         borderBottomWidth: 2
     },
     input: {
-        fontFamily: "Poppins_400Regular",
+        fontFamily: "Inter_400Regular",
         fontSize: 16,
         width: '75%'
     },
     textEmphasis: {
-        fontFamily: 'Poppins_400Regular',
+        fontFamily: 'Inter_400Regular',
         fontSize: 15,
         fontWeight: 'bold',
     },
@@ -70,7 +70,7 @@ const loginStyle = StyleSheet.create({
         borderRadius: 50,
     },
     textButtom: {
-        fontFamily: 'Poppins_400Regular',
+        fontFamily: 'Inter_400Regular',
         fontSize: 20,
         fontWeight: '700',
         letterSpacing: 1.6,
@@ -81,7 +81,7 @@ const loginStyle = StyleSheet.create({
         textAlign: "center",
     },
     subtitle: {
-        fontFamily: "Poppins_400Regular",
+        fontFamily: "Inter_400Regular",
         fontSize: 16,
         textAlign: "center",
         color: "#666",

@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 6,
-    fontFamily: "Poppins_400Regular",
+    fontFamily: "Inter_400Regular",
   },
   inputBox: {
     borderColor: "#ccc",
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontSize: 16,
     color: "#000",
-    fontFamily: "Poppins_400Regular",
+    fontFamily: "Inter_400Regular",
   },
   modalOverlay: {
     flex: 1,

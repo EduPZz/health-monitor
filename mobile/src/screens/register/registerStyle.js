@@ -35,12 +35,12 @@ const registerStyle = StyleSheet.create({
         gap: 16
     },
     registerTitle: {
-       fontFamily: "Poppins_400Regular",
+       fontFamily: "Inter_400Regular",
         fontSize: 26,
 
     },
     inputTitle: {
-        fontFamily: "Poppins_400Regular",
+        fontFamily: "Inter_400Regular",
         fontSize: 16,
         fontWeight: "600",
         letterSpacing: 1
@@ -57,12 +57,12 @@ const registerStyle = StyleSheet.create({
         width: '100%',
     },
     input: {
-        fontFamily: "Poppins_400Regular",
+        fontFamily: "Inter_400Regular",
         fontSize: 16,
         width: '75%'
     },
     textButtom: {
-        fontFamily: 'Poppins_400Regular',
+        fontFamily: 'Inter_400Regular',
         fontSize: 20,
         fontWeight: '700',
         letterSpacing: 1.6,
@@ -77,7 +77,7 @@ const registerStyle = StyleSheet.create({
         borderRadius: 50
     },
     textEmphasis: {
-        fontFamily: 'Poppins_400Regular',
+        fontFamily: 'Inter_400Regular',
         fontSize: 15,
         fontWeight: 'bold'
     },

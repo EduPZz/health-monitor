@@ -7,6 +7,7 @@ import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { SvgIcon } from "../icons/SvgIcons";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,11 +41,7 @@ export default function TabRoutes() {
           component={HomeStackNavigator}
           options={{
             tabBarIcon: ({ focused, size, color }) => (
-              <Icons.Ionicons
-                name={focused ? "home-sharp" : "home-outline"}
-                size={size}
-                color={color}
-              />
+              <SvgIcon name="home" outline={!focused} size={size} color="#000" />
             ),
             tabBarLabel: "",
           }}

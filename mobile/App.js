@@ -3,11 +3,7 @@ import React, { useEffect, useState } from "react";
 import Routes from "./src/routes";
 import { Provider } from "./src/context/authContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {
-  useFonts,
-  Poppins_400Regular,
-  Poppins_100Thin_Italic,
-} from "@expo-google-fonts/poppins";
+import { useFonts, Inter_400Regular, Inter_700Bold, Inter_300Light_Italic, Inter_100Thin, Inter_100Thin_Italic, Inter_200ExtraLight } from '@expo-google-fonts/inter';
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TamaguiProvider } from "tamagui";
@@ -19,8 +15,13 @@ const App = () => {
   const [appIsReady, setAppIsReady] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_100Thin_Italic,
+    Inter_100Thin,
+    Inter_100Thin_Italic,
+    Inter_200ExtraLight,
+    Inter_200ExtraLight,
+    Inter_400Regular,
+    Inter_700Bold,
+    Inter_300Light_Italic
   });
 
   useEffect(() => {
