@@ -3,13 +3,13 @@ import { Platform, StyleSheet } from "react-native";
 const registerStyle = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#FFCD43",
+        backgroundColor: "#EEF5FF",
     },
     topSection: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFCD43",
+        backgroundColor: "#EEF5FF",
     },
     containerAction: {
         width: '100%',
@@ -30,26 +30,31 @@ const registerStyle = StyleSheet.create({
             }
         }),
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        display: "flex",
+        gap: 16
     },
     registerTitle: {
        fontFamily: "Poppins_400Regular",
-       fontSize: 38,
+        fontSize: 26,
+
     },
     inputTitle: {
         fontFamily: "Poppins_400Regular",
-        fontSize: 24,
+        fontSize: 16,
         fontWeight: "600",
-        letterSpacing: 1,
-        marginTop: 35,
-        marginBottom: 10
+        letterSpacing: 1
     },
     blocoInput: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        paddingVertical: Platform.OS === "ios" ? 14 : 8,
+        backgroundColor: "#fff",
         width: '100%',
-        paddingLeft: 7,
-        paddingRight: 7,
-        paddingTop: 5,
-        borderBottomWidth: 2
     },
     input: {
         fontFamily: "Poppins_400Regular",
@@ -68,15 +73,13 @@ const registerStyle = StyleSheet.create({
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#000',
-        borderRadius: 50,
-        marginTop: 40
+        backgroundColor: '#1976D2',
+        borderRadius: 50
     },
     textEmphasis: {
         fontFamily: 'Poppins_400Regular',
         fontSize: 15,
-        fontWeight: 'bold',
-        marginTop: 8
+        fontWeight: 'bold'
     },
 });
 

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Link } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import CustomPicker from "../../components/CustomPicker";
 
 const SecondForm = ({ navigation, onSignup, userData }) => {
   const [sex, setSex] = useState("");
@@ -30,27 +31,18 @@ const SecondForm = ({ navigation, onSignup, userData }) => {
 
   return (
     <View style={registerStyle.containerAction}>
+      <Text style={registerStyle.registerTitle}>Informações Pessoais</Text>
+
       <View style={{ width: "100%" }}>
-        <Text style={registerStyle.registerTitle}>Informações Pessoais</Text>
-
-        <Text style={registerStyle.inputTitle}>Sexo</Text>
-        <View style={registerStyle.blocoInput}>
-          <Picker
+          <CustomPicker
+            label="Sexo"
+            options={sexOptions}
             selectedValue={sex}
-            onValueChange={(itemValue) => setSex(itemValue)}
-            style={{ width: "100%" }}
-          >
-            <Picker.Item label="Selecione o sexo" value="" />
-            {sexOptions.map((option) => (
-              <Picker.Item
-                key={option.value}
-                label={option.label}
-                value={option.value}
-              />
-            ))}
-          </Picker>
-        </View>
+            onValueChange={(value) => setSex(value)}
+          />
+      </View>
 
+      <View style={{ width: "100%" }}>
         <Text style={registerStyle.inputTitle}>Data de Nascimento</Text>
         <TouchableOpacity
           style={registerStyle.blocoInput}
@@ -67,7 +59,7 @@ const SecondForm = ({ navigation, onSignup, userData }) => {
             mode="date"
             display="default"
             onChange={(event, selectedDate) => {
-              handleDateChange(event, selectedDate)
+              handleDateChange(event, selectedDate);
             }}
             maximumDate={new Date()}
           />
@@ -84,10 +76,9 @@ const SecondForm = ({ navigation, onSignup, userData }) => {
       >
         <Text style={registerStyle.textButtom}>Finalizar Cadastro</Text>
       </TouchableOpacity>
-
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
         <Text style={registerStyle.textEmphasis}>
-          Já tem uma conta? Entrar
+          Já tem uma conta? <Text style={{ color: "#1976D2" }}>Entrar</Text>
         </Text>
       </TouchableOpacity>
     </View>

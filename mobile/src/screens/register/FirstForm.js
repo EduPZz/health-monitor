@@ -14,9 +14,9 @@ const FirstForm = ({ navigation, onFillFirstForm }) => {
 
   return (
     <View style={registerStyle.containerAction}>
-      <View style={{ width: "100%" }}>
-        <Text style={registerStyle.registerTitle}>Cadastro</Text>
+      <Text style={registerStyle.registerTitle}>Cadastro</Text>
 
+      <View style={{ width: "100%" }}>
         <Text style={registerStyle.inputTitle}>Nome</Text>
         <View style={registerStyle.blocoInput}>
           <TextInput
@@ -27,7 +27,9 @@ const FirstForm = ({ navigation, onFillFirstForm }) => {
             placeholderTextColor="#555"
           />
         </View>
+      </View>
 
+      <View style={{ width: "100%" }}>
         <Text style={registerStyle.inputTitle}>E-mail</Text>
         <View style={registerStyle.blocoInput}>
           <TextInput
@@ -39,7 +41,9 @@ const FirstForm = ({ navigation, onFillFirstForm }) => {
             placeholderTextColor="#555"
           />
         </View>
+      </View>
 
+      <View style={{ width: "100%" }}>
         <Text style={registerStyle.inputTitle}>Senha</Text>
         <View
           style={[
@@ -64,6 +68,7 @@ const FirstForm = ({ navigation, onFillFirstForm }) => {
           </TouchableOpacity>
         </View>
       </View>
+
       <TouchableOpacity
         style={[
           registerStyle.registerButtom,
@@ -77,7 +82,7 @@ const FirstForm = ({ navigation, onFillFirstForm }) => {
 
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
         <Text style={registerStyle.textEmphasis}>
-          Já tem uma conta? Entrar
+          Já tem uma conta? <Text style={{ color: "#1976D2" }}>Entrar</Text>
         </Text>
       </TouchableOpacity>
     </View>
