@@ -15,7 +15,7 @@ const getToken = async () => {
   }
 };
 
-export default function useSocket({ onCompanionRequest }) {
+export default function useSocket({ onCompanionRequest, onCompanionUpdate }) {
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -36,6 +36,50 @@ export default function useSocket({ onCompanionRequest }) {
           onCompanionRequest(data?.request);
         });
       }
+
+      // Handle companion measurement updates
+      socket.on("body-measure-created", (data) => {
+        console.log("Body measure created:", data);
+        if (onCompanionUpdate) {
+          onCompanionUpdate(data);
+        }
+      });
+
+      socket.on("body-measure-updated", (data) => {
+        console.log("Body measure updated:", data);
+        if (onCompanionUpdate) {
+          onCompanionUpdate(data);
+        }
+      });
+
+      socket.on("body-measure-deleted", (data) => {
+        console.log("Body measure deleted:", data);
+        if (onCompanionUpdate) {
+          onCompanionUpdate(data);
+        }
+      });
+
+      // Handle exercise updates
+      socket.on("exercise-created", (data) => {
+        console.log("Exercise created:", data);
+        if (onCompanionUpdate) {
+          onCompanionUpdate(data);
+        }
+      });
+
+      socket.on("exercise-updated", (data) => {
+        console.log("Exercise updated:", data);
+        if (onCompanionUpdate) {
+          onCompanionUpdate(data);
+        }
+      });
+
+      socket.on("exercise-deleted", (data) => {
+        console.log("Exercise deleted:", data);
+        if (onCompanionUpdate) {
+          onCompanionUpdate(data);
+        }
+      });
     }
     connect();
     return () => {

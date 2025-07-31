@@ -9,12 +9,14 @@ import { UpdateExerciseDto } from './dto/update-exercise.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import ValidationUtil from 'src/utils/dateValidation';
 import { UsersService } from 'src/users/users.service';
+import { EventsGateway } from '../events/events.gateway';
 
 @Injectable()
 export class ExerciseService {
   constructor(
     private prisma: PrismaService,
     private readonly usersService: UsersService,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   private async validateExerciseOwnership(id: number, userId: number) {
@@ -47,9 +49,17 @@ export class ExerciseService {
       );
     }
 
-    return this.prisma.exercise.create({
+    const exercise = await this.prisma.exercise.create({
       data: { ...createExerciseDto, userId },
     });
+
+    // Emit event to companions
+    await this.eventsGateway.emitToCompanions(userId, 'exercise-created', {
+      exercise,
+      userId,
+    });
+
+    return exercise;
   }
 
   findByUserId(userId: number) {
@@ -80,14 +90,28 @@ export class ExerciseService {
       );
     }
 
-    return this.prisma.exercise.update({
+    const exercise = await this.prisma.exercise.update({
       data: updateExerciseDto,
       where: { id },
     });
+
+    // Emit event to companions
+    await this.eventsGateway.emitToCompanions(userId, 'exercise-updated', {
+      exercise,
+      userId,
+    });
+
+    return exercise;
   }
 
   async remove(id: number, userId: number) {
     await this.validateExerciseOwnership(id, userId);
     await this.prisma.exercise.delete({ where: { id } });
+
+    // Emit event to companions
+    await this.eventsGateway.emitToCompanions(userId, 'exercise-deleted', {
+      exerciseId: id,
+      userId,
+    });
   }
 }

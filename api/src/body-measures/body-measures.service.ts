@@ -7,12 +7,14 @@ import { CreateBodyMeasureDto } from './dto/create-body-measure.dto';
 import { UpdateBodyMeasureDto } from './dto/update-body-measure.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
+import { EventsGateway } from '../events/events.gateway';
 
 @Injectable()
 export class BodyMeasuresService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   private async validateBodyMeasureOwnership(id: number, userId: number) {
@@ -34,9 +36,17 @@ export class BodyMeasuresService {
       throw new UnauthorizedException();
     }
 
-    return this.prisma.bodyMeasure.create({
+    const bodyMeasure = await this.prisma.bodyMeasure.create({
       data: { ...createBodyMeasureDto, userId },
     });
+
+    // Emit event to companions
+    await this.eventsGateway.emitToCompanions(userId, 'body-measure-created', {
+      bodyMeasure,
+      userId,
+    });
+
+    return bodyMeasure;
   }
 
   findByUserId(userId: number) {
@@ -54,10 +64,18 @@ export class BodyMeasuresService {
   ) {
     await this.validateBodyMeasureOwnership(id, userId);
 
-    return this.prisma.bodyMeasure.update({
+    const bodyMeasure = await this.prisma.bodyMeasure.update({
       data: updateBodyMeasureDto,
       where: { id },
     });
+
+    // Emit event to companions
+    await this.eventsGateway.emitToCompanions(userId, 'body-measure-updated', {
+      bodyMeasure,
+      userId,
+    });
+
+    return bodyMeasure;
   }
 
   async remove(id: number, userId: number) {
@@ -65,6 +83,12 @@ export class BodyMeasuresService {
 
     await this.prisma.bodyMeasure.delete({
       where: { id },
+    });
+
+    // Emit event to companions
+    await this.eventsGateway.emitToCompanions(userId, 'body-measure-deleted', {
+      bodyMeasureId: id,
+      userId,
     });
   }
 }

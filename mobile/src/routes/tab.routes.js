@@ -135,6 +135,24 @@ export default function TabRoutes() {
             </View>
             <Icons.FontAwesome6 name="chevron-right" size={16} color={"#000"} />
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.optContainer}
+            onPress={() => {
+              bottomSheetRef.current?.close();
+              navigation.navigate("Companions");
+            }}
+          >
+            <View style={styles.firstOptContainer}>
+              <Icons.Ionicons
+                name="people"
+                size={24}
+                color={"#000"}
+              />
+              <Text style={styles.textOpt}>Meus Acompanhados</Text>
+            </View>
+            <Icons.FontAwesome6 name="chevron-right" size={16} color={"#000"} />
+          </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>

@@ -59,7 +59,7 @@ export class EventsGateway implements OnGatewayConnection {
       });
 
       (socket as any).userId = userId;
-    } catch (e) {
+    } catch {
       socket.disconnect();
     }
   }
@@ -69,6 +69,14 @@ export class EventsGateway implements OnGatewayConnection {
     const sockets = this.userSockets.get(userId) || [];
     for (const socket of sockets) {
       socket.emit(event, data);
+    }
+  }
+
+  // Emit event to all companions of a user
+  async emitToCompanions(userId: number, event: string, data: any) {
+    const companions = await this.eventsService.getUserCompanions(userId);
+    for (const companion of companions) {
+      this.emitToUser(companion.accompanyingId, event, data);
     }
   }
 

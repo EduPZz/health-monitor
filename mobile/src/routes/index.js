@@ -7,8 +7,9 @@ import Login from "../screens/signin/Login";
 import { Context } from "../context/authContext";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ShareMedicalRecords from "../screens/share-medical-records";
+import CompanionsScreen from "../screens/companions";
 import Toast from "react-native-toast-message";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Routes() {
   const Stack = createNativeStackNavigator();
@@ -26,7 +27,6 @@ export default function Routes() {
 
   if (loggedIn === null) return <Text>Loading...</Text>;
 
-
   return (
     <NavigationContainer>
       {loggedIn ? (
@@ -39,6 +39,10 @@ export default function Routes() {
             <Stack.Screen
               name="ShareMedicalRecords"
               component={ShareMedicalRecords}
+            />
+            <Stack.Screen
+              name="Companions"
+              component={CompanionsScreen}
             />
           </Stack.Navigator>
           <Toast topOffset={insets.top} />
