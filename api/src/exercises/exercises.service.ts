@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
 import { UpdateExerciseDto } from './dto/update-exercise.dto';
@@ -31,6 +32,22 @@ export class ExerciseService {
     return exercise;
   }
 
+  private async validateCompanionAccess(companionUserId: number, requestingUserId: number) {
+    // Check if the requesting user is a companion of the target user
+    const companionRelation = await this.prisma.userCompanion.findFirst({
+      where: {
+        accompaniedById: companionUserId,
+        accompanyingId: requestingUserId,
+      },
+    });
+
+    if (!companionRelation) {
+      throw new ForbiddenException('Access denied: Not authorized to view this user\'s exercises');
+    }
+
+    return true;
+  }
+
   async create(createExerciseDto: CreateExerciseDto, userId: number) {
     const user = await this.usersService.findById(userId);
 
@@ -54,9 +71,9 @@ export class ExerciseService {
     });
 
     // Emit event to companions
-    await this.eventsGateway.emitToCompanions(userId, 'exercise-created', {
+    await this.eventsGateway.emitExerciseToCompanions(userId, 'exercise-created', {
       exercise,
-      userId,
+      type: 'exercise-created',
     });
 
     return exercise;
@@ -64,6 +81,14 @@ export class ExerciseService {
 
   findByUserId(userId: number) {
     return this.prisma.exercise.findMany({ where: { userId } });
+  }
+
+  async findByUserIdForCompanion(companionUserId: number, requestingUserId: number) {
+    await this.validateCompanionAccess(companionUserId, requestingUserId);
+    return this.prisma.exercise.findMany({ 
+      where: { userId: companionUserId },
+      orderBy: { beginTime: 'desc' }
+    });
   }
 
   async findOne(id: number, userId: number) {
@@ -96,9 +121,9 @@ export class ExerciseService {
     });
 
     // Emit event to companions
-    await this.eventsGateway.emitToCompanions(userId, 'exercise-updated', {
+    await this.eventsGateway.emitExerciseToCompanions(userId, 'exercise-updated', {
       exercise,
-      userId,
+      type: 'exercise-updated',
     });
 
     return exercise;
@@ -109,9 +134,9 @@ export class ExerciseService {
     await this.prisma.exercise.delete({ where: { id } });
 
     // Emit event to companions
-    await this.eventsGateway.emitToCompanions(userId, 'exercise-deleted', {
+    await this.eventsGateway.emitExerciseToCompanions(userId, 'exercise-deleted', {
       exerciseId: id,
-      userId,
+      type: 'exercise-deleted',
     });
   }
 }

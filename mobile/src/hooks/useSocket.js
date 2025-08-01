@@ -80,6 +80,14 @@ export default function useSocket({ onCompanionRequest, onCompanionUpdate }) {
           onCompanionUpdate(data);
         }
       });
+
+      // Handle companion updates for exercises
+      socket.on("companion-exercise-update", (data) => {
+        console.log("Companion exercise update:", data);
+        if (onCompanionUpdate) {
+          onCompanionUpdate(data);
+        }
+      });
     }
     connect();
     return () => {

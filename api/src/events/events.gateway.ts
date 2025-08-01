@@ -80,6 +80,18 @@ export class EventsGateway implements OnGatewayConnection {
     }
   }
 
+  // Emit exercise events to companions
+  async emitExerciseToCompanions(userId: number, event: string, data: any) {
+    const companions = await this.eventsService.getUserCompanions(userId);
+    for (const companion of companions) {
+      this.emitToUser(companion.accompanyingId, event, {
+        ...data,
+        userId,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  }
+
   @SubscribeMessage('events')
   handleEvent(@MessageBody() data: string): string {
     return `Echo: ${data}`;

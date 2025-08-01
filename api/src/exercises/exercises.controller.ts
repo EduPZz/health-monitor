@@ -26,6 +26,11 @@ export class ExerciseController {
     return this.exerciseService.findByUserId(req.user.sub);
   }
 
+  @Get('user/:userId')
+  findByUserId(@Param('userId') userId: string, @Request() req) {
+    return this.exerciseService.findByUserIdForCompanion(+userId, req.user.sub);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req) {
     return this.exerciseService.findOne(+id, req.user.sub);
