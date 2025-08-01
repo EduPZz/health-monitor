@@ -13,9 +13,10 @@ import {
 import loginStyle from "./loginStyle";
 import { useContext, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Context } from "../../context/authContext";
 import { Link } from "@react-navigation/native";
+import { SvgIcon } from "../../icons/SvgIcons";
 
 const Login = ({ navigation }) => {
   const { loginUser } = useContext(Context);
@@ -54,9 +55,11 @@ const Login = ({ navigation }) => {
           </View>
 
           <View style={{ width: "100%" }}>
-            <Text style={{...loginStyle.inputTitle, width: "100%"}}>E-mail</Text>
+            <Text style={{ ...loginStyle.inputTitle, width: "100%" }}>
+              E-mail
+            </Text>
             <View style={loginStyle.inputWrapper}>
-              <MaterialCommunityIcons name="email-outline" size={20} color="#1976D2" style={{ marginRight: 8 }} />
+              <SvgIcon name="email" color="#1976D2" size={20} />
               <TextInput
                 style={loginStyle.input}
                 placeholder="seuemail@exemplo.com"
@@ -81,9 +84,11 @@ const Login = ({ navigation }) => {
                 placeholderTextColor="#555"
                 secureTextEntry={!isPasswordVisible}
               />
-              <TouchableOpacity onPress={() => setPasswordVisible(!isPasswordVisible)}>
-                <Feather
-                  name={isPasswordVisible ? "eye-off" : "eye"}
+              <TouchableOpacity
+                onPress={() => setPasswordVisible(!isPasswordVisible)}
+              >
+                <SvgIcon
+                  name={isPasswordVisible ? "eye-hide" : "eye"}
                   size={20}
                   color="#555"
                 />
@@ -104,7 +109,8 @@ const Login = ({ navigation }) => {
 
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={loginStyle.textEmphasis}>
-              Não tem uma conta? <Text style={{ color: "#1976D2" }}>Cadastrar-se</Text>
+              Não tem uma conta?{" "}
+              <Text style={{ color: "#1976D2" }}>Cadastrar-se</Text>
             </Text>
           </TouchableOpacity>
         </View>

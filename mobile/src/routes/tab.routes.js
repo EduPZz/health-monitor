@@ -41,7 +41,12 @@ export default function TabRoutes() {
           component={HomeStackNavigator}
           options={{
             tabBarIcon: ({ focused, size, color }) => (
-              <SvgIcon name="home" outline={!focused} size={size} color="#000" />
+              <SvgIcon
+                name="home"
+                outline={!focused}
+                size={size}
+                color="#000"
+              />
             ),
             tabBarLabel: "",
           }}
@@ -84,10 +89,11 @@ export default function TabRoutes() {
           component={Calculator}
           options={{
             tabBarIcon: ({ focused, size, color }) => (
-              <Icons.Ionicons
-                name={focused ? "person" : "person-outline"}
+              <SvgIcon
+                name="person"
                 size={size}
                 color={color}
+                outline={!focused}
               />
             ),
             tabBarLabel: "",
@@ -141,11 +147,7 @@ export default function TabRoutes() {
             }}
           >
             <View style={styles.firstOptContainer}>
-              <Icons.Ionicons
-                name="people"
-                size={24}
-                color={"#000"}
-              />
+              <Icons.Ionicons name="people" size={24} color={"#000"} />
               <Text style={styles.textOpt}>Meus Acompanhados</Text>
             </View>
             <Icons.FontAwesome6 name="chevron-right" size={16} color={"#000"} />
