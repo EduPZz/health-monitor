@@ -8,6 +8,7 @@ import Weighting from "../screens/weighting";
 import ShareMedicalRecords from "../screens/share-medical-records";
 import CompanionsScreen from "../screens/companions";
 import CompanionDetails from "../screens/companions/CompanionDetails";
+import MeasurementDetails from "../screens/measures/MeasurementDetails";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="ShareMedicalRecords" component={ShareMedicalRecords} />
       <HomeStack.Screen name="Companions" component={CompanionsScreen} />
       <HomeStack.Screen name="CompanionDetails" component={CompanionDetails} />
+      <HomeStack.Screen name="MeasurementDetails" component={MeasurementDetails} />
     </HomeStack.Navigator>
   );
 }

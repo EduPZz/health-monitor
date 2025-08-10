@@ -1,15 +1,36 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Icons from "../../../components/Icons";
 
 const MeasurementItem = ({ measurement, isHighlighted = false }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate("MeasurementDetails", { measurement });
+  };
+
   return (
-    <View style={[styles.measurementCard, isHighlighted && styles.highlightedCard]}>
+    <TouchableOpacity
+      style={[styles.measurementCard, isHighlighted && styles.highlightedCard]}
+      onPress={handlePress}
+      activeOpacity={0.7}
+    >
       <View style={styles.measurementHeader}>
-        <Text style={[styles.measurementDate, isHighlighted && styles.highlightedText]}>
+        <Text
+          style={[
+            styles.measurementDate,
+            isHighlighted && styles.highlightedText,
+          ]}
+        >
           {new Date(measurement.createdAt).toLocaleDateString("pt-BR")}
         </Text>
-        <Text style={[styles.measurementTime, isHighlighted && styles.highlightedSubtext]}>
+        <Text
+          style={[
+            styles.measurementTime,
+            isHighlighted && styles.highlightedSubtext,
+          ]}
+        >
           {new Date(measurement.createdAt).toLocaleTimeString("pt-BR", {
             hour: "2-digit",
             minute: "2-digit",
@@ -20,105 +41,62 @@ const MeasurementItem = ({ measurement, isHighlighted = false }) => {
       <View style={styles.measurementData}>
         {measurement.weight && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="weight-scale" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>Peso:</Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>{measurement.weight} kg</Text>
+            <Icons.FontAwesome6
+              name="weight-scale"
+              size={16}
+              color={isHighlighted ? "#4CAF50" : "#1976D2"}
+            />
+            <Text
+              style={[
+                styles.measurementLabel,
+                isHighlighted && styles.highlightedSubtext,
+              ]}
+            >
+              Peso:
+            </Text>
+            <Text
+              style={[
+                styles.measurementValue,
+                isHighlighted && styles.highlightedText,
+              ]}
+            >
+              {measurement.weight} kg
+            </Text>
           </View>
         )}
 
         {measurement.height && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="ruler" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>Altura:</Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>{measurement.height} cm</Text>
-          </View>
-        )}
-
-        {measurement.chestCircumference && (
-          <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
-              Circunferência do Tórax:
+            <Icons.FontAwesome6
+              name="ruler"
+              size={16}
+              color={isHighlighted ? "#4CAF50" : "#1976D2"}
+            />
+            <Text
+              style={[
+                styles.measurementLabel,
+                isHighlighted && styles.highlightedSubtext,
+              ]}
+            >
+              Altura:
             </Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
-              {measurement.chestCircumference} cm
-            </Text>
-          </View>
-        )}
-
-        {measurement.waistCircumference && (
-          <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
-              Circunferência da Cintura:
-            </Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
-              {measurement.waistCircumference} cm
-            </Text>
-          </View>
-        )}
-
-        {measurement.hipCircumference && (
-          <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
-              Circunferência do Quadril:
-            </Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
-              {measurement.hipCircumference} cm
-            </Text>
-          </View>
-        )}
-
-        {measurement.leftArmCircumference && (
-          <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
-              Circunferência do Braço Esquerdo:
-            </Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
-              {measurement.leftArmCircumference} cm
-            </Text>
-          </View>
-        )}
-
-        {measurement.rightArmCircumference && (
-          <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
-              Circunferência do Braço Direito:
-            </Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
-              {measurement.rightArmCircumference} cm
-            </Text>
-          </View>
-        )}
-
-        {measurement.leftThighCircumference && (
-          <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
-              Circunferência da Coxa Esquerda:
-            </Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
-              {measurement.leftThighCircumference} cm
-            </Text>
-          </View>
-        )}
-
-        {measurement.rightThighCircumference && (
-          <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
-            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
-              Circunferência da Coxa Direita:
-            </Text>
-            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
-              {measurement.rightThighCircumference} cm
+            <Text
+              style={[
+                styles.measurementValue,
+                isHighlighted && styles.highlightedText,
+              ]}
+            >
+              {measurement.height} m
             </Text>
           </View>
         )}
       </View>
-    </View>
+
+      {/* Add a subtle indicator that the item is clickable */}
+      <View style={styles.clickIndicator}>
+        <Text style={{ alignSelf: 'flex-end', color: '#1976D2' }}>Ver mais</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -188,6 +166,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#000",
   },
+  clickIndicator: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: 8
+  },
 });
 
-export default MeasurementItem; 
+export default MeasurementItem;

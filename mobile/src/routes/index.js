@@ -11,6 +11,7 @@ import CompanionsScreen from "../screens/companions";
 import Toast from "react-native-toast-message";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CompanionDetails from "../screens/companions/CompanionDetails";
+import MeasurementDetails from "../screens/measures/MeasurementDetails";
 
 export default function Routes() {
   const Stack = createNativeStackNavigator();
@@ -45,6 +46,10 @@ export default function Routes() {
             <Stack.Screen
               name="CompanionDetails"
               component={CompanionDetails}
+            />
+            <Stack.Screen
+              name="MeasurementDetails"
+              component={MeasurementDetails}
             />
           </Stack.Navigator>
           <Toast topOffset={insets.top} />
