@@ -44,7 +44,6 @@ const CompanionsScreen = () => {
 
   // Handle real-time updates from companions
   const handleCompanionUpdate = (data) => {
-    console.log("Companion update received:", data);
     // Refresh the list when we receive updates
     fetchCompanions();
   };

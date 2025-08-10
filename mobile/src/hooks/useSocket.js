@@ -39,21 +39,18 @@ export default function useSocket({ onCompanionRequest, onCompanionUpdate }) {
 
       // Handle companion measurement updates
       socket.on("body-measure-created", (data) => {
-        console.log("Body measure created:", data);
         if (onCompanionUpdate) {
           onCompanionUpdate(data);
         }
       });
 
       socket.on("body-measure-updated", (data) => {
-        console.log("Body measure updated:", data);
         if (onCompanionUpdate) {
           onCompanionUpdate(data);
         }
       });
 
       socket.on("body-measure-deleted", (data) => {
-        console.log("Body measure deleted:", data);
         if (onCompanionUpdate) {
           onCompanionUpdate(data);
         }
@@ -61,21 +58,18 @@ export default function useSocket({ onCompanionRequest, onCompanionUpdate }) {
 
       // Handle exercise updates
       socket.on("exercise-created", (data) => {
-        console.log("Exercise created:", data);
         if (onCompanionUpdate) {
           onCompanionUpdate(data);
         }
       });
 
       socket.on("exercise-updated", (data) => {
-        console.log("Exercise updated:", data);
         if (onCompanionUpdate) {
           onCompanionUpdate(data);
         }
       });
 
       socket.on("exercise-deleted", (data) => {
-        console.log("Exercise deleted:", data);
         if (onCompanionUpdate) {
           onCompanionUpdate(data);
         }
@@ -83,7 +77,6 @@ export default function useSocket({ onCompanionRequest, onCompanionUpdate }) {
 
       // Handle companion updates for exercises
       socket.on("companion-exercise-update", (data) => {
-        console.log("Companion exercise update:", data);
         if (onCompanionUpdate) {
           onCompanionUpdate(data);
         }

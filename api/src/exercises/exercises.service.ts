@@ -32,17 +32,22 @@ export class ExerciseService {
     return exercise;
   }
 
-  private async validateCompanionAccess(companionUserId: number, requestingUserId: number) {
+  private async validateCompanionAccess(
+    companionUserId: number,
+    requestingUserId: number,
+  ) {
     // Check if the requesting user is a companion of the target user
     const companionRelation = await this.prisma.userCompanion.findFirst({
       where: {
-        accompaniedById: companionUserId,
-        accompanyingId: requestingUserId,
+        accompaniedById: requestingUserId,
+        accompanyingId: companionUserId,
       },
     });
 
     if (!companionRelation) {
-      throw new ForbiddenException('Access denied: Not authorized to view this user\'s exercises');
+      throw new ForbiddenException(
+        "Access denied: Not authorized to view this user's exercises",
+      );
     }
 
     return true;
@@ -71,10 +76,14 @@ export class ExerciseService {
     });
 
     // Emit event to companions
-    await this.eventsGateway.emitExerciseToCompanions(userId, 'exercise-created', {
-      exercise,
-      type: 'exercise-created',
-    });
+    await this.eventsGateway.emitExerciseToCompanions(
+      userId,
+      'exercise-created',
+      {
+        exercise,
+        type: 'exercise-created',
+      },
+    );
 
     return exercise;
   }
@@ -83,11 +92,14 @@ export class ExerciseService {
     return this.prisma.exercise.findMany({ where: { userId } });
   }
 
-  async findByUserIdForCompanion(companionUserId: number, requestingUserId: number) {
+  async findByUserIdForCompanion(
+    companionUserId: number,
+    requestingUserId: number,
+  ) {
     await this.validateCompanionAccess(companionUserId, requestingUserId);
-    return this.prisma.exercise.findMany({ 
+    return this.prisma.exercise.findMany({
       where: { userId: companionUserId },
-      orderBy: { beginTime: 'desc' }
+      orderBy: { beginTime: 'desc' },
     });
   }
 
@@ -121,10 +133,14 @@ export class ExerciseService {
     });
 
     // Emit event to companions
-    await this.eventsGateway.emitExerciseToCompanions(userId, 'exercise-updated', {
-      exercise,
-      type: 'exercise-updated',
-    });
+    await this.eventsGateway.emitExerciseToCompanions(
+      userId,
+      'exercise-updated',
+      {
+        exercise,
+        type: 'exercise-updated',
+      },
+    );
 
     return exercise;
   }
@@ -134,9 +150,13 @@ export class ExerciseService {
     await this.prisma.exercise.delete({ where: { id } });
 
     // Emit event to companions
-    await this.eventsGateway.emitExerciseToCompanions(userId, 'exercise-deleted', {
-      exerciseId: id,
-      type: 'exercise-deleted',
-    });
+    await this.eventsGateway.emitExerciseToCompanions(
+      userId,
+      'exercise-deleted',
+      {
+        exerciseId: id,
+        type: 'exercise-deleted',
+      },
+    );
   }
 }
