@@ -2,14 +2,14 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Icons from "../../../components/Icons";
 
-const MeasurementItem = ({ measurement }) => {
+const MeasurementItem = ({ measurement, isHighlighted = false }) => {
   return (
-    <View style={styles.measurementCard}>
+    <View style={[styles.measurementCard, isHighlighted && styles.highlightedCard]}>
       <View style={styles.measurementHeader}>
-        <Text style={styles.measurementDate}>
+        <Text style={[styles.measurementDate, isHighlighted && styles.highlightedText]}>
           {new Date(measurement.createdAt).toLocaleDateString("pt-BR")}
         </Text>
-        <Text style={styles.measurementTime}>
+        <Text style={[styles.measurementTime, isHighlighted && styles.highlightedSubtext]}>
           {new Date(measurement.createdAt).toLocaleTimeString("pt-BR", {
             hour: "2-digit",
             minute: "2-digit",
@@ -20,27 +20,27 @@ const MeasurementItem = ({ measurement }) => {
       <View style={styles.measurementData}>
         {measurement.weight && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="weight-scale" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>Peso:</Text>
-            <Text style={styles.measurementValue}>{measurement.weight} kg</Text>
+            <Icons.FontAwesome6 name="weight-scale" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>Peso:</Text>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>{measurement.weight} kg</Text>
           </View>
         )}
 
         {measurement.height && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="ruler" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>Altura:</Text>
-            <Text style={styles.measurementValue}>{measurement.height} cm</Text>
+            <Icons.FontAwesome6 name="ruler" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>Altura:</Text>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>{measurement.height} cm</Text>
           </View>
         )}
 
         {measurement.chestCircumference && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>
+            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
               Circunferência do Tórax:
             </Text>
-            <Text style={styles.measurementValue}>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
               {measurement.chestCircumference} cm
             </Text>
           </View>
@@ -48,11 +48,11 @@ const MeasurementItem = ({ measurement }) => {
 
         {measurement.waistCircumference && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>
+            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
               Circunferência da Cintura:
             </Text>
-            <Text style={styles.measurementValue}>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
               {measurement.waistCircumference} cm
             </Text>
           </View>
@@ -60,11 +60,11 @@ const MeasurementItem = ({ measurement }) => {
 
         {measurement.hipCircumference && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>
+            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
               Circunferência do Quadril:
             </Text>
-            <Text style={styles.measurementValue}>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
               {measurement.hipCircumference} cm
             </Text>
           </View>
@@ -72,11 +72,11 @@ const MeasurementItem = ({ measurement }) => {
 
         {measurement.leftArmCircumference && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>
+            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
               Circunferência do Braço Esquerdo:
             </Text>
-            <Text style={styles.measurementValue}>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
               {measurement.leftArmCircumference} cm
             </Text>
           </View>
@@ -84,11 +84,11 @@ const MeasurementItem = ({ measurement }) => {
 
         {measurement.rightArmCircumference && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>
+            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
               Circunferência do Braço Direito:
             </Text>
-            <Text style={styles.measurementValue}>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
               {measurement.rightArmCircumference} cm
             </Text>
           </View>
@@ -96,11 +96,11 @@ const MeasurementItem = ({ measurement }) => {
 
         {measurement.leftThighCircumference && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>
+            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
               Circunferência da Coxa Esquerda:
             </Text>
-            <Text style={styles.measurementValue}>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
               {measurement.leftThighCircumference} cm
             </Text>
           </View>
@@ -108,11 +108,11 @@ const MeasurementItem = ({ measurement }) => {
 
         {measurement.rightThighCircumference && (
           <View style={styles.measurementItem}>
-            <Icons.FontAwesome6 name="circle" size={16} color="#1976D2" />
-            <Text style={styles.measurementLabel}>
+            <Icons.FontAwesome6 name="circle" size={16} color={isHighlighted ? "#4CAF50" : "#1976D2"} />
+            <Text style={[styles.measurementLabel, isHighlighted && styles.highlightedSubtext]}>
               Circunferência da Coxa Direita:
             </Text>
-            <Text style={styles.measurementValue}>
+            <Text style={[styles.measurementValue, isHighlighted && styles.highlightedText]}>
               {measurement.rightThighCircumference} cm
             </Text>
           </View>
@@ -137,6 +137,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  highlightedCard: {
+    backgroundColor: "#f8fff8",
+    borderWidth: 2,
+    borderColor: "#4CAF50",
+    shadowColor: "#4CAF50",
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 8,
+  },
   measurementHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -150,9 +159,16 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#000",
   },
+  highlightedText: {
+    color: "#2E7D32",
+    fontWeight: "700",
+  },
   measurementTime: {
     fontSize: 12,
     color: "#666",
+  },
+  highlightedSubtext: {
+    color: "#4CAF50",
   },
   measurementData: {
     gap: 8,

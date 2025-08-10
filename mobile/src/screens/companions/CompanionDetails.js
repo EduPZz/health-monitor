@@ -24,6 +24,7 @@ const CompanionDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { companion: routeCompanion } = route.params;
+  const [activeTab, setActiveTab] = React.useState("exercises");
 
   const {
     companion,
@@ -62,6 +63,82 @@ const CompanionDetails = () => {
     setCompanion(routeCompanion);
   }, [routeCompanion]);
 
+  const renderExercisesTab = () => (
+    <View style={styles.tabContent}>
+      <DateFilter
+        selectedDateRange={selectedDateRange}
+        setSelectedDateRange={setSelectedDateRange}
+      />
+
+      <AverageCard
+        averageHours={averageHours}
+        averageMinutes={averageMinutes}
+        selectedDateRange={selectedDateRange}
+      />
+
+      {chartData.data.length > 0 && (
+        <ExerciseChart
+          data={chartDataFormatted}
+          title="Evolução de Exercícios"
+          color="#4CAF50"
+        />
+      )}
+
+      {chartData.exerciseTypes.length > 0 && (
+        <ExerciseChart
+          data={typesChartFormatted}
+          title="Tipos de Exercício"
+          color="#1976D2"
+        />
+      )}
+
+      {filteredExercises.length > 0 ? (
+        filteredExercises?.map((exercise, index) => (
+          <ExerciseItem key={exercise.id || index} exercise={exercise} />
+        ))
+      ) : (
+        <EmptyState
+          icon={<Icons.FontAwesome6 name="dumbbell" size={64} color="#ccc" />}
+          title="Nenhum exercício registrado"
+          subtitle="O acompanhado ainda não registrou exercícios"
+        />
+      )}
+    </View>
+  );
+
+  const renderMeasurementsTab = () => (
+    <View style={styles.tabContent}>
+      {measurements.length > 0 ? (
+        <>
+          {/* Highlight the last measurement */}
+          <View style={styles.lastMeasurementHighlight}>
+            <Text style={styles.highlightTitle}>Última Medida</Text>
+            <MeasurementItem
+              measurement={measurements[0]}
+              isHighlighted={true}
+            />
+          </View>
+          
+          {/* Show all measurements */}
+          <Text style={styles.sectionTitle}>Todas as Medidas</Text>
+          {measurements?.map((measurement, index) => (
+            <MeasurementItem
+              key={measurement.id || index}
+              measurement={measurement}
+              isHighlighted={false}
+            />
+          ))}
+        </>
+      ) : (
+        <EmptyState
+          icon={<Icons.Ionicons name="body-outline" size={64} color="#ccc" />}
+          title="Nenhuma medida registrada"
+          subtitle="O acompanhado ainda não registrou medidas corporais"
+        />
+      )}
+    </View>
+  );
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -83,74 +160,46 @@ const CompanionDetails = () => {
         <View style={styles.placeholder} />
       </View>
 
+      {companion && <CompanionHeader companion={companion} />}
+
+      {/* Tab Navigation */}
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === "exercises" && styles.activeTab]}
+          onPress={() => setActiveTab("exercises")}
+        >
+          <Icons.FontAwesome6 
+            name="dumbbell" 
+            size={20} 
+            color={activeTab === "exercises" ? "#4CAF50" : "#666"} 
+          />
+          <Text style={[styles.tabText, activeTab === "exercises" && styles.activeTabText]}>
+            Exercícios
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.tab, activeTab === "measurements" && styles.activeTab]}
+          onPress={() => setActiveTab("measurements")}
+        >
+          <Icons.Ionicons 
+            name="body-outline" 
+            size={20} 
+            color={activeTab === "measurements" ? "#4CAF50" : "#666"} 
+          />
+          <Text style={[styles.tabText, activeTab === "measurements" && styles.activeTabText]}>
+            Medidas
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView
         style={styles.content}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {companion && <CompanionHeader companion={companion} />}
-
-        <View style={styles.exercisesSection}>
-          <Text style={styles.sectionTitle}>Exercícios</Text>
-
-          <DateFilter
-            selectedDateRange={selectedDateRange}
-            setSelectedDateRange={setSelectedDateRange}
-          />
-
-          <AverageCard
-            averageHours={averageHours}
-            averageMinutes={averageMinutes}
-            selectedDateRange={selectedDateRange}
-          />
-
-          {chartData.data.length > 0 && (
-            <ExerciseChart
-              data={chartDataFormatted}
-              title="Evolução de Exercícios"
-              color="#4CAF50"
-            />
-          )}
-
-          {chartData.exerciseTypes.length > 0 && (
-            <ExerciseChart
-              data={typesChartFormatted}
-              title="Tipos de Exercício"
-              color="#1976D2"
-            />
-          )}
-
-          {filteredExercises.length > 0 ? (
-            filteredExercises?.map((exercise, index) => (
-              <ExerciseItem key={exercise.id || index} exercise={exercise} />
-            ))
-          ) : (
-            <EmptyState
-              icon={<Icons.FontAwesome6 name="dumbbell" size={64} color="#ccc" />}
-              title="Nenhum exercício registrado"
-              subtitle="O acompanhado ainda não registrou exercícios"
-            />
-          )}
-        </View>
-
-        <View style={styles.measurementsSection}>
-          <Text style={styles.sectionTitle}>Medidas Corporais</Text>
-          {measurements.length > 0 ? (
-            measurements?.map((measurement, index) => (
-              <MeasurementItem
-                key={measurement.id || index}
-                measurement={measurement}
-              />
-            ))
-          ) : (
-            <EmptyState
-              icon={<Icons.Ionicons name="body-outline" size={64} color="#ccc" />}
-              title="Nenhuma medida registrada"
-              subtitle="O acompanhado ainda não registrou medidas corporais"
-            />
-          )}
-        </View>
+        {activeTab === "exercises" ? renderExercisesTab() : renderMeasurementsTab()}
       </ScrollView>
     </View>
   );
@@ -183,22 +232,68 @@ const styles = StyleSheet.create({
   placeholder: {
     width: 40,
   },
+  tabContainer: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e0e0e0",
+  },
+  tab: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginHorizontal: 4,
+    borderRadius: 8,
+    backgroundColor: "#f5f5f5",
+  },
+  activeTab: {
+    backgroundColor: "#e8f5e8",
+    borderWidth: 1,
+    borderColor: "#4CAF50",
+  },
+  tabText: {
+    marginLeft: 8,
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#666",
+  },
+  activeTabText: {
+    color: "#4CAF50",
+  },
   content: {
     flex: 1,
   },
-  exercisesSection: {
+  tabContent: {
     padding: 20,
     backgroundColor: "#fff",
     marginBottom: 16,
-  },
-  measurementsSection: {
-    padding: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 16,
+    marginTop: 20,
+  },
+  lastMeasurementHighlight: {
+    backgroundColor: "#e8f5e8",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#4CAF50",
+  },
+  highlightTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#4CAF50",
+    marginBottom: 12,
+    textAlign: "center",
   },
   loadingContainer: {
     flex: 1,
