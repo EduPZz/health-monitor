@@ -5,16 +5,13 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  TextInput,
   Alert,
-  Platform,
+  Animated,
 } from "react-native";
 import Layout from "../../components/layout";
 import styles from "./styles";
 import api from "../../api";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import Icons from "../../components/Icons";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const DateCard = ({ date, userTimezone }) => {
   const dateInTimeZone = new Date(date);
@@ -26,9 +23,75 @@ const DateCard = ({ date, userTimezone }) => {
     timeZone: userTimezone || "UTC",
   }).format(dateInTimeZone);
 
+  const formattedTime = new Intl.DateTimeFormat("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: userTimezone || "UTC",
+  }).format(dateInTimeZone);
+
   return (
     <View style={styles.dateCard}>
-      <Text>{formattedDate}</Text>
+      <Text style={styles.dateCardText}>{formattedDate}</Text>
+      <Text style={styles.timeText}>{formattedTime}</Text>
+    </View>
+  );
+};
+
+const ConsultationCard = ({ consultation, userTimezone, onDelete }) => {
+  const handleDelete = () => {
+    Alert.alert(
+      "Excluir consulta",
+      "Tem certeza que deseja excluir esta consulta?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { text: "Excluir", style: "destructive", onPress: () => onDelete(consultation.id) }
+      ]
+    );
+  };
+
+  const isUpcoming = new Date(consultation.scheduleDate) > new Date();
+  const statusColor = isUpcoming ? "#4CAF50" : "#FF9800";
+  const statusText = isUpcoming ? "Próxima" : "Realizada";
+
+  return (
+    <View style={styles.consultationCard}>
+      <View style={styles.consultationHeader}>
+        <View style={styles.doctorInfo}>
+          <View style={[styles.statusIndicator, { backgroundColor: statusColor }]} />
+          <Icons.MaterialIcons
+            name="person"
+            size={24}
+            color="#176B87"
+            style={styles.doctorIcon}
+          />
+          <View style={styles.doctorDetails}>
+            <Text style={styles.doctorName}>{consultation.doctorName}</Text>
+            <Text style={styles.specialization}>{consultation.specialization}</Text>
+            <View style={styles.statusContainer}>
+              <Text style={[styles.statusText, { color: statusColor }]}>
+                {statusText}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <TouchableOpacity
+          onPress={handleDelete}
+          style={styles.deleteButton}
+        >
+          <Icons.MaterialIcons
+            name="delete-outline"
+            size={20}
+            color="#ff4d4d"
+          />
+        </TouchableOpacity>
+      </View>
+      
+      <View style={styles.consultationFooter}>
+        <DateCard
+          date={consultation.scheduleDate}
+          userTimezone={userTimezone}
+        />
+      </View>
     </View>
   );
 };
@@ -36,15 +99,28 @@ const DateCard = ({ date, userTimezone }) => {
 const Consultations = ({ navigation }) => {
   const [userTimezone, setUserTimezone] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [consultationToCreate, setConsultationToCreate] = useState({
-    doctorName: "",
-    scheduleDate: new Date(),
-    specialization: "",
-  });
   const [consultations, setConsultations] = useState([]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [fabScale] = useState(new Animated.Value(1));
 
   const goBack = () => navigation.goBack();
+
+  const fetchConsultations = async () => {
+    try {
+      const response = await api.get("consultation");
+      // Sort consultations by scheduleDate in descending order (most recent first)
+      const sortedConsultations = response.data.sort((a, b) => 
+        new Date(b.scheduleDate) - new Date(a.scheduleDate)
+      );
+      setConsultations(sortedConsultations);
+    } catch (error) {
+      console.error("Failed to fetch consultations", error);
+      Alert.alert("Não foi possível carregar as consultas.");
+    } finally {
+      setIsLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     const fetchUserTimezone = async () => {
@@ -58,48 +134,18 @@ const Consultations = ({ navigation }) => {
       }
     };
 
-    const fetchConsultations = async () => {
-      try {
-        const response = await api.get("consultation");
-        setConsultations(response.data); // Assuming `response.data` contains the list of consultations
-      } catch (error) {
-        console.error("Failed to fetch consultations", error);
-        Alert.alert("Não foi possível carregar as consultas.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchUserTimezone();
     fetchConsultations();
   }, []);
 
-  const resetConsultationsToCreate = () => {
-    setConsultationToCreate({
-      doctorName: "",
-      scheduleDate: new Date(),
-      specialization: "",
+  // Add focus listener to refresh data when returning from AddConsultation
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchConsultations();
     });
-  };
 
-  const handleCreate = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await api.post("consultation", {
-        ...consultationToCreate,
-        scheduleDate: consultationToCreate.scheduleDate.toISOString(),
-        description: "",
-      });
-      setConsultations([...consultations, data]);
-      resetConsultationsToCreate();
-    } catch (error) {
-      Alert.alert("Não foi possível agendar a consulta.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const isSaveDisabled = Object.values(consultationToCreate).some((m) => !m);
+    return unsubscribe;
+  }, [navigation]);
 
   const handleDelete = async (id) => {
     try {
@@ -113,135 +159,92 @@ const Consultations = ({ navigation }) => {
     }
   };
 
-  const handleDateChange = (event, selectedDate) => {
-    setShowDatePicker(Platform.OS === "ios");
-    if (selectedDate) {
-      setConsultationToCreate({
-        ...consultationToCreate,
-        scheduleDate: selectedDate,
-      });
-    }
+  const animateFabPress = () => {
+    Animated.sequence([
+      Animated.timing(fabScale, {
+        toValue: 0.95,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fabScale, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
+
+  const navigateToAddConsultation = () => {
+    animateFabPress();
+    setTimeout(() => {
+      navigation.navigate("AddConsultation");
+    }, 100);
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchConsultations();
+  };
+
+  const renderConsultation = ({ item }) => (
+    <ConsultationCard
+      consultation={item}
+      userTimezone={userTimezone}
+      onDelete={handleDelete}
+    />
+  );
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyState}>
+      <Icons.MaterialIcons
+        name="event-busy"
+        size={64}
+        color="#ccc"
+      />
+      <Text style={styles.emptyStateTitle}>Nenhuma consulta agendada</Text>
+      <Text style={styles.emptyStateSubtitle}>
+        Toque no botão + para agendar sua primeira consulta
+      </Text>
+    </View>
+  );
 
   return (
     <Layout title="Consultas médicas" goBackFunction={goBack}>
       {isLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#176B87" />
+        </View>
       ) : (
-        <KeyboardAwareScrollView
-          style={styles.container}
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-          extraHeight={100}
-        >
-          {consultations.length > 0 && (
-            <View style={styles.upcomingCard}>
-              <Text style={styles.sectionTitle}>Próximas consultas</Text>
-              {consultations.map((item) => (
-                <View key={item.id.toString()} style={styles.appointmentItem}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={styles.doctorText}>
-                      Consulta com {item.doctorName}
-                    </Text>
-                    <DateCard
-                      date={item.scheduleDate}
-                      userTimezone={userTimezone}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={styles.typeText}>{item.specialization}</Text>
-                    <TouchableOpacity
-                      onPress={() => handleDelete(item.id)}
-                      style={styles.deleteButton}
-                    >
-                      <Icons.MaterialIcons
-                        name="delete"
-                        size={12}
-                        color="white"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              ))}
-            </View>
+        <View style={styles.container}>
+          {consultations.length > 0 ? (
+            <FlatList
+              data={consultations}
+              renderItem={renderConsultation}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.listContainer}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          ) : (
+            renderEmptyState()
           )}
 
-          <View style={styles.addCard}>
-            <Text style={styles.sectionTitle}>Adicionar uma consulta</Text>
-            <View style={styles.addForm}>
-              <View style={styles.input}>
-                <Text>Nome do doutor</Text>
-                <TextInput
-                  style={styles.inputText}
-                  placeholderTextColor="#ababab"
-                  placeholder="Alberto"
-                  value={consultationToCreate.doctorName}
-                  onChangeText={(value) =>
-                    setConsultationToCreate({
-                      ...consultationToCreate,
-                      doctorName: value,
-                    })
-                  }
-                />
-              </View>
-              <View style={styles.input}>
-                <Text>Data</Text>
-                <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                  <Text style={styles.inputText}>
-                    {consultationToCreate.scheduleDate.toLocaleDateString(
-                      "pt-BR"
-                    )}
-                  </Text>
-                </TouchableOpacity>
-                {showDatePicker && (
-                  <DateTimePicker
-                    value={consultationToCreate.scheduleDate}
-                    mode="date"
-                    display="default"
-                    onChange={handleDateChange}
-                  />
-                )}
-              </View>
-              <View style={styles.input}>
-                <Text>Especialização</Text>
-                <TextInput
-                  style={styles.inputText}
-                  placeholder="Cardiologista"
-                  placeholderTextColor="#ababab"
-                  value={consultationToCreate.specialization}
-                  onChangeText={(value) =>
-                    setConsultationToCreate({
-                      ...consultationToCreate,
-                      specialization: value,
-                    })
-                  }
-                />
-              </View>
-              <TouchableOpacity
-                style={[
-                  styles.addButton,
-                  isSaveDisabled && styles.buttonDisabled,
-                ]}
-                disabled={isSaveDisabled}
-                onPress={handleCreate}
-              >
-                <Text style={styles.addButtonText}>+</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </KeyboardAwareScrollView>
+          {/* Floating Action Button */}
+          <Animated.View style={[styles.fab, { transform: [{ scale: fabScale }] }]}>
+            <TouchableOpacity
+              style={styles.fabTouchable}
+              onPress={navigateToAddConsultation}
+              activeOpacity={0.8}
+            >
+              <Icons.MaterialIcons
+                name="add"
+                size={28}
+                color="#fff"
+              />
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
       )}
     </Layout>
   );

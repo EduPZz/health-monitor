@@ -188,7 +188,7 @@ const Exercices = ({ navigation }) => {
   };
 
   return (
-    <Layout goBackFunction={goBack} title="Exercices">
+    <Layout goBackFunction={goBack} title="Exercícios">
       <KeyboardAwareScrollView>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <View style={ExercicesStyle.containerGrafico}>
