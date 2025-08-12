@@ -4,6 +4,21 @@ import { BarChart } from "react-native-chart-kit";
 
 const screenWidth = Dimensions.get("window").width;
 
+const formatMinutesToHoursMinutes = (minutes) => {
+  if (minutes === 0) return "0m";
+  
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  
+  if (hours === 0) {
+    return `${remainingMinutes}m`;
+  } else if (remainingMinutes === 0) {
+    return `${hours}h`;
+  } else {
+    return `${hours}h${remainingMinutes}m`;
+  }
+};
+
 const ExerciseChart = ({ data, title, color = "#4CAF50" }) => {
   if (!data || data.labels.length === 0) return null;
 
@@ -30,6 +45,7 @@ const ExerciseChart = ({ data, title, color = "#4CAF50" }) => {
             propsForLabels: {
               fontSize: 10,
             },
+            formatYLabel: (value) => formatMinutesToHoursMinutes(parseInt(value)),
           }}
           style={{
             marginVertical: 8,

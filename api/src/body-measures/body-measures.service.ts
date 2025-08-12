@@ -50,7 +50,10 @@ export class BodyMeasuresService {
   }
 
   findByUserId(userId: number) {
-    return this.prisma.bodyMeasure.findMany({ where: { userId } });
+    return this.prisma.bodyMeasure.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   findOne(id: number, userId: number) {

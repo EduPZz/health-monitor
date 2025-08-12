@@ -53,17 +53,24 @@ export const useExerciseFilter = (exercises) => {
 
     exercises.forEach((exercise) => {
       let date;
-      if (range === "month") {
-        date = getWeekLabel(exercise.beginTime);
-      } else if (range === "month") {
-        date = new Date(exercise.beginTime).toLocaleDateString("pt-BR", {
-          day: "numeric",
-          month: "short",
-        });
-      } else if (range === "year") {
-        date = new Date(exercise.beginTime).toLocaleDateString("pt-BR", {
-          month: "short",
-        });
+
+      switch (range) {
+        case "month":
+          date = getWeekLabel(exercise.beginTime);
+          break;
+        case "week":
+          date = new Date(exercise.beginTime).toLocaleDateString("pt-BR", {
+            day: "numeric",
+            month: "short",
+          });
+          break;
+        case "year":
+          date = new Date(exercise.beginTime).toLocaleDateString("pt-BR", {
+            month: "short",
+          });
+          break;
+        default:
+          break;
       }
 
       const duration =

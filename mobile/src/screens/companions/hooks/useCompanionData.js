@@ -9,6 +9,14 @@ export const useCompanionData = (companionId) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+  const sort = (elements) => {
+    return elements
+      ? [...elements.data].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )
+      : [];
+  };
+
   const fetchCompanionData = async () => {
     try {
       const [measurementsResponse, exercisesResponse] = await Promise.all([
@@ -16,8 +24,8 @@ export const useCompanionData = (companionId) => {
         api.get(`/exercise/user/${companionId}`),
       ]);
 
-      setMeasurements(measurementsResponse.data);
-      setExercises(exercisesResponse.data);
+      setMeasurements(sort(measurementsResponse));
+      setExercises(sort(exercisesResponse));
     } catch (error) {
       console.error("Error fetching companion data:", error);
       Alert.alert("Erro", "Não foi possível carregar os dados do acompanhado");
@@ -46,4 +54,4 @@ export const useCompanionData = (companionId) => {
     onRefresh,
     fetchCompanionData,
   };
-}; 
+};

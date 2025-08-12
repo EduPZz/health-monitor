@@ -17,10 +17,11 @@ const MeasureForm = ({
   onCancel,
 }) => {
   const handleInputChange = (field, value) => {
-    setMeasurements((prev) => ({ ...prev, [field]: value }));
+    const normalized = value.replace(",", ".");
+    setMeasurements((prev) => ({ ...prev, [field]: normalized }));
   };
 
-  const isSaveDisabled = Object.values(measurements).some((m) => !m);
+  const isSaveDisabled = Object.values(measurements).some((m) => m === "");
 
   const measurementFields = [
     { label: "Peito (cm)", field: "chest", placeholder: "Ex: 100" },
@@ -30,7 +31,7 @@ const MeasureForm = ({
     { label: "Quadril (cm)", field: "hip", placeholder: "Ex: 30" },
     { label: "Panturrilha (cm)", field: "calf", placeholder: "Ex: 20" },
     { label: "Peso (kg)", field: "weight", placeholder: "Ex: 70" },
-    { label: "Altura (metros)", field: "height", placeholder: "Ex: 1.87" },
+    { label: "Altura (m)", field: "height", placeholder: "Ex: 1.87" },
   ];
 
   return (
@@ -42,30 +43,25 @@ const MeasureForm = ({
       >
         <Text style={styles.title}>{title}</Text>
 
-        <View style={styles.inputContainer}>
-          {measurementFields.map(({ label, field, placeholder }) => (
-            <View style={styles.inputBox} key={field}>
-              <Text style={styles.inputLabel}>{label}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={placeholder}
-                value={measurements[field].toString()}
-                keyboardType="numeric"
-                onChangeText={(value) => handleInputChange(field, +value)}
-              />
-            </View>
-          ))}
-        </View>
+        {measurementFields.map(({ label, field, placeholder }) => (
+          <View style={styles.inputGroup} key={field}>
+            <Text style={styles.inputLabel}>{label}</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={placeholder}
+              value={measurements[field]?.toString() || ""}
+              keyboardType="numeric"
+              onChangeText={(value) => handleInputChange(field, value)}
+            />
+          </View>
+        ))}
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.buttonCancel} onPress={onCancel}>
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[
-              styles.buttonSave,
-              isSaveDisabled && styles.buttonSaveDisabled,
-            ]}
+            style={[styles.buttonSave, isSaveDisabled && styles.buttonDisabled]}
             onPress={onSave}
             disabled={isSaveDisabled}
           >
@@ -80,67 +76,60 @@ const MeasureForm = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    borderRadius: 12,
+    borderRadius: 16,
+    padding: 20,
   },
   title: {
-    marginTop: 32,
     fontSize: 20,
-    color: "#303030",
     fontWeight: "bold",
     textAlign: "center",
+    color: "#303030",
+    marginBottom: 20,
   },
-  inputContainer: {
-    marginTop: 24,
-    marginBottom: 32,
-    display: "flex",
-    flexDirection: "column",
-    gap: 16,
-  },
-  inputBox: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
+  inputGroup: {
+    marginBottom: 16,
   },
   inputLabel: {
     color: "#5F5F5F",
-    fontSize: 16,
+    fontSize: 15,
+    marginBottom: 6,
   },
   input: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#F2F2F2",
     borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    fontSize: 16,
+    color: "#303030",
   },
   buttonsContainer: {
-    display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 16,
-    marginBottom: 18,
+    justifyContent: "space-between",
+    marginTop: 20,
   },
   buttonCancel: {
-    justifyContent: "center",
+    flex: 1,
     backgroundColor: "#7E7B7B",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    textAlign: "center",
+    paddingVertical: 10,
     borderRadius: 12,
+    marginRight: 8,
+    alignItems: "center",
   },
   buttonSave: {
-    justifyContent: "center",
+    flex: 1,
     backgroundColor: "#E2B740",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    textAlign: "center",
+    paddingVertical: 10,
     borderRadius: 12,
+    marginLeft: 8,
+    alignItems: "center",
   },
-  buttonSaveDisabled: {
+  buttonDisabled: {
     backgroundColor: "#BDBDBD",
   },
   buttonText: {
     color: "#fff",
+    fontWeight: "bold",
+    fontSize: 15,
   },
 });
 
