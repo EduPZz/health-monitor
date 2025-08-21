@@ -43,6 +43,7 @@ const loginStyle = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         letterSpacing: 1,
+        marginBottom: 10
     },
     blocoInput: {
         width: '100%',
@@ -54,7 +55,13 @@ const loginStyle = StyleSheet.create({
     input: {
         fontFamily: "Inter_400Regular",
         fontSize: 16,
-        width: '75%'
+        width: '90%',
+    },
+    inputWithIcon: {
+        fontFamily: "Inter_400Regular",
+        fontSize: 16,
+        width: '90%',
+        marginLeft: 10,
     },
     textEmphasis: {
         fontFamily: 'Inter_400Regular',
@@ -68,6 +75,8 @@ const loginStyle = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#1976D2',
         borderRadius: 50,
+        marginTop: 10,
+        marginBottom: 10,
     },
     textButtom: {
         fontFamily: 'Inter_400Regular',
@@ -79,6 +88,7 @@ const loginStyle = StyleSheet.create({
     welcomeTitle: {
         fontSize: 26,
         textAlign: "center",
+        fontWeight: "bold"
     },
     subtitle: {
         fontFamily: "Inter_400Regular",

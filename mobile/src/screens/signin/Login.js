@@ -61,7 +61,7 @@ const Login = ({ navigation }) => {
             <View style={loginStyle.inputWrapper}>
               <SvgIcon name="email" color="#1976D2" size={20} />
               <TextInput
-                style={loginStyle.input}
+                style={loginStyle.inputWithIcon}
                 placeholder="seuemail@exemplo.com"
                 value={email}
                 onChangeText={setEmail}
