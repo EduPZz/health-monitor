@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
   Button,
+  RefreshControl,
 } from "react-native";
 import Icon from "../../components/Icons";
 import { Context } from "../../context/authContext";
@@ -17,13 +18,22 @@ import Notifications from "./notifications";
 import getInitials from "../../utils/getInitials";
 import SkeletonCard from "../../components/SkeletonCard";
 import useSocket from '../../hooks/useSocket';
+import { useHomeData } from '../../hooks/useHomeData';
+import HealthSummaryCard from '../../components/HealthSummaryCard';
+import WeightTrendChart from '../../components/WeightTrendChart';
+import UpcomingConsultationsCard from '../../components/UpcomingConsultationsCard';
+import RecentExercisesCard from '../../components/RecentExercisesCard';
+import BodyMeasuresCard from '../../components/BodyMeasuresCard';
+import WeightSummaryCard from '../../components/WeightSummaryCard';
 
 const Home = ({ navigation }) => {
   const { user, logout } = useContext(Context);
   const [userName, setUserName] = useState("");
   const [companionRequests, setCompanionRequests] = useState([]);
   const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
+  
+  // Use the new home data hook
+  const { data, loading, error, refreshData } = useHomeData();
 
   const onErrorToFetchUser = (error) => {
     console.error("Failed to fetch user", error);
@@ -55,6 +65,7 @@ const Home = ({ navigation }) => {
       });
     }
   };
+
   const fetchData = async () => {
     try {
       const userData = await user(onErrorToFetchUser);
@@ -68,8 +79,6 @@ const Home = ({ navigation }) => {
       );
     } catch (error) {
       console.error("Failed to load data", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -89,16 +98,98 @@ const Home = ({ navigation }) => {
     },
   });
 
-  const renderCard = (icon, text, screen, iconPack = "FontAwesome6") => {
-    const IconComponent = Icon[iconPack];
+  const renderDataCards = () => {
+    console.log('Home data:', data);
+
     return (
-      <TouchableOpacity
-        style={styles.divOpt}
-        onPress={() => navigation.navigate(screen)}
-      >
-        <IconComponent name={icon} size={40} color={"#22313F"} />
-        <Text style={styles.textOpt}>{text}</Text>
-      </TouchableOpacity>
+      <>
+        {/* Welcome message if no scale connected */}
+        {data.bluetoothScales.length === 0 && (
+          <View style={styles.divAddBalance}>
+            <Icon.FontAwesome6 name="weight-scale" size={60} color={"#22313F"} />
+            <Text style={styles.subtitle}>
+              Bem-vindo! Conecte uma balança para medições automáticas ou use os botões abaixo para adicionar dados manualmente
+            </Text>
+            <TouchableOpacity
+              style={styles.btnAddBalance}
+              onPress={() => navigation.navigate("ConnectScale")}
+            >
+              <Text style={styles.textBtn}>Conectar dispositivo</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Health Summary Card */}
+        <HealthSummaryCard data={data} />
+        
+        {/* Weight Trend Chart */}
+        {/* <WeightTrendChart weightData={data.bodyMeasures} /> */}
+        
+        {/* Weight Card */}
+        <WeightSummaryCard
+          weightData={data.bodyMeasures}
+          onPress={() => navigation.navigate("Weighting")}
+        />
+
+        {/* Body Measures Card */}
+        <BodyMeasuresCard
+          measures={data.bodyMeasures}
+          onPress={() => navigation.navigate("Measures")}
+          onAddNew={() => navigation.navigate("Measures")}
+        />
+
+        {/* Consultations Card */}
+        <UpcomingConsultationsCard
+          consultations={data.upcomingConsultations}
+          onPress={() => navigation.navigate("Consultations")}
+          onAddNew={() => navigation.navigate("Consultations")}
+        />
+
+        {/* Exercises Card */}
+        <RecentExercisesCard
+          exercises={data.recentExercises}
+          onPress={() => navigation.navigate("Exercices")}
+          onAddNew={() => navigation.navigate("Exercices")}
+        />
+
+        {/* Quick Actions */}
+        <View style={styles.quickActionsContainer}>
+          <Text style={styles.quickActionsTitle}>Ações Rápidas</Text>
+          <View style={styles.quickActionsGrid}>
+            <TouchableOpacity
+              style={styles.quickActionButton}
+              onPress={() => navigation.navigate("Weighting")}
+            >
+              <Icon.FontAwesome6 name="weight-scale" size={24} color="#4CAF50" />
+              <Text style={styles.quickActionText}>Nova Pesagem</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={styles.quickActionButton}
+              onPress={() => navigation.navigate("Measures")}
+            >
+              <Icon.MaterialCommunityIcons name="tape-measure" size={24} color="#FF9800" />
+              <Text style={styles.quickActionText}>Nova Medida</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={styles.quickActionButton}
+              onPress={() => navigation.navigate("Exercices")}
+            >
+              <Icon.FontAwesome6 name="dumbbell" size={24} color="#9C27B0" />
+              <Text style={styles.quickActionText}>Novo Exercício</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={styles.quickActionButton}
+              onPress={() => navigation.navigate("Consultations")}
+            >
+              <Icon.FontAwesome6 name="user-doctor" size={24} color="#2196F3" />
+              <Text style={styles.quickActionText}>Nova Consulta</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </>
     );
   };
 
@@ -125,21 +216,12 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.divAddBalance}>
-          <Icon.FontAwesome6 name="weight-scale" size={60} color={"#22313F"} />
-          <Text style={styles.subtitle}>
-            Bem-vindo! Por favor, adicione um dispositivo primeiro
-          </Text>
-          <TouchableOpacity
-            style={styles.btnAddBalance}
-            onPress={() => navigation.navigate("ConnectScale")}
-          >
-            <Text style={styles.textBtn}>Conectar dispositivo</Text>
-          </TouchableOpacity>
-        </View>
-        <Button title="Desconectar" onPress={disconnect}/>
-
+      <ScrollView 
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={refreshData} />
+        }
+      >
         {loading ? (
           <>
             <SkeletonCard />
@@ -148,19 +230,10 @@ const Home = ({ navigation }) => {
             <SkeletonCard />
           </>
         ) : (
-          <>
-            {renderCard("weight-scale", "Pesagem", "Weighting")}
-            {renderCard("user-doctor", "Consultas médicas", "Consultations")}
-            {renderCard(
-              "tape-measure",
-              "Medidas",
-              "Measures",
-              "MaterialCommunityIcons"
-            )}
-            {renderCard("dumbbell", "Exercícios", "Exercices")}
-            {renderCard("user", "Exercícios", "Companions")}
-          </>
+          renderDataCards()
         )}
+        
+        <Button title="Desconectar" onPress={disconnect}/>
       </ScrollView>
 
       <Notifications
@@ -190,7 +263,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   scrollView: {
     flex: 1,
   },
@@ -321,6 +393,44 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+  },
+  quickActionsContainer: {
+    marginHorizontal: 24,
+    marginVertical: 16,
+  },
+  quickActionsTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#22313F",
+    marginBottom: 16,
+  },
+  quickActionsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  quickActionButton: {
+    width: "48%",
+    backgroundColor: "#FFF",
+    borderRadius: 12,
+    padding: 16,
+    alignItems: "center",
+    marginBottom: 12,
+    shadowColor: "#22313F",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  quickActionText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#22313F",
+    marginTop: 8,
+    textAlign: "center",
   },
 });
 
