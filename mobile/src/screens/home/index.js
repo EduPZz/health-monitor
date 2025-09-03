@@ -17,21 +17,21 @@ import api from "../../api";
 import Notifications from "./notifications";
 import getInitials from "../../utils/getInitials";
 import SkeletonCard from "../../components/SkeletonCard";
-import useSocket from '../../hooks/useSocket';
-import { useHomeData } from '../../hooks/useHomeData';
-import HealthSummaryCard from '../../components/HealthSummaryCard';
-import WeightTrendChart from '../../components/WeightTrendChart';
-import UpcomingConsultationsCard from '../../components/UpcomingConsultationsCard';
-import RecentExercisesCard from '../../components/RecentExercisesCard';
-import BodyMeasuresCard from '../../components/BodyMeasuresCard';
-import WeightSummaryCard from '../../components/WeightSummaryCard';
+import useSocket from "../../hooks/useSocket";
+import { useHomeData } from "../../hooks/useHomeData";
+import HealthSummaryCard from "../../components/HealthSummaryCard";
+import WeightTrendChart from "../../components/WeightTrendChart";
+import UpcomingConsultationsCard from "../../components/UpcomingConsultationsCard";
+import RecentExercisesCard from "../../components/RecentExercisesCard";
+import BodyMeasuresCard from "../../components/BodyMeasuresCard";
+import WeightSummaryCard from "../../components/WeightSummaryCard";
 
 const Home = ({ navigation }) => {
   const { user, logout } = useContext(Context);
   const [userName, setUserName] = useState("");
   const [companionRequests, setCompanionRequests] = useState([]);
   const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
-  
+
   // Use the new home data hook
   const { data, loading, error, refreshData } = useHomeData();
 
@@ -61,7 +61,9 @@ const Home = ({ navigation }) => {
       Toast.show({
         type: "error",
         text1: "Erro ao desconectar",
-        text2: error.response?.data?.message || "Ocorreu um erro ao tentar se desconectar.",
+        text2:
+          error.response?.data?.message ||
+          "Ocorreu um erro ao tentar se desconectar.",
       });
     }
   };
@@ -99,16 +101,18 @@ const Home = ({ navigation }) => {
   });
 
   const renderDataCards = () => {
-    console.log('Home data:', data);
-
     return (
       <>
-        {/* Welcome message if no scale connected */}
         {data.bluetoothScales.length === 0 && (
           <View style={styles.divAddBalance}>
-            <Icon.FontAwesome6 name="weight-scale" size={60} color={"#22313F"} />
+            <Icon.FontAwesome6
+              name="weight-scale"
+              size={60}
+              color={"#22313F"}
+            />
             <Text style={styles.subtitle}>
-              Bem-vindo! Conecte uma balança para medições automáticas ou use os botões abaixo para adicionar dados manualmente
+              Bem-vindo! Conecte uma balança para medições automáticas ou use os botões
+              abaixo para adicionar dados manualmente
             </Text>
             <TouchableOpacity
               style={styles.btnAddBalance}
@@ -119,40 +123,26 @@ const Home = ({ navigation }) => {
           </View>
         )}
 
-        {/* Health Summary Card */}
         <HealthSummaryCard data={data} />
-        
-        {/* Weight Trend Chart */}
-        {/* <WeightTrendChart weightData={data.bodyMeasures} /> */}
-        
-        {/* Weight Card */}
         <WeightSummaryCard
           weightData={data.bodyMeasures}
           onPress={() => navigation.navigate("Weighting")}
         />
-
-        {/* Body Measures Card */}
         <BodyMeasuresCard
           measures={data.bodyMeasures}
           onPress={() => navigation.navigate("Measures")}
           onAddNew={() => navigation.navigate("Measures")}
         />
-
-        {/* Consultations Card */}
         <UpcomingConsultationsCard
           consultations={data.upcomingConsultations}
           onPress={() => navigation.navigate("Consultations")}
           onAddNew={() => navigation.navigate("Consultations")}
         />
-
-        {/* Exercises Card */}
         <RecentExercisesCard
           exercises={data.recentExercises}
           onPress={() => navigation.navigate("Exercices")}
           onAddNew={() => navigation.navigate("Exercices")}
         />
-
-        {/* Quick Actions */}
         <View style={styles.quickActionsContainer}>
           <Text style={styles.quickActionsTitle}>Ações Rápidas</Text>
           <View style={styles.quickActionsGrid}>
@@ -160,18 +150,26 @@ const Home = ({ navigation }) => {
               style={styles.quickActionButton}
               onPress={() => navigation.navigate("Weighting")}
             >
-              <Icon.FontAwesome6 name="weight-scale" size={24} color="#4CAF50" />
+              <Icon.FontAwesome6
+                name="weight-scale"
+                size={24}
+                color="#4CAF50"
+              />
               <Text style={styles.quickActionText}>Nova Pesagem</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={styles.quickActionButton}
               onPress={() => navigation.navigate("Measures")}
             >
-              <Icon.MaterialCommunityIcons name="tape-measure" size={24} color="#FF9800" />
+              <Icon.MaterialCommunityIcons
+                name="tape-measure"
+                size={24}
+                color="#FF9800"
+              />
               <Text style={styles.quickActionText}>Nova Medida</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={styles.quickActionButton}
               onPress={() => navigation.navigate("Exercices")}
@@ -179,7 +177,7 @@ const Home = ({ navigation }) => {
               <Icon.FontAwesome6 name="dumbbell" size={24} color="#9C27B0" />
               <Text style={styles.quickActionText}>Novo Exercício</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={styles.quickActionButton}
               onPress={() => navigation.navigate("Consultations")}
@@ -201,7 +199,7 @@ const Home = ({ navigation }) => {
           <View style={styles.divUser}>
             <Text style={styles.initials}>{getInitials(userName)}</Text>
           </View>
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{userName}</Text>
+          <Text style={{ fontWeight: "bold", fontSize: 16 }}>{userName}</Text>
         </View>
         <TouchableOpacity
           style={styles.bellContainer}
@@ -216,7 +214,7 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={refreshData} />
@@ -232,8 +230,8 @@ const Home = ({ navigation }) => {
         ) : (
           renderDataCards()
         )}
-        
-        <Button title="Desconectar" onPress={disconnect}/>
+
+        <Button title="Desconectar" onPress={disconnect} />
       </ScrollView>
 
       <Notifications
@@ -345,7 +343,6 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   divAddBalance: {
-    height: 250,
     marginHorizontal: 24,
     backgroundColor: "#FFF",
     borderRadius: 20,
