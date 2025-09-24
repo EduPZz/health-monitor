@@ -88,12 +88,10 @@ const Home = ({ navigation }) => {
     fetchData();
   }, []);
 
-  // Adiciona o hook para ouvir eventos do WebSocket
+
   useSocket({
     onCompanionRequest: (data) => {
-      // Adiciona a nova notificação ao estado
       setCompanionRequests((prev) => {
-        // Evita duplicidade
         if (prev.some((req) => req.id === data.id)) return prev;
         return [data, ...prev];
       });
@@ -103,30 +101,10 @@ const Home = ({ navigation }) => {
   const renderDataCards = () => {
     return (
       <>
-        {data.bluetoothScales.length === 0 && (
-          <View style={styles.divAddBalance}>
-            <Icon.FontAwesome6
-              name="weight-scale"
-              size={60}
-              color={"#22313F"}
-            />
-            <Text style={styles.subtitle}>
-              Bem-vindo! Conecte uma balança para medições automáticas ou use os botões
-              abaixo para adicionar dados manualmente
-            </Text>
-            <TouchableOpacity
-              style={styles.btnAddBalance}
-              onPress={() => navigation.navigate("ConnectScale")}
-            >
-              <Text style={styles.textBtn}>Conectar dispositivo</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
         <HealthSummaryCard data={data} />
         <WeightSummaryCard
           weightData={data.bodyMeasures}
-          onPress={() => navigation.navigate("Weighting")}
+          onPress={() => navigation.navigate("ConnectScale")}
         />
         <BodyMeasuresCard
           measures={data.bodyMeasures}
@@ -148,7 +126,7 @@ const Home = ({ navigation }) => {
           <View style={styles.quickActionsGrid}>
             <TouchableOpacity
               style={styles.quickActionButton}
-              onPress={() => navigation.navigate("Weighting")}
+              onPress={() => navigation.navigate("ConnectScale")}
             >
               <Icon.FontAwesome6
                 name="weight-scale"

@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from './Icons';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import Icon from "./Icons";
+import { getDaysUntil } from "../utils/dateUtil";
 
 const UpcomingConsultationsCard = ({ consultations, onPress, onAddNew }) => {
   if (!consultations || consultations.length === 0) {
@@ -10,11 +11,13 @@ const UpcomingConsultationsCard = ({ consultations, onPress, onAddNew }) => {
           <Icon.FontAwesome6 name="user-doctor" size={24} color="#2196F3" />
           <Text style={styles.title}>Próximas Consultas</Text>
         </View>
-        
+
         <View style={styles.emptyState}>
           <Text style={styles.emptyText}>Nenhuma consulta agendada</Text>
-          <Text style={styles.emptySubtext}>Agende sua primeira consulta médica</Text>
-          
+          <Text style={styles.emptySubtext}>
+            Agende sua primeira consulta médica
+          </Text>
+
           <TouchableOpacity style={styles.addButton} onPress={onAddNew}>
             <Icon.FontAwesome6 name="plus" size={16} color="#FFF" />
             <Text style={styles.addButtonText}>Agendar Consulta</Text>
@@ -26,31 +29,19 @@ const UpcomingConsultationsCard = ({ consultations, onPress, onAddNew }) => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
+    return date.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     });
   };
 
   const formatTime = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
+    return date.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
-  };
-
-  const getDaysUntil = (dateString) => {
-    const today = new Date();
-    const consultationDate = new Date(dateString);
-    const diffTime = consultationDate - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return 'Hoje';
-    if (diffDays === 1) return 'Amanhã';
-    if (diffDays < 0) return 'Passou';
-    return `Em ${diffDays} dias`;
   };
 
   return (
@@ -62,34 +53,37 @@ const UpcomingConsultationsCard = ({ consultations, onPress, onAddNew }) => {
           <Icon.FontAwesome6 name="plus" size={16} color="#2196F3" />
         </TouchableOpacity>
       </View>
-      
+
       <View style={styles.consultationsList}>
         {consultations.slice(0, 3).map((consultation, index) => (
           <View key={consultation.id || index} style={styles.consultationItem}>
             <View style={styles.consultationInfo}>
               <Text style={styles.doctorName}>
-                {consultation.doctorName || 'Dr. Nome não informado'}
+                {consultation.doctorName || "Dr. Nome não informado"}
               </Text>
               <Text style={styles.specialty}>
-                {consultation.specialty || 'Especialidade não informada'}
+                {consultation.specialization || "Especialidade não informada"}
               </Text>
               <View style={styles.dateTimeContainer}>
                 <Icon.FontAwesome6 name="calendar" size={12} color="#666" />
                 <Text style={styles.dateTime}>
-                  {formatDate(consultation.date)} às {formatTime(consultation.date)}
+                  {formatDate(consultation.scheduleDate)} às{" "}
+                  {formatTime(consultation.scheduleDate)}
                 </Text>
               </View>
             </View>
-            
+
             <View style={styles.statusContainer}>
-              <Text style={styles.daysUntil}>{getDaysUntil(consultation.date)}</Text>
+              <Text style={styles.daysUntil}>
+                {getDaysUntil(consultation.scheduleDate)}
+              </Text>
               <TouchableOpacity style={styles.viewButton}>
                 <Text style={styles.viewButtonText}>Ver</Text>
               </TouchableOpacity>
             </View>
           </View>
         ))}
-        
+
         {consultations.length > 3 && (
           <TouchableOpacity style={styles.viewAllButton} onPress={onPress}>
             <Text style={styles.viewAllText}>
@@ -105,12 +99,12 @@ const UpcomingConsultationsCard = ({ consultations, onPress, onAddNew }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 16,
     padding: 20,
     marginHorizontal: 24,
     marginVertical: 8,
-    shadowColor: '#22313F',
+    shadowColor: "#22313F",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -120,14 +114,14 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#22313F',
+    fontWeight: "600",
+    color: "#22313F",
     marginLeft: 12,
     flex: 1,
   },
@@ -135,104 +129,104 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#E3F2FD',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#E3F2FD",
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyState: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
   },
   emptyText: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#666',
+    fontWeight: "500",
+    color: "#666",
     marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#999',
+    color: "#999",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   addButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#2196F3',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#2196F3",
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 25,
     gap: 8,
   },
   addButtonText: {
-    color: '#FFF',
-    fontWeight: '600',
+    color: "#FFF",
+    fontWeight: "600",
     fontSize: 14,
   },
   consultationsList: {
     gap: 16,
   },
   consultationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: "#F0F0F0",
   },
   consultationInfo: {
     flex: 1,
   },
   doctorName: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#22313F',
+    fontWeight: "600",
+    color: "#22313F",
     marginBottom: 4,
   },
   specialty: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginBottom: 8,
   },
   dateTimeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   dateTime: {
     fontSize: 12,
-    color: '#666',
+    color: "#666",
   },
   statusContainer: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     gap: 8,
   },
   daysUntil: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#2196F3',
+    fontWeight: "500",
+    color: "#2196F3",
   },
   viewButton: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: "#E3F2FD",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
   },
   viewButtonText: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#2196F3',
+    fontWeight: "500",
+    color: "#2196F3",
   },
   viewAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 16,
     gap: 8,
   },
   viewAllText: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#2196F3',
+    fontWeight: "500",
+    color: "#2196F3",
   },
 });
 
