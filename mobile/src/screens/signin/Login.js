@@ -5,9 +5,7 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
-  ScrollView,
   Platform,
-  ToastAndroid,
   StatusBar,
 } from "react-native";
 import loginStyle from "./loginStyle";
@@ -17,6 +15,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Context } from "../../context/authContext";
 import { Link } from "@react-navigation/native";
 import { SvgIcon } from "../../icons/SvgIcons";
+import Toast from "react-native-toast-message";
 
 const Login = ({ navigation }) => {
   const { loginUser } = useContext(Context);
@@ -29,7 +28,11 @@ const Login = ({ navigation }) => {
     try {
       await loginUser(email, senha);
     } catch (error) {
-      ToastAndroid.show("Não foi possível fazer o login!", ToastAndroid.SHORT);
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: `${error?.message || "Erro ao fazer login"}`,
+      });
     }
   };
 
@@ -53,7 +56,7 @@ const Login = ({ navigation }) => {
             <Text style={loginStyle.welcomeTitle}>Bem-vindo de volta</Text>
             <Text style={loginStyle.subtitle}>Faça login para entrar</Text>
           </View>
-
+          
           <View style={{ width: "100%" }}>
             <Text style={{ ...loginStyle.inputTitle, width: "100%" }}>
               E-mail

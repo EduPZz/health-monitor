@@ -41,8 +41,6 @@ const HealthSummaryCard = ({ data }) => {
     return { text: "Precisa Melhorar", color: "#F44336" };
   };
 
-  const 
-
   const healthScore = getHealthScore();
   const healthStatus = getHealthStatus(healthScore);
 

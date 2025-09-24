@@ -7,7 +7,6 @@ import {
   StyleSheet,
   ScrollView,
   Button,
-  FlatList,
   TextInput,
 } from "react-native";
 import { BleManager } from "react-native-ble-plx";
@@ -32,7 +31,6 @@ const MetricCard = ({ label, value, emoji }) => (
 
 const ConnectScale = ({ navigation }) => {
   const [manager] = useState(new BleManager());
-  const [miDevices, setMiDevices] = useState([]);
   const [currentWeight, setCurrentWeight] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -44,9 +42,7 @@ const ConnectScale = ({ navigation }) => {
   const [userSex, setUserSex] = useState("");
   const [userBirthDate, setUserBirthDate] = useState("");
 
-  const [formSex, setFormSex] = useState("");
   const [formHeight, setFormHeight] = useState("");
-  const [formAge, setFormAge] = useState("");
 
   const goBack = () => navigation.goBack();
 
@@ -54,8 +50,7 @@ const ConnectScale = ({ navigation }) => {
     if (!userBirthDate) return 0;
     const birthDate = new Date(userBirthDate);
     const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    return age;
+    return today.getFullYear() - birthDate.getFullYear();
   };
 
   useEffect(() => {
@@ -67,7 +62,7 @@ const ConnectScale = ({ navigation }) => {
         setUserSex(sex);
         setUserBirthDate(birthDate);
       } catch (error) {
-        console.error("Failed to fetch timezone", error);
+        console.error("Failed to fetch profile", error);
       }
     };
 
@@ -77,22 +72,6 @@ const ConnectScale = ({ navigation }) => {
   const softDisconnectDevice = () => {
     setIsConnected(false);
     setConnectedDevice(null);
-  };
-
-  const checkDeviceConnection = async (device) => {
-    try {
-      const isDeviceConnected = await device.isConnected();
-      if (isDeviceConnected) {
-        setIsConnected(true);
-        setConnectedDevice(device);
-        await startMonitoring(device);
-        return true;
-      }
-      softDisconnectDevice();
-      return false;
-    } catch (error) {
-      return false;
-    }
   };
 
   const startMonitoring = async (device) => {
@@ -112,7 +91,10 @@ const ConnectScale = ({ navigation }) => {
 
           if (characteristic?.value) {
             const buffer = Buffer.from(characteristic.value, "base64");
+            console.log("Raw buffer:", buffer);
             const result = parseMiScalePacket(buffer);
+            console.log("Parsed result:", result);
+
             if (result?.weight && result.weight > 0) {
               setCurrentWeight(result.weight);
             }
@@ -129,6 +111,7 @@ const ConnectScale = ({ navigation }) => {
         "indication"
       );
     } catch (error) {
+      console.log("startMonitoring error:", error);
       softDisconnectDevice();
     }
   };
@@ -138,49 +121,38 @@ const ConnectScale = ({ navigation }) => {
 
     try {
       setIsConnecting(true);
-      const connectedDevice = await manager.connectToDevice(device.id);
-      const isAlreadyConnected = await checkDeviceConnection(connectedDevice);
-      if (isAlreadyConnected) {
-        setIsConnected(true);
-        setConnectedDevice(connectedDevice);
-        await startMonitoring(connectedDevice);
-        return;
-      }
+      manager.stopDeviceScan();
+
+      const connectedDevice = await manager.connectToDevice(device.id, { timeout: 10000 });
+      await connectedDevice.discoverAllServicesAndCharacteristics();
+
       setIsConnected(true);
       setConnectedDevice(connectedDevice);
+
       await startMonitoring(connectedDevice);
     } catch (error) {
+      if (error.errorCode !== 2) {
+        console.log("BLE connect error:", error);
+      }
       softDisconnectDevice();
     } finally {
       setIsConnecting(false);
     }
   };
 
-  const disconnectDevice = async () => {
-    if (connectedDevice) {
-      try {
-        await connectedDevice.cancelConnection();
-        softDisconnectDevice();
-      } catch (error) {}
-    }
-  };
-
   const startScan = () => {
-    setMiDevices([]);
     manager.startDeviceScan(
+      [WEIGH_SERVICE_UUID], // procura só devices com o service da balança
       null,
-      { allowDuplicates: true },
       async (error, device) => {
         if (error) {
+          console.log("Scan error:", error);
           return;
         }
-        if (device?.name?.includes("MIBFS")) {
-          setMiDevices([device]);
-          const isConnected = await checkDeviceConnection(device);
-          if (isConnected) {
-            return;
-          }
-          connectAndListen(device);
+
+        if (device && !isConnected && !isConnecting) {
+          console.log("Found scale:", device.name || device.id);
+          await connectAndListen(device);
         }
       }
     );
@@ -221,17 +193,15 @@ const ConnectScale = ({ navigation }) => {
 
   const saveScaleData = async () => {
     try {
-      // First save the scale device
       const scaleResponse = await api.post("/bluetooth-scales", {
-        macAddress: connectedDevice.id,
-        name: connectedDevice.name,
-        model: "Mi Body Composition Scale",
+        macAddress: connectedDevice?.id,
+        name: connectedDevice?.name,
+        model: "Mi Body Composition Scale 2",
         brand: "Xiaomi",
         supportsImpedance: true,
       });
 
-      // Then save the measurement session with bioimpedance data
-      const measurementResponse = await api.post("/measurement-sessions", {
+      await api.post("/measurement-sessions", {
         measurementType: "scale",
         bluetoothScaleId: scaleResponse.data.id,
         anonymous: false,
@@ -247,7 +217,6 @@ const ConnectScale = ({ navigation }) => {
       });
     } catch (error) {
       console.error("Failed to save scale data:", error);
-      // You might want to show an error message to the user here
     }
   };
 
@@ -255,65 +224,30 @@ const ConnectScale = ({ navigation }) => {
     <Layout goBackFunction={goBack} title={"Conectar dispositivo"}>
       <View style={styles.container}>
         <View style={localStyles.gaugeContainer}>
+          <Text style={localStyles.weightText}>
+            {currentWeight > 0
+              ? "Peso atual"
+              : "Suba na balança para iniciar a medição"}
+          </Text>
           <AnimatedCircularProgress
             size={200}
             width={15}
             fill={currentWeight > 0 ? (currentWeight / 200) * 100 : 0}
-            tintColor="#4CAF50"
-            backgroundColor="#f5f5f5"
+            tintColor="#176B87"
+            backgroundColor="#E3F2FD"
             rotation={0}
             lineCap="round"
           >
             {() => (
               <View style={localStyles.weightContainer}>
                 <Text style={localStyles.weightValue}>
-                  {currentWeight > 0 ? currentWeight.toFixed(1) : "---"}
+                  {currentWeight > 0 ? currentWeight.toFixed(2) : "--"}
                 </Text>
                 <Text style={localStyles.weightUnit}>kg</Text>
               </View>
             )}
           </AnimatedCircularProgress>
-          <Text style={localStyles.weightText}>
-            {currentWeight > 0 ? "Peso atual" : "Aguardando medição..."}
-          </Text>
         </View>
-
-        {(!showForm && !impedanceResult) && (
-          <>
-            <Text style={localStyles.devicesTitle}>
-              Dispositivos encontrados:
-            </Text>
-            <FlatList
-              data={miDevices}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={localStyles.deviceItem}>
-                  <Text style={localStyles.deviceName}>
-                    Device: {item.name}
-                  </Text>
-                  {isConnected ? (
-                    <Button
-                      title="Desconectar"
-                      onPress={disconnectDevice}
-                      color="#ff4444"
-                    />
-                  ) : (
-                    <Button
-                      title="Conectar"
-                      onPress={() => connectAndListen(item)}
-                    />
-                  )}
-                </View>
-              )}
-            />
-            <Button
-              title="Parar busca"
-              onPress={() => {
-                manager.stopDeviceScan();
-              }}
-            />
-          </>
-        )}
 
         {showForm && (
           <View style={localStyles.formContainer}>
@@ -351,68 +285,57 @@ const ConnectScale = ({ navigation }) => {
             <Text style={localStyles.sectionTitle}>
               Resultados de Impedância
             </Text>
-            <ScrollView contentContainerStyle={localStyles.scroll}>
-              <Text style={localStyles.sectionTitle}>
-                🧍 Composição corporal
-              </Text>
-              <MetricCard
-                label="Gordura"
-                value={`${impedanceResult.fatPercentage}%`}
-                emoji="🔥"
-              />
-              <MetricCard
-                label="Água"
-                value={`${impedanceResult.waterPercentage}%`}
-                emoji="💧"
-              />
-              <MetricCard
-                label="Proteína"
-                value={`${impedanceResult.proteinPercentage}%`}
-                emoji="🥚"
-              />
-              <MetricCard
-                label="Tipo corporal"
-                value={impedanceResult.bodyType}
-                emoji="🧍"
-              />
-
-              <Text style={localStyles.sectionTitle}>💪 Massa e estrutura</Text>
-              <MetricCard
-                label="Massa muscular"
-                value={`${impedanceResult.muscleMass} kg`}
-                emoji="💪"
-              />
-              <MetricCard
-                label="Massa óssea"
-                value={`${impedanceResult.boneMass} kg`}
-                emoji="🦴"
-              />
-              <MetricCard
-                label="Gordura visceral"
-                value={impedanceResult.visceralFat}
-                emoji="🍔"
-              />
-
-              <Text style={localStyles.sectionTitle}>
-                ⚙️ Metabolismo e saúde
-              </Text>
-              <MetricCard label="IMC" value={impedanceResult.bmi} emoji="📊" />
-              <MetricCard
-                label="Idade metabólica"
-                value={`${impedanceResult.metabolicAge} anos`}
-                emoji="🧠"
-              />
-              <MetricCard
-                label="Taxa metabólica basal"
-                value={`${impedanceResult.bmr} kcal`}
-                emoji="⚡️"
-              />
-              <MetricCard
-                label="Peso ideal"
-                value={`${impedanceResult.idealWeight} kg`}
-                emoji="🎯"
-              />
-            </ScrollView>
+            <MetricCard
+              label="Gordura"
+              value={`${impedanceResult.fatPercentage}%`}
+              emoji="🔥"
+            />
+            <MetricCard
+              label="Água"
+              value={`${impedanceResult.waterPercentage}%`}
+              emoji="💧"
+            />
+            <MetricCard
+              label="Proteína"
+              value={`${impedanceResult.proteinPercentage}%`}
+              emoji="🥚"
+            />
+            <MetricCard
+              label="Tipo corporal"
+              value={impedanceResult.bodyType}
+              emoji="🧍"
+            />
+            <MetricCard
+              label="Massa muscular"
+              value={`${impedanceResult.muscleMass} kg`}
+              emoji="💪"
+            />
+            <MetricCard
+              label="Massa óssea"
+              value={`${impedanceResult.boneMass} kg`}
+              emoji="🦴"
+            />
+            <MetricCard
+              label="Gordura visceral"
+              value={impedanceResult.visceralFat}
+              emoji="🍔"
+            />
+            <MetricCard label="IMC" value={impedanceResult.bmi} emoji="📊" />
+            <MetricCard
+              label="Idade metabólica"
+              value={`${impedanceResult.metabolicAge} anos`}
+              emoji="🧠"
+            />
+            <MetricCard
+              label="Taxa metabólica basal"
+              value={`${impedanceResult.bmr} kcal`}
+              emoji="⚡️"
+            />
+            <MetricCard
+              label="Peso ideal"
+              value={`${impedanceResult.idealWeight} kg`}
+              emoji="🎯"
+            />
 
             <View style={localStyles.buttonContainer}>
               <Button title="Salvar" onPress={saveScaleData} color="#4CAF50" />
@@ -428,15 +351,16 @@ const localStyles = StyleSheet.create({
   gaugeContainer: {
     alignItems: "center",
     marginVertical: 20,
+    gap: 20,
   },
   weightContainer: {
     alignItems: "center",
     justifyContent: "center",
   },
   weightValue: {
-    fontSize: 36,
+    fontSize: 40,
     fontWeight: "bold",
-    color: "#333",
+    color: "#22313F",
   },
   weightUnit: {
     fontSize: 18,
@@ -446,29 +370,12 @@ const localStyles = StyleSheet.create({
   weightText: {
     fontSize: 18,
     marginTop: 10,
-    color: "#666",
-  },
-  devicesTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginVertical: 10,
-    color: "#333",
-  },
-  deviceItem: {
-    marginVertical: 10,
-    padding: 15,
-    backgroundColor: "#f5f5f5",
-    borderRadius: 8,
-  },
-  deviceName: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: "#333",
+    color: "#22313F",
   },
   formContainer: {
     marginTop: 20,
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#FFF",
     borderRadius: 8,
   },
   formTitle: {

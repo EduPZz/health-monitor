@@ -12,6 +12,7 @@ import { BluetoothScalesModule } from './bluetooth-scales/bluetooth-scales.modul
 import { CompanionRequestsModule } from './companion-requests/companion-requests.module';
 import { UserCompanionsModule } from './user-companions/user-companions.module';
 import { EventsModule } from './events/events.module';
+import { MeasurementSessionsModule } from './measurement-sessions/measurement-sessions.module';
 @Module({
   imports: [
     UsersModule,
@@ -23,6 +24,7 @@ import { EventsModule } from './events/events.module';
     CompanionRequestsModule,
     UserCompanionsModule,
     EventsModule,
+    MeasurementSessionsModule,
   ],
   controllers: [AppController],
   providers: [
