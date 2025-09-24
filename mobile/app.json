@@ -17,9 +17,11 @@
         "NSBluetoothAlwaysUsageDescription": "Este aplicativo usa Bluetooth para conectar com dispositivos de saúde",
         "NSBluetoothPeripheralUsageDescription": "Este aplicativo usa Bluetooth para conectar com dispositivos de saúde",
         "UIBackgroundModes": [
+          "bluetooth-central",
           "bluetooth-central"
         ]
-      }
+      },
+      "bundleIdentifier": "com.edupzz.HealthMonitor"
     },
     "android": {
       "adaptiveIcon": {
