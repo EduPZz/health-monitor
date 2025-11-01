@@ -18,5 +18,3 @@ export class MeasurementSessionsController {
     return this.measurementSessionsService.findAll(req.user.sub);
   }
 }
-
-

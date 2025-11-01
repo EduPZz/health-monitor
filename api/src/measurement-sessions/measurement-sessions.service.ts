@@ -22,6 +22,23 @@ export class MeasurementSessionsService {
       bluetoothScaleId: dto.bluetoothScaleId ?? null,
     };
 
+    const lastMeasure = await this.prisma.bodyMeasure.findFirst({
+      where: { userId: userId },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (lastMeasure && dto.bioimpedanceMeasurement?.weight) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, createdAt, updatedAt, weight, ...rest } = lastMeasure;
+
+      await this.prisma.bodyMeasure.create({
+        data: {
+          ...rest,
+          weight: dto.bioimpedanceMeasurement.weight,
+          userId: userId,
+        },
+      });
+    }
+
     return this.prisma.measurementSession.create({
       data: {
         ...data,
@@ -53,5 +70,3 @@ export class MeasurementSessionsService {
     });
   }
 }
-
-

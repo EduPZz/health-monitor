@@ -1,4 +1,10 @@
-import { IsBoolean, IsEnum, IsInt, IsOptional, ValidateNested } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { MeasurementTypes } from '@prisma/client';
 
@@ -42,5 +48,3 @@ export class CreateMeasurementSessionDto {
   @Type(() => BioimpedanceDto)
   bioimpedanceMeasurement?: BioimpedanceDto;
 }
-
-
