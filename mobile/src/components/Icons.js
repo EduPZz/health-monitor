@@ -1,19 +1,20 @@
-import MaterialCommunityIconsI from 'react-native-vector-icons/MaterialCommunityIcons'
-import SimpleLineIconsI from 'react-native-vector-icons/SimpleLineIcons'
-import MaterialIconsI from 'react-native-vector-icons/MaterialIcons'
-import FontAwesomeI from 'react-native-vector-icons/FontAwesome'
-import FontAwesome5I from 'react-native-vector-icons/FontAwesome5'
-import FontAwesome6I from 'react-native-vector-icons/FontAwesome6'
-import FoundationI from 'react-native-vector-icons/Foundation'
-import EvilIconsI from 'react-native-vector-icons/EvilIcons'
-import OcticonsI from 'react-native-vector-icons/Octicons'
-import IoniconsI from 'react-native-vector-icons/Ionicons'
-import FeatherI from 'react-native-vector-icons/Feather'
-import EntypoI from 'react-native-vector-icons/Entypo'
-import ZocialI from 'react-native-vector-icons/Zocial'
-import AntDesignI from 'react-native-vector-icons/AntDesign';
-import FontistoI from 'react-native-vector-icons/Fontisto';
-import LineIconsI from 'react-native-vector-icons/SimpleLineIcons';
+import {
+  MaterialCommunityIcons as MaterialCommunityIconsI,
+  SimpleLineIcons as SimpleLineIconsI,
+  MaterialIcons as MaterialIconsI,
+  FontAwesome as FontAwesomeI,
+  FontAwesome5 as FontAwesome5I,
+  FontAwesome6 as FontAwesome6I,
+  Foundation as FoundationI,
+  EvilIcons as EvilIconsI,
+  Octicons as OcticonsI,
+  Ionicons as IoniconsI,
+  Feather as FeatherI,
+  Entypo as EntypoI,
+  Zocial as ZocialI,
+  AntDesign as AntDesignI,
+  Fontisto as FontistoI,
+} from '@expo/vector-icons';
 
 import React from 'react'
 
@@ -32,13 +33,12 @@ export const MaterialCommunityIcons = props => (
  const Feather = props => <FeatherI {...props} />
  const Entypo = props => <EntypoI {...props} />
  const Zocial = props => <ZocialI {...props} />
- const AntDesign = props => <AntDesignI {...props} />
- const Fontisto = props => <FontistoI {...props} />
- const LineIcons = props => <LineIconsI {...props} />
+const AntDesign = props => <AntDesignI {...props} />
+const Fontisto = props => <FontistoI {...props} />
+const LineIcons = props => <SimpleLineIconsI {...props} />
 
 export default  {
     MaterialCommunityIcons,
-    SimpleLineIcons,
     SimpleLineIcons,
     MaterialIcons,
     FontAwesome,

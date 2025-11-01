@@ -1,6 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../screens/home";
 import ConnectScale from "../screens/connect-scale";
+import MeasurementSelection from "../screens/measurement-selection";
+import ManualMeasurement from "../screens/manual-measurement";
 import Exercices from "../screens/exercices/Exercices";
 import Measures from "../screens/measures";
 import Consultations from "../screens/consultations";
@@ -17,7 +19,9 @@ function HomeStackNavigator() {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
       <HomeStack.Screen name="Home" component={Home} />
+      <HomeStack.Screen name="MeasurementSelection" component={MeasurementSelection} />
       <HomeStack.Screen name="ConnectScale" component={ConnectScale} />
+      <HomeStack.Screen name="ManualMeasurement" component={ManualMeasurement} />
       <HomeStack.Screen name="Exercices" component={Exercices} />
       <HomeStack.Screen name="Measures" component={Measures} />
       <HomeStack.Screen name="Consultations" component={Consultations} />

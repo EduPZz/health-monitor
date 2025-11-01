@@ -104,7 +104,7 @@ const Home = ({ navigation }) => {
         <HealthSummaryCard data={data} />
         <WeightSummaryCard
           weightData={data.bodyMeasures}
-          onPress={() => navigation.navigate("ConnectScale")}
+          onPress={() => navigation.navigate("MeasurementSelection")}
         />
         <BodyMeasuresCard
           measures={data.bodyMeasures}
@@ -126,7 +126,7 @@ const Home = ({ navigation }) => {
           <View style={styles.quickActionsGrid}>
             <TouchableOpacity
               style={styles.quickActionButton}
-              onPress={() => navigation.navigate("ConnectScale")}
+              onPress={() => navigation.navigate("MeasurementSelection")}
             >
               <Icon.FontAwesome6
                 name="weight-scale"

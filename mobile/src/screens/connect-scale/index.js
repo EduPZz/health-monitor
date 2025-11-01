@@ -91,9 +91,7 @@ const ConnectScale = ({ navigation }) => {
 
           if (characteristic?.value) {
             const buffer = Buffer.from(characteristic.value, "base64");
-            console.log("Raw buffer:", buffer);
             const result = parseMiScalePacket(buffer);
-            console.log("Parsed result:", result);
 
             if (result?.weight && result.weight > 0) {
               setCurrentWeight(result.weight);
@@ -151,7 +149,6 @@ const ConnectScale = ({ navigation }) => {
         }
 
         if (device && !isConnected && !isConnecting) {
-          console.log("Found scale:", device.name || device.id);
           await connectAndListen(device);
         }
       }
