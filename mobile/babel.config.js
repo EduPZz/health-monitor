@@ -5,13 +5,6 @@ module.exports = function (api) {
     plugins: [
       'module:react-native-dotenv',
       'react-native-reanimated/plugin',
-      [
-        '@tamagui/babel-plugin',
-        {
-          components: ['tamagui'],
-          config: './tamagui.config.ts',
-        },
-      ],
     ],
   };
 };
