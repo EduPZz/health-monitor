@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Text,
   View,
   Dimensions,
-  TouchableWithoutFeedback,
   Alert,
 } from "react-native";
 import Svg, { Rect, G, Text as SVGText } from "react-native-svg";
@@ -22,11 +21,13 @@ const spacing = (chartWidth - barCount * barWidth) / (barCount + 1);
 const Exercices = ({ navigation }) => {
   const goBack = () => navigation.goBack();
   const [data, setData] = useState([]);
-  const [visibleMiniCard, setVisibleMiniCard] = useState(false);
+  const [selectedCell, setSelectedCell] = useState(null);
   const [selectedExerciseInfo, setSelectedExerciseInfo] = useState({
+    exercise: null,
     duration: 0,
-    x: 0,
-    y: 0,
+    dayIndex: 0,
+    yOffset: 0,
+    barHeight: 0,
   });
   const [loading, setLoading] = useState(true);
   const maxBarHeight = 200;
@@ -40,14 +41,17 @@ const Exercices = ({ navigation }) => {
     return color;
   };
 
-  colors = {};
-  data.forEach(function (exercices) {
-    Object.keys(exercices).forEach(function (exercice) {
-      if (!(exercice in colors)) {
-        colors[exercice] = generateRandomColor();
-      }
+  const colors = useMemo(() => {
+    const colorMap = {};
+    data.forEach(function (exercices) {
+      Object.keys(exercices).forEach(function (exercice) {
+        if (!(exercice in colorMap)) {
+          colorMap[exercice] = generateRandomColor();
+        }
+      });
     });
-  });
+    return colorMap;
+  }, [data]);
 
   const transformDataForChart = (exercises) => {
     const dailyData = {};
@@ -104,15 +108,39 @@ const Exercices = ({ navigation }) => {
     );
   }
 
+  const getTooltipPosition = (index, yOffset, barHeight) => {
+    const barCenterX = (index + 1) * spacing + index * barWidth + barWidth / 2;
+    const tooltipWidth = 200;
+    const tooltipHeight = 50;
+    
+    let left = barCenterX - tooltipWidth / 2;
+    
+    if (left < 0) {
+      left = 5;
+    }
+    
+    if (left + tooltipWidth > chartWidth) {
+      left = chartWidth - tooltipWidth - 5;
+    }
+    
+    let top = yOffset - tooltipHeight - 5;
+    
+    if (top < 0) {
+      top = yOffset + barHeight + 5;
+    }
+    
+    return { left, top };
+  };
+
   const renderChartData = () => {
     return data.map((day, index) => {
-      maxDuration = 0;
+      let maxDuration = 0;
       Object.values(day).forEach(function (value) {
         if (!isNaN(value)) {
           maxDuration += value;
         }
       });
-      yOffset = maxBarHeight;
+      let yOffset = maxBarHeight;
 
       return (
         <G key={index} x={(index + 1) * spacing + index * barWidth}>
@@ -128,18 +156,36 @@ const Exercices = ({ navigation }) => {
               : (value / maxDuration) * maxBarHeight;
             yOffset -= barHeight;
 
+            const key = `${index}-${exercise}`;
+
             return (
               <Rect
-                key={exercise}
+                key={key}
                 y={yOffset}
                 width={barWidth}
                 height={barHeight}
                 fill={color}
-                onPress={() =>
-                  console.log(
-                    `Exercício ${exercise} com duração ${value} minutos`
-                  )
-                }
+                style={{ opacity: selectedCell !== key && selectedCell ? 0.3 : 1 }}
+                onPressIn={() => {
+                  setSelectedCell(key);
+                  setSelectedExerciseInfo({
+                    exercise,
+                    duration: value,
+                    dayIndex: index,
+                    yOffset,
+                    barHeight,
+                  });
+                }}
+                onPressOut={() => {
+                  setSelectedCell(null);
+                  setSelectedExerciseInfo({
+                    exercise: null,
+                    duration: 0,
+                    dayIndex: 0,
+                    yOffset: 0,
+                    barHeight: 0,
+                  });
+                }}
               />
             );
           })}
@@ -195,13 +241,41 @@ const Exercices = ({ navigation }) => {
             <Text style={ExercicesStyle.textTitles}>
               Evolução de exercícios
             </Text>
-            <Svg
-              width={chartWidth}
-              height={maxBarHeight + 40}
-              style={{ alignSelf: "center" }}
-            >
-              {renderChartData()}
-            </Svg>
+            <View style={{ position: "relative", width: chartWidth }}>
+              <Svg
+                width={chartWidth}
+                height={maxBarHeight + 40}
+                style={{ alignSelf: "center" }}
+              >
+                {renderChartData()}
+              </Svg>
+              {selectedCell && selectedExerciseInfo.exercise && (
+                <View
+                  style={{
+                    position: "absolute",
+                    ...getTooltipPosition(
+                      selectedExerciseInfo.dayIndex,
+                      selectedExerciseInfo.yOffset,
+                      selectedExerciseInfo.barHeight
+                    ),
+                    backgroundColor: "white",
+                    padding: 8,
+                    borderRadius: 5,
+                    zIndex: 1000,
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                    maxWidth: 200,
+                  }}
+                >
+                  <Text style={{ fontSize: 12 }}>
+                    {`Exercício: ${selectedExerciseInfo.exercise}\nDuração: ${selectedExerciseInfo.duration.toFixed(1)} minutos`}
+                  </Text>
+                </View>
+              )}
+            </View>
             <View style={ExercicesStyle.legendContainer}>{renderLegend()}</View>
           </View>
           <AddExerciseForm onAddExercise={fetchExercises} />
