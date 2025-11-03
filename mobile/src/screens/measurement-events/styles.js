@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingBottom: 100, // Space for FAB
   },
-  consultationCard: {
+  eventCard: {
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
     padding: 20,
@@ -25,75 +25,70 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-  consultationHeader: {
+  eventHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 16,
+    marginBottom: 12,
   },
-  doctorInfo: {
+  eventInfo: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
   },
-  statusIndicator: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  doctorIcon: {
+  eventIcon: {
     marginRight: 12,
   },
-  doctorDetails: {
+  eventDetails: {
     flex: 1,
   },
-  doctorName: {
+  eventName: {
     fontSize: 18,
     fontWeight: "600",
     color: "#333",
     marginBottom: 4,
   },
-  specialization: {
+  eventDescription: {
     fontSize: 14,
     color: "#666",
-    fontWeight: "500",
-    marginBottom: 4,
+    lineHeight: 20,
+    marginTop: 4,
   },
-  statusContainer: {
-    marginTop: 2,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: "600",
-    textTransform: "uppercase",
-  },
-  consultationFooter: {
-    alignItems: "flex-end",
+  eventFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#F0F0F0",
   },
   dateCard: {
     backgroundColor: "#E3F2FD",
-    padding: 12,
-    borderRadius: 12,
+    padding: 8,
+    borderRadius: 8,
     alignItems: "center",
-    minWidth: 100,
+    minWidth: 80,
   },
   dateCardText: {
     color: "#1976D2",
-    fontSize: 14,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  timeText: {
-    color: "#1976D2",
     fontSize: 12,
     fontWeight: "500",
-    marginTop: 2,
+    textAlign: "center",
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    gap: 8,
   },
   deleteButton: {
     padding: 8,
     borderRadius: 8,
     backgroundColor: "#FFF5F5",
+  },
+  editButton: {
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: "#E3F2FD",
   },
   emptyState: {
     flex: 1,
@@ -139,10 +134,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 28,
   },
-  fabPressed: {
-    transform: [{ scale: 0.95 }],
-    backgroundColor: "#135D6B",
-  },
   addContainer: {
     flex: 1,
     marginTop: 32,
@@ -150,30 +141,6 @@ const styles = StyleSheet.create({
   addContentContainer: {
     paddingHorizontal: 16,
     paddingBottom: 32,
-  },
-  addCardTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#333",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  dateTimeButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flex: 1,
-    paddingVertical: 8,
-  },
-  dateTimeText: {
-    fontSize: 16,
-    color: "#333",
-    fontWeight: "500",
-  },
-  textArea: {
-    height: 80,
-    paddingTop: 12,
-    paddingBottom: 12,
   },
   addCard: {
     backgroundColor: "#FFFFFF",
@@ -185,6 +152,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  addCardTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 20,
+    textAlign: "center",
   },
   inputGroup: {
     flexDirection: "row",
@@ -203,6 +177,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+  textArea: {
+    height: 80,
+    paddingTop: 12,
+    paddingBottom: 12,
+  },
   saveButton: {
     backgroundColor: "#176B87",
     borderRadius: 8,
@@ -218,93 +197,7 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     backgroundColor: "#BDBDBD",
   },
-  upcomingCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  appointmentItem: {
-    backgroundColor: "#E0E0E0",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
-    flexDirection: "column",
-    gap: 4,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 8,
-  },
-  doctorText: {
-    fontSize: 12,
-  },
-  typeText: {
-    fontSize: 12,
-    color: "#666",
-  },
-  dateText: {
-    fontSize: 12,
-    color: "#4A90E2",
-  },
-  input: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  inputText: {
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#fff",
-    backgroundColor: "#4A4949",
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 4,
-  },
-  specialtyTags: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 4,
-    marginTop: 5,
-  },
-  tag: {
-    backgroundColor: "#666",
-    borderRadius: 8,
-    color: "#FFF",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginRight: 5,
-    marginBottom: 5,
-  },
-  addButton: {
-    backgroundColor: "#176B87",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    marginTop: 10,
-  },
-  addButtonText: {
-    fontSize: 24,
-    color: "#FFF",
-  },
-  addForm: {
-    gap: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  deleteButtonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
 });
 
 export default styles;
+

@@ -44,6 +44,10 @@ export class CreateMeasurementSessionDto {
   bluetoothScaleId?: number;
 
   @IsOptional()
+  @IsInt()
+  eventId?: number;
+
+  @IsOptional()
   @ValidateNested()
   @Type(() => BioimpedanceDto)
   bioimpedanceMeasurement?: BioimpedanceDto;

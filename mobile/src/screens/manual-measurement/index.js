@@ -20,7 +20,8 @@ const MetricCard = ({ label, value, emoji }) => (
   </View>
 );
 
-const ManualMeasurement = ({ navigation }) => {
+const ManualMeasurement = ({ navigation, route }) => {
+  const eventId = route?.params?.eventId;
   const [weight, setWeight] = useState("");
   const [bioImpedanceValues, setBioImpedanceValues] = useState({
     fatPercentage: 0,
@@ -65,8 +66,9 @@ const ManualMeasurement = ({ navigation }) => {
       await api.post("/measurement-sessions", {
         measurementType: "form",
         anonymous: false,
+        eventId: eventId || undefined,
         bioimpedanceMeasurement: {
-          weight: transformToNumber(bioImpedanceValues.weight),
+          weight: transformToNumber(weight),
           bodyFatPercentage: transformToNumber(bioImpedanceValues.fatPercentage),
           muscleMass: transformToNumber(bioImpedanceValues.muscleMass),
           boneMass: transformToNumber(bioImpedanceValues.boneMass),
@@ -79,7 +81,15 @@ const ManualMeasurement = ({ navigation }) => {
       Alert.alert("Sucesso", "Dados salvos com sucesso!", [
         {
           text: "OK",
-          onPress: () => navigation.goBack(),
+          onPress: () => {
+            if (eventId) {
+              // Navigate back to EventDetails if this was an event measurement
+              navigation.navigate("EventDetails", { eventId });
+            } else {
+              // Otherwise go back normally
+              navigation.goBack();
+            }
+          },
         },
       ]);
     } catch (error) {

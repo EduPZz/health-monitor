@@ -3,19 +3,43 @@ import Layout from "../../components/layout";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icons from "../../components/Icons";
 
-const MeasurementSelection = ({ navigation }) => {
+const MeasurementSelection = ({ navigation, route }) => {
+  const eventId = route?.params?.eventId;
+  const isEventMeasurement = !!eventId;
+
   const goBack = () => navigation.goBack();
 
+  const navigateToConnectScale = () => {
+    if (isEventMeasurement) {
+      navigation.navigate("ConnectScale", { eventId });
+    } else {
+      navigation.navigate("ConnectScale");
+    }
+  };
+
+  const navigateToManualMeasurement = () => {
+    if (isEventMeasurement) {
+      navigation.navigate("ManualMeasurement", { eventId });
+    } else {
+      navigation.navigate("ManualMeasurement");
+    }
+  };
+
   return (
-    <Layout goBackFunction={goBack} title={"Nova Pesagem"}>
+    <Layout 
+      goBackFunction={goBack} 
+      title={isEventMeasurement ? "Nova Medição" : "Nova Pesagem"}
+    >
       <View style={localStyles.container}>
         <Text style={localStyles.subtitle}>
-          Escolha como deseja realizar a medição
+          {isEventMeasurement 
+            ? "Escolha como deseja realizar a medição para este evento"
+            : "Escolha como deseja realizar a medição"}
         </Text>
 
         <TouchableOpacity
           style={localStyles.optionCard}
-          onPress={() => navigation.navigate("ConnectScale")}
+          onPress={navigateToConnectScale}
         >
           <View style={localStyles.iconContainer}>
             <Icons.FontAwesome6 name="weight-scale" size={48} color="#4CAF50" />
@@ -28,7 +52,7 @@ const MeasurementSelection = ({ navigation }) => {
 
         <TouchableOpacity
           style={localStyles.optionCard}
-          onPress={() => navigation.navigate("ManualMeasurement")}
+          onPress={navigateToManualMeasurement}
         >
           <View style={localStyles.iconContainer}>
             <Icons.MaterialCommunityIcons

@@ -13,6 +13,7 @@ import { CompanionRequestsModule } from './companion-requests/companion-requests
 import { UserCompanionsModule } from './user-companions/user-companions.module';
 import { EventsModule } from './events/events.module';
 import { MeasurementSessionsModule } from './measurement-sessions/measurement-sessions.module';
+import { MeasurementEventsModule } from './measurement-events/measurement-events.module';
 @Module({
   imports: [
     UsersModule,
@@ -25,6 +26,7 @@ import { MeasurementSessionsModule } from './measurement-sessions/measurement-se
     UserCompanionsModule,
     EventsModule,
     MeasurementSessionsModule,
+    MeasurementEventsModule,
   ],
   controllers: [AppController],
   providers: [

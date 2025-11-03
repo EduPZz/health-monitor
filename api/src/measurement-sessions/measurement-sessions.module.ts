@@ -10,5 +10,3 @@ import { UsersModule } from 'src/users/users.module';
   providers: [PrismaService, MeasurementSessionsService],
 })
 export class MeasurementSessionsModule {}
-
-

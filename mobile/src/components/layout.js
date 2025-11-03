@@ -5,9 +5,11 @@ import {
   Text,
   StyleSheet,
   StatusBar,
-  Platform,
-  SafeAreaView,
+  Platform
 } from "react-native";
+import {
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 import Icons from "./Icons";
 
 const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
@@ -17,13 +19,20 @@ const Layout = ({ goBackFunction, title, children }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={[styles.container, { paddingTop: statusBarHeight }]}>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={goBackFunction}
-          >
-            <Icons.Ionicons name="chevron-back-outline" size={30} color={"#000"} />
-          </TouchableOpacity>
-          <Text style={styles.title}>{title}</Text>
+          {goBackFunction && (
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={goBackFunction}
+            >
+              <Icons.Ionicons
+                name="chevron-back-outline"
+                size={30}
+                color={"#000"}
+              />
+            </TouchableOpacity>
+          )}
+
+          {title && <Text style={styles.title}>{title}</Text>}
         </View>
         {children}
       </View>

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { MeasurementSessionsService } from './measurement-sessions.service';
 import { CreateMeasurementSessionDto } from './dto/create-measurement-session.dto';
 
@@ -16,5 +16,10 @@ export class MeasurementSessionsController {
   @Get()
   findAll(@Request() req) {
     return this.measurementSessionsService.findAll(req.user.sub);
+  }
+
+  @Get('event/:eventId')
+  findByEvent(@Param('eventId') eventId: string, @Request() req) {
+    return this.measurementSessionsService.findByEvent(+eventId, req.user.sub);
   }
 }

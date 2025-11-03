@@ -12,6 +12,9 @@ import ShareMedicalRecords from "../screens/share-medical-records";
 import CompanionsScreen from "../screens/companions";
 import CompanionDetails from "../screens/companions/CompanionDetails";
 import MeasurementDetails from "../screens/measures/MeasurementDetails";
+import MeasurementEvents from "../screens/measurement-events";
+import AddMeasurementEvent from "../screens/measurement-events/AddMeasurementEvent";
+import EventDetails from "../screens/measurement-events/EventDetails";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -35,4 +38,19 @@ function HomeStackNavigator() {
   );
 }
 
-export { HomeStackNavigator };
+const EventsStack = createNativeStackNavigator();
+
+function EventsStackNavigator() {
+  return (
+    <EventsStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="MeasurementEvents">
+      <EventsStack.Screen name="MeasurementEvents" component={MeasurementEvents} />
+      <EventsStack.Screen name="AddMeasurementEvent" component={AddMeasurementEvent} />
+      <EventsStack.Screen name="EventDetails" component={EventDetails} />
+      <EventsStack.Screen name="MeasurementSelection" component={MeasurementSelection} />
+      <EventsStack.Screen name="ConnectScale" component={ConnectScale} />
+      <EventsStack.Screen name="ManualMeasurement" component={ManualMeasurement} />
+    </EventsStack.Navigator>
+  );
+}
+
+export { HomeStackNavigator, EventsStackNavigator };

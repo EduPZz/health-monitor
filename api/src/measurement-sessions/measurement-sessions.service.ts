@@ -20,6 +20,7 @@ export class MeasurementSessionsService {
       anonymous: dto.anonymous ?? false,
       measurementType: dto.measurementType,
       bluetoothScaleId: dto.bluetoothScaleId ?? null,
+      eventId: dto.eventId ?? null,
     };
 
     const lastMeasure = await this.prisma.bodyMeasure.findFirst({
@@ -65,6 +66,23 @@ export class MeasurementSessionsService {
   async findAll(userId: number) {
     return this.prisma.measurementSession.findMany({
       where: { measuredUserId: userId },
+      orderBy: { id: 'desc' },
+      include: { bioimpedanceMeasurement: true },
+    });
+  }
+
+  async findByEvent(eventId: number, userId: number) {
+    // Validate event ownership
+    const event = await this.prisma.measurementEvents.findFirst({
+      where: { id: eventId, userId },
+    });
+
+    if (!event) {
+      throw new NotFoundException('Event not found or not authorized');
+    }
+
+    return this.prisma.measurementSession.findMany({
+      where: { eventId, measuredUserId: userId },
       orderBy: { id: 'desc' },
       include: { bioimpedanceMeasurement: true },
     });

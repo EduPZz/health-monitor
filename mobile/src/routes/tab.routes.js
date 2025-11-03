@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Calculator from "../screens/calculator";
 import Icons from "../components/Icons";
-import { HomeStackNavigator } from "./stack.routes";
+import { HomeStackNavigator, EventsStackNavigator } from "./stack.routes";
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -85,15 +84,16 @@ export default function TabRoutes() {
         />
 
         <Tab.Screen
-          name="Calculator"
-          component={Calculator}
+          name="EventsStack"
+          component={EventsStackNavigator}
           options={{
             tabBarIcon: ({ focused, size, color }) => (
               <SvgIcon
-                name="person"
+                name="calendar-checkmark"
                 size={size}
                 color={color}
                 outline={!focused}
+                strokeWidth={focused ? 1.5 : 1.7}
               />
             ),
             tabBarLabel: "",

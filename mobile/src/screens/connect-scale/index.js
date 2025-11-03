@@ -29,7 +29,8 @@ const MetricCard = ({ label, value, emoji }) => (
   </View>
 );
 
-const ConnectScale = ({ navigation }) => {
+const ConnectScale = ({ navigation, route }) => {
+  const eventId = route?.params?.eventId;
   const [manager] = useState(new BleManager());
   const [currentWeight, setCurrentWeight] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
@@ -202,6 +203,7 @@ const ConnectScale = ({ navigation }) => {
         measurementType: "scale",
         bluetoothScaleId: scaleResponse.data.id,
         anonymous: false,
+        eventId: eventId || undefined,
         bioimpedanceMeasurement: {
           weight: impedanceResult.weight,
           bodyFatPercentage: impedanceResult.fatPercentage,
@@ -212,6 +214,14 @@ const ConnectScale = ({ navigation }) => {
           metabolicAge: impedanceResult.metabolicAge,
         },
       });
+
+      if (eventId) {
+        // Navigate back to EventDetails if this was an event measurement
+        navigation.navigate("EventDetails", { eventId });
+      } else {
+        // Otherwise go back normally
+        navigation.goBack();
+      }
     } catch (error) {
       console.error("Failed to save scale data:", error);
     }
