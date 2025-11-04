@@ -13,15 +13,27 @@ export class MeasurementSessionsService {
   async create(userId: number, dto: CreateMeasurementSessionDto) {
     const user = await this.usersService.findById(userId);
     if (!user) throw new NotFoundException('User not found');
+    const measuredUserId = dto.anonymous ? dto?.measuredUserId : userId;
 
     const data: any = {
       executerId: userId,
-      measuredUserId: userId,
+      measuredUserId: measuredUserId,
       anonymous: dto.anonymous ?? false,
       measurementType: dto.measurementType,
       bluetoothScaleId: dto.bluetoothScaleId ?? null,
       eventId: dto.eventId ?? null,
     };
+
+    if (
+      dto.anonymous &&
+      dto.anonymousEmail &&
+      dto.anonymousName &&
+      dto.anonymousPhone
+    ) {
+      data.anonymousEmail = dto.anonymousEmail;
+      data.anonymousName = dto.anonymousName;
+      data.anonymousPhone = dto.anonymousPhone;
+    }
 
     const lastMeasure = await this.prisma.bodyMeasure.findFirst({
       where: { userId: userId },
@@ -67,7 +79,7 @@ export class MeasurementSessionsService {
     return this.prisma.measurementSession.findMany({
       where: { measuredUserId: userId },
       orderBy: { id: 'desc' },
-      include: { bioimpedanceMeasurement: true },
+      include: { bioimpedanceMeasurement: true, measuredUser: true },
     });
   }
 
@@ -84,7 +96,7 @@ export class MeasurementSessionsService {
     return this.prisma.measurementSession.findMany({
       where: { eventId, measuredUserId: userId },
       orderBy: { id: 'desc' },
-      include: { bioimpedanceMeasurement: true },
+      include: { bioimpedanceMeasurement: true, measuredUser: true },
     });
   }
 }

@@ -15,6 +15,7 @@ import MeasurementDetails from "../screens/measures/MeasurementDetails";
 import MeasurementEvents from "../screens/measurement-events";
 import AddMeasurementEvent from "../screens/measurement-events/AddMeasurementEvent";
 import EventDetails from "../screens/measurement-events/EventDetails";
+import MeasurementRecipientSelection from "../screens/measurement-events/MeasurementRecipientSelection";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ function EventsStackNavigator() {
       <EventsStack.Screen name="MeasurementEvents" component={MeasurementEvents} />
       <EventsStack.Screen name="AddMeasurementEvent" component={AddMeasurementEvent} />
       <EventsStack.Screen name="EventDetails" component={EventDetails} />
+      <EventsStack.Screen name="MeasurementRecipientSelection" component={MeasurementRecipientSelection} />
       <EventsStack.Screen name="MeasurementSelection" component={MeasurementSelection} />
       <EventsStack.Screen name="ConnectScale" component={ConnectScale} />
       <EventsStack.Screen name="ManualMeasurement" component={ManualMeasurement} />

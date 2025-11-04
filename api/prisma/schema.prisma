@@ -142,9 +142,12 @@ model MeasurementSession {
   event                   MeasurementEvents?        @relation(fields: [eventId], references: [id], onDelete: Cascade)
   executerId              Int
   executer                User                      @relation("measurementExecuter", fields: [executerId], references: [id], onDelete: Cascade)
-  measuredUserId          Int
-  measuredUser            User                      @relation("measuredUser", fields: [measuredUserId], references: [id], onDelete: Cascade)
+  measuredUserId          Int?
+  measuredUser            User?                     @relation("measuredUser", fields: [measuredUserId], references: [id], onDelete: Cascade)
   anonymous               Boolean                   @default(false)
+  anonymousName           String?
+  anonymousEmail          String?
+  anonymousPhone          String?
   measurementType         MeasurementTypes          @default(scale)
   bluetoothScaleId        Int?
   bluetoothScale          BluetoothScales?          @relation(fields: [bluetoothScaleId], references: [id], onDelete: Cascade)

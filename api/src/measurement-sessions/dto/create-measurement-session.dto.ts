@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsInt,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -38,6 +39,22 @@ export class CreateMeasurementSessionDto {
   @IsOptional()
   @IsBoolean()
   anonymous?: boolean;
+
+  @IsOptional()
+  @IsString()
+  anonymousName?: string;
+
+  @IsOptional()
+  @IsString()
+  anonymousEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  anonymousPhone?: string;
+
+  @IsOptional()
+  @IsInt()
+  measuredUserId?: number;
 
   @IsOptional()
   @IsInt()

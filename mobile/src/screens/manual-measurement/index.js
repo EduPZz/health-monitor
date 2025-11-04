@@ -22,6 +22,8 @@ const MetricCard = ({ label, value, emoji }) => (
 
 const ManualMeasurement = ({ navigation, route }) => {
   const eventId = route?.params?.eventId;
+  const recipientType = route?.params?.recipientType;
+  const recipientData = route?.params?.recipientData;
   const [weight, setWeight] = useState("");
   const [bioImpedanceValues, setBioImpedanceValues] = useState({
     fatPercentage: 0,
@@ -48,8 +50,6 @@ const ManualMeasurement = ({ navigation, route }) => {
       } catch (error) {
         console.error("Erro ao buscar as medidas corporais:", error);
         Alert.alert("Erro", "Não foi possível buscar as medidas corporais.");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -63,9 +63,8 @@ const ManualMeasurement = ({ navigation, route }) => {
 
   const saveScaleData = async () => {
     try {
-      await api.post("/measurement-sessions", {
+      const payload = {
         measurementType: "form",
-        anonymous: false,
         eventId: eventId || undefined,
         bioimpedanceMeasurement: {
           weight: transformToNumber(weight),
@@ -76,7 +75,24 @@ const ManualMeasurement = ({ navigation, route }) => {
           visceralFat: transformToNumber(bioImpedanceValues.visceralFat),
           metabolicAge: transformToNumber(bioImpedanceValues.metabolicAge),
         },
-      });
+      };
+
+      // Handle recipient data for event measurements
+      if (eventId && recipientType) {
+        if (recipientType === "anonymous") {
+          payload.anonymous = true;
+          payload.anonymousName = recipientData.name;
+          payload.anonymousEmail = recipientData.email;
+          payload.anonymousPhone = recipientData.phone;
+        } else if (recipientType === "user" && recipientData?.userId) {
+          payload.anonymous = true;
+          payload.measuredUserId = recipientData.userId;
+        }
+      } else {
+        payload.anonymous = false;
+      }
+
+      await api.post("/measurement-sessions", payload);
 
       Alert.alert("Sucesso", "Dados salvos com sucesso!", [
         {

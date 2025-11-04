@@ -107,6 +107,44 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#333",
   },
+  userInfoSection: {
+    backgroundColor: "#F8F9FA",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: "#176B87",
+  },
+  userInfoHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  userInfoTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+    marginLeft: 8,
+  },
+  userInfoContent: {
+    gap: 8,
+  },
+  userInfoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 4,
+  },
+  userInfoLabel: {
+    fontSize: 14,
+    color: "#666",
+    fontWeight: "500",
+  },
+  userInfoValue: {
+    fontSize: 14,
+    color: "#333",
+    flex: 1,
+    textAlign: "right",
+  },
   emptyState: {
     flex: 1,
     justifyContent: "center",

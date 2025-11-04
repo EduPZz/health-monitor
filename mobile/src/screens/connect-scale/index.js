@@ -31,6 +31,8 @@ const MetricCard = ({ label, value, emoji }) => (
 
 const ConnectScale = ({ navigation, route }) => {
   const eventId = route?.params?.eventId;
+  const recipientType = route?.params?.recipientType;
+  const recipientData = route?.params?.recipientData;
   const [manager] = useState(new BleManager());
   const [currentWeight, setCurrentWeight] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
@@ -199,10 +201,9 @@ const ConnectScale = ({ navigation, route }) => {
         supportsImpedance: true,
       });
 
-      await api.post("/measurement-sessions", {
+      const payload = {
         measurementType: "scale",
         bluetoothScaleId: scaleResponse.data.id,
-        anonymous: false,
         eventId: eventId || undefined,
         bioimpedanceMeasurement: {
           weight: impedanceResult.weight,
@@ -213,7 +214,24 @@ const ConnectScale = ({ navigation, route }) => {
           visceralFat: impedanceResult.visceralFat,
           metabolicAge: impedanceResult.metabolicAge,
         },
-      });
+      };
+
+      // Handle recipient data for event measurements
+      if (eventId && recipientType) {
+        if (recipientType === "anonymous") {
+          payload.anonymous = true;
+          payload.anonymousName = recipientData.name;
+          payload.anonymousEmail = recipientData.email;
+          payload.anonymousPhone = recipientData.phone;
+        } else if (recipientType === "user" && recipientData?.userId) {
+          payload.anonymous = true;
+          payload.measuredUserId = recipientData.userId;
+        }
+      } else {
+        payload.anonymous = false;
+      }
+
+      await api.post("/measurement-sessions", payload);
 
       if (eventId) {
         // Navigate back to EventDetails if this was an event measurement

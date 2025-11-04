@@ -14,8 +14,33 @@ import styles from "./eventDetailsStyles";
 import api from "../../api";
 import Icons from "../../components/Icons";
 
+const getAnonymousUser = (measurement) => {
+  const measuredUser = measurement?.measuredUser;
+  const isAnonymous = measurement?.anonymous;
+  
+  if (!isAnonymous) {
+    return null;
+  }
+
+  if (measuredUser) {
+    return {
+      name: measuredUser.name,
+      email: measuredUser.email,
+      phone: null,
+    }
+  }
+
+  return {
+    name: measurement.anonymousName || "Usuário Anônimo",
+    email: measurement.anonymousEmail || "E-mail não fornecido",
+    phone: measurement.anonymousPhone || "Telefone não fornecido",
+  }
+}
+
 const MeasurementCard = ({ measurement }) => {
-  const date = new Date(measurement.bioimpedanceMeasurement?.createdAt || new Date());
+  const anonymousUser = getAnonymousUser(measurement);
+  const bioimpedanceMeasurement = measurement?.bioimpedanceMeasurement[0];
+  const date = new Date(bioimpedanceMeasurement?.createdAt || new Date());
   const formattedDate = new Intl.DateTimeFormat("pt-BR", {
     day: "numeric",
     month: "long",
@@ -24,14 +49,16 @@ const MeasurementCard = ({ measurement }) => {
     minute: "2-digit",
   }).format(date);
 
-  const bioimpedance = measurement.bioimpedanceMeasurement;
+  const bioimpedance = bioimpedanceMeasurement;
 
   return (
     <View style={styles.measurementCard}>
       <View style={styles.measurementHeader}>
         <View style={styles.measurementTypeContainer}>
           <Icons.MaterialIcons
-            name={measurement.measurementType === "scale" ? "weight-scale" : "edit"}
+            name={
+              measurement.measurementType === "scale" ? "weight-scale" : "edit"
+            }
             size={24}
             color="#176B87"
           />
@@ -41,6 +68,33 @@ const MeasurementCard = ({ measurement }) => {
         </View>
         <Text style={styles.measurementDate}>{formattedDate}</Text>
       </View>
+
+      {anonymousUser && (
+        <View style={styles.userInfoSection}>
+          <View style={styles.userInfoHeader}>
+            <Icons.MaterialIcons name="person" size={20} color="#176B87" />
+            <Text style={styles.userInfoTitle}>Informações do Usuário</Text>
+          </View>
+          <View style={styles.userInfoContent}>
+            <View style={styles.userInfoRow}>
+              <Text style={styles.userInfoLabel}>Nome:</Text>
+              <Text style={styles.userInfoValue}>{anonymousUser.name}</Text>
+            </View>
+            {anonymousUser.email && (
+              <View style={styles.userInfoRow}>
+                <Text style={styles.userInfoLabel}>E-mail:</Text>
+                <Text style={styles.userInfoValue}>{anonymousUser.email}</Text>
+              </View>
+            )}
+            {anonymousUser.phone && (
+              <View style={styles.userInfoRow}>
+                <Text style={styles.userInfoLabel}>Telefone:</Text>
+                <Text style={styles.userInfoValue}>{anonymousUser.phone}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      )}
 
       {bioimpedance && (
         <View style={styles.measurementMetrics}>
@@ -53,19 +107,25 @@ const MeasurementCard = ({ measurement }) => {
           {bioimpedance.bodyFatPercentage && (
             <View style={styles.metricRow}>
               <Text style={styles.metricLabel}>Gordura Corporal:</Text>
-              <Text style={styles.metricValue}>{bioimpedance.bodyFatPercentage}%</Text>
+              <Text style={styles.metricValue}>
+                {bioimpedance.bodyFatPercentage}%
+              </Text>
             </View>
           )}
           {bioimpedance.muscleMass && (
             <View style={styles.metricRow}>
               <Text style={styles.metricLabel}>Massa Muscular:</Text>
-              <Text style={styles.metricValue}>{bioimpedance.muscleMass} kg</Text>
+              <Text style={styles.metricValue}>
+                {bioimpedance.muscleMass} kg
+              </Text>
             </View>
           )}
           {bioimpedance.waterPercentage && (
             <View style={styles.metricRow}>
               <Text style={styles.metricLabel}>Água:</Text>
-              <Text style={styles.metricValue}>{bioimpedance.waterPercentage}%</Text>
+              <Text style={styles.metricValue}>
+                {bioimpedance.waterPercentage}%
+              </Text>
             </View>
           )}
         </View>
@@ -85,7 +145,9 @@ const EventDetails = ({ navigation, route }) => {
   const fetchEventDetails = async () => {
     try {
       setIsLoading(true);
-      const { data: eventData } = await api.get(`measurement-events/${eventId}`);
+      const { data: eventData } = await api.get(
+        `measurement-events/${eventId}`
+      );
       setEvent(eventData);
       setMeasurements(eventData.measurementSession || []);
     } catch (error) {
@@ -102,7 +164,7 @@ const EventDetails = ({ navigation, route }) => {
   }, [eventId]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       fetchEventDetails();
     });
 
@@ -127,7 +189,7 @@ const EventDetails = ({ navigation, route }) => {
   const navigateToMeasurementSelection = () => {
     animateFabPress();
     setTimeout(() => {
-      navigation.navigate("MeasurementSelection", { eventId });
+      navigation.navigate("MeasurementRecipientSelection", { eventId });
     }, 100);
   };
 
@@ -188,7 +250,8 @@ const EventDetails = ({ navigation, route }) => {
             <View style={styles.statItem}>
               <Icons.MaterialIcons name="straighten" size={20} color="#666" />
               <Text style={styles.statText}>
-                {measurements.length} {measurements.length === 1 ? "medição" : "medições"}
+                {measurements.length}{" "}
+                {measurements.length === 1 ? "medição" : "medições"}
               </Text>
             </View>
           </View>
@@ -211,7 +274,9 @@ const EventDetails = ({ navigation, route }) => {
         )}
 
         {/* Floating Action Button */}
-        <Animated.View style={[styles.fab, { transform: [{ scale: fabScale }] }]}>
+        <Animated.View
+          style={[styles.fab, { transform: [{ scale: fabScale }] }]}
+        >
           <TouchableOpacity
             style={styles.fabTouchable}
             onPress={navigateToMeasurementSelection}
@@ -226,4 +291,3 @@ const EventDetails = ({ navigation, route }) => {
 };
 
 export default EventDetails;
-

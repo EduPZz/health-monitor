@@ -52,7 +52,7 @@ export class MeasurementEventsService {
       where: { id, userId },
       include: {
         measurementSession: {
-          include: { bioimpedanceMeasurement: true },
+          include: { bioimpedanceMeasurement: true, measuredUser: true },
           orderBy: { id: 'desc' },
         },
       },

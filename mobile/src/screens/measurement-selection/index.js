@@ -5,13 +5,19 @@ import Icons from "../../components/Icons";
 
 const MeasurementSelection = ({ navigation, route }) => {
   const eventId = route?.params?.eventId;
+  const recipientType = route?.params?.recipientType;
+  const recipientData = route?.params?.recipientData;
   const isEventMeasurement = !!eventId;
 
   const goBack = () => navigation.goBack();
 
   const navigateToConnectScale = () => {
     if (isEventMeasurement) {
-      navigation.navigate("ConnectScale", { eventId });
+      navigation.navigate("ConnectScale", {
+        eventId,
+        recipientType,
+        recipientData,
+      });
     } else {
       navigation.navigate("ConnectScale");
     }
@@ -19,7 +25,11 @@ const MeasurementSelection = ({ navigation, route }) => {
 
   const navigateToManualMeasurement = () => {
     if (isEventMeasurement) {
-      navigation.navigate("ManualMeasurement", { eventId });
+      navigation.navigate("ManualMeasurement", {
+        eventId,
+        recipientType,
+        recipientData,
+      });
     } else {
       navigation.navigate("ManualMeasurement");
     }
@@ -118,4 +128,3 @@ const localStyles = StyleSheet.create({
 });
 
 export default MeasurementSelection;
-
