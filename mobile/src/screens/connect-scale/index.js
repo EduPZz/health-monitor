@@ -509,6 +509,7 @@ const ConnectScale = ({ navigation, route }) => {
               value={formHeight}
               onChangeText={setFormHeight}
               placeholder="Digite sua altura em cm"
+              placeholderTextColor="#999"
             />
             <TouchableOpacity
               style={{

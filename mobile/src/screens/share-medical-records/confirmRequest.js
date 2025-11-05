@@ -46,6 +46,7 @@ export default function ConfirmRequest({
           <TextInput
             style={{ ...styles.input, height: 60 }}
             placeholder="Escreva uma mensagem..."
+            placeholderTextColor="#999"
             value={message}
             onChangeText={setMessage}
           />

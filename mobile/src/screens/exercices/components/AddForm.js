@@ -65,6 +65,7 @@ const AddExerciseForm = ({ userId, onAddExercise }) => {
         <TextInput
           style={[ExercicesStyle.pickerPlaceholder, ExercicesStyle.picker]}
           placeholder="Selecionar exercício"
+          placeholderTextColor="#999"
           value={exerciseType}
           onChangeText={setExerciseType}
         />

@@ -49,6 +49,7 @@ const MeasureForm = ({
             <TextInput
               style={styles.input}
               placeholder={placeholder}
+              placeholderTextColor="#999"
               value={measurements[field]?.toString() || ""}
               keyboardType="numeric"
               onChangeText={(value) => handleInputChange(field, value)}

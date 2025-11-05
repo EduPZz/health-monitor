@@ -153,6 +153,7 @@ const ManualMeasurement = ({ navigation, route }) => {
             value={weight}
             onChangeText={setWeight}
             placeholder="Ex: 70.5"
+            placeholderTextColor="#999"
           />
 
           <Text style={localStyles.label}>Altura (M) *</Text>
@@ -162,6 +163,7 @@ const ManualMeasurement = ({ navigation, route }) => {
             value={height}
             onChangeText={setHeight}
             placeholder="Ex: 175.0"
+            placeholderTextColor="#999"
           />
 
           <Text style={localStyles.label}>
@@ -178,6 +180,7 @@ const ManualMeasurement = ({ navigation, route }) => {
               })
             }
             placeholder="Ex: 20.5"
+            placeholderTextColor="#999"
           />
 
           <Text style={localStyles.label}>Porcentagem de Água (%)</Text>
@@ -192,6 +195,7 @@ const ManualMeasurement = ({ navigation, route }) => {
               });
             }}
             placeholder="Ex: 55.0"
+            placeholderTextColor="#999"
           />
 
           <Text style={localStyles.label}>Massa Muscular (kg)</Text>
@@ -206,6 +210,7 @@ const ManualMeasurement = ({ navigation, route }) => {
               })
             }
             placeholder="Ex: 30.0"
+            placeholderTextColor="#999"
           />
 
           <Text style={localStyles.label}>Massa Óssea (kg)</Text>
@@ -220,6 +225,7 @@ const ManualMeasurement = ({ navigation, route }) => {
               })
             }
             placeholder="Ex: 3.0"
+            placeholderTextColor="#999"
           />
 
           <Text style={localStyles.label}>Gordura Visceral</Text>
@@ -234,6 +240,7 @@ const ManualMeasurement = ({ navigation, route }) => {
               })
             }
             placeholder="Ex: 10.0"
+            placeholderTextColor="#999"
           />
 
           <Text style={localStyles.label}>Idade Metabólica</Text>
@@ -248,6 +255,7 @@ const ManualMeasurement = ({ navigation, route }) => {
               })
             }
             placeholder="Ex: 30"
+            placeholderTextColor="#999"
           />
 
           <TouchableOpacity
