@@ -25,14 +25,25 @@ const ManualMeasurement = ({ navigation, route }) => {
   const recipientType = route?.params?.recipientType;
   const recipientData = route?.params?.recipientData;
   const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
   const [bioImpedanceValues, setBioImpedanceValues] = useState({
     fatPercentage: 0,
     waterPercentage: 0,
     muscleMass: 0,
     boneMass: 0,
     visceralFat: 0,
-    metabolicAge: 0
+    metabolicAge: 0,
   });
+
+  const isSaveDisabled =
+    !weight &&
+    !height &&
+    !bioImpedanceValues.fatPercentage &&
+    !bioImpedanceValues.waterPercentage &&
+    !bioImpedanceValues.muscleMass &&
+    !bioImpedanceValues.boneMass &&
+    !bioImpedanceValues.visceralFat &&
+    !bioImpedanceValues.metabolicAge;
 
   const goBack = () => navigation.goBack();
 
@@ -47,6 +58,9 @@ const ManualMeasurement = ({ navigation, route }) => {
         if (lastBodyMeasure?.weight) {
           setWeight(lastBodyMeasure.weight.toString());
         }
+        if (lastBodyMeasure?.height) {
+          setHeight(lastBodyMeasure.height.toString());
+        }
       } catch (error) {
         console.error("Erro ao buscar as medidas corporais:", error);
         Alert.alert("Erro", "Não foi possível buscar as medidas corporais.");
@@ -59,7 +73,7 @@ const ManualMeasurement = ({ navigation, route }) => {
   const transformToNumber = (value) => {
     const numberValue = parseFloat(value);
     return isNaN(numberValue) ? 0 : numberValue;
-  }
+  };
 
   const saveScaleData = async () => {
     try {
@@ -68,10 +82,15 @@ const ManualMeasurement = ({ navigation, route }) => {
         eventId: eventId || undefined,
         bioimpedanceMeasurement: {
           weight: transformToNumber(weight),
-          bodyFatPercentage: transformToNumber(bioImpedanceValues.fatPercentage),
+          height: transformToNumber(height),
+          bodyFatPercentage: transformToNumber(
+            bioImpedanceValues.fatPercentage
+          ),
           muscleMass: transformToNumber(bioImpedanceValues.muscleMass),
           boneMass: transformToNumber(bioImpedanceValues.boneMass),
-          waterPercentage: transformToNumber(bioImpedanceValues.waterPercentage),
+          waterPercentage: transformToNumber(
+            bioImpedanceValues.waterPercentage
+          ),
           visceralFat: transformToNumber(bioImpedanceValues.visceralFat),
           metabolicAge: transformToNumber(bioImpedanceValues.metabolicAge),
         },
@@ -136,7 +155,18 @@ const ManualMeasurement = ({ navigation, route }) => {
             placeholder="Ex: 70.5"
           />
 
-          <Text style={localStyles.label}>Porcentagem de Gordura Corporal (%)</Text>
+          <Text style={localStyles.label}>Altura (M) *</Text>
+          <TextInput
+            style={localStyles.input}
+            keyboardType="decimal-pad"
+            value={height}
+            onChangeText={setHeight}
+            placeholder="Ex: 175.0"
+          />
+
+          <Text style={localStyles.label}>
+            Porcentagem de Gordura Corporal (%)
+          </Text>
           <TextInput
             style={localStyles.input}
             keyboardType="decimal-pad"
@@ -163,7 +193,6 @@ const ManualMeasurement = ({ navigation, route }) => {
             }}
             placeholder="Ex: 55.0"
           />
-
 
           <Text style={localStyles.label}>Massa Muscular (kg)</Text>
           <TextInput
@@ -221,10 +250,15 @@ const ManualMeasurement = ({ navigation, route }) => {
             placeholder="Ex: 30"
           />
 
-          <TouchableOpacity style={localStyles.buttonContainer} onPress={saveScaleData}>
-            <Text>
-              Salvar Dados
-            </Text>
+          <TouchableOpacity
+            style={{
+              ...localStyles.buttonContainer,
+              opacity: isSaveDisabled ? 0.3 : 1,
+            }}
+            onPress={saveScaleData}
+            disabled={isSaveDisabled}
+          >
+            <Text>Salvar Dados</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
@@ -307,4 +341,3 @@ const localStyles = StyleSheet.create({
 });
 
 export default ManualMeasurement;
-

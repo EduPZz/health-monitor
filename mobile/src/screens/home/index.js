@@ -5,11 +5,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   StatusBar,
   Button,
   RefreshControl,
 } from "react-native";
+import {
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 import Icon from "../../components/Icons";
 import { Context } from "../../context/authContext";
 import Toast from "react-native-toast-message";

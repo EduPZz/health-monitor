@@ -23,7 +23,7 @@ export class BluetoothScalesController {
     @Request() req,
     @Body() createBluetoothScaleDto: CreateBluetoothScaleDto,
   ) {
-    return this.bluetoothScalesService.create(
+    return this.bluetoothScalesService.findOrCreate(
       req.user.sub,
       createBluetoothScaleDto,
     );

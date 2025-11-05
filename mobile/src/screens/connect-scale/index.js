@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout";
-import styles from "./styles";
 import {
   View,
   Text,
@@ -8,6 +7,8 @@ import {
   ScrollView,
   Button,
   TextInput,
+  Alert,
+  TouchableOpacity,
 } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { Buffer } from "buffer";
@@ -24,7 +25,9 @@ const WEIGHT_CHARACTERISTIC_UUID = "00002a9c-0000-1000-8000-00805f9b34fb";
 
 const MetricCard = ({ label, value, emoji }) => (
   <View style={localStyles.card}>
-    <Text style={localStyles.cardTitle}>{emoji} {label}</Text>
+    <Text style={localStyles.cardTitle}>
+      {emoji} {label}
+    </Text>
     <Text style={localStyles.cardValue}>{value}</Text>
   </View>
 );
@@ -37,7 +40,7 @@ const ConnectScale = ({ navigation, route }) => {
   const [currentWeight, setCurrentWeight] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [connectedDevice, setConnectedDevice] = useState(null);
+  const [connectedDevices, setConnectedDevices] = useState([]);
   const [results, setResults] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [impedanceResult, setImpedanceResult] = useState(null);
@@ -46,6 +49,7 @@ const ConnectScale = ({ navigation, route }) => {
   const [userBirthDate, setUserBirthDate] = useState("");
 
   const [formHeight, setFormHeight] = useState("");
+  const [requestHeigh, setRequestHeight] = useState("");
 
   const goBack = () => navigation.goBack();
 
@@ -72,9 +76,28 @@ const ConnectScale = ({ navigation, route }) => {
     fetchUserData();
   }, []);
 
+  const fetchMeasures = async (scaleResult) => {
+    try {
+      const { data } = await api.get("body-measure");
+
+      const lastBodyMeasure = data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      )[0];
+
+      if (lastBodyMeasure?.height) {
+        setRequestHeight(lastBodyMeasure.height.toString());
+        calculateBioimpedance(lastBodyMeasure.height.toString(), scaleResult);
+        return;
+      }
+      setShowForm(true);
+    } catch (error) {
+      console.error("Erro ao buscar as medidas corporais:", error);
+      setShowForm(true);
+    }
+  };
+
   const softDisconnectDevice = () => {
     setIsConnected(false);
-    setConnectedDevice(null);
   };
 
   const startMonitoring = async (device) => {
@@ -104,7 +127,7 @@ const ConnectScale = ({ navigation, route }) => {
               device.cancelConnection();
               softDisconnectDevice();
               manager.stopDeviceScan();
-              setShowForm(true);
+              fetchMeasures(result);
             }
           }
         },
@@ -124,13 +147,15 @@ const ConnectScale = ({ navigation, route }) => {
       setIsConnecting(true);
       manager.stopDeviceScan();
 
-      const connectedDevice = await manager.connectToDevice(device.id, { timeout: 10000 });
-      await connectedDevice.discoverAllServicesAndCharacteristics();
+      const currentConnectedDevice = await manager.connectToDevice(device.id, {
+        timeout: 10000,
+      });
+      await currentConnectedDevice.discoverAllServicesAndCharacteristics();
 
       setIsConnected(true);
-      setConnectedDevice(connectedDevice);
+      setConnectedDevices((prev) => [...prev, currentConnectedDevice]);
 
-      await startMonitoring(connectedDevice);
+      await startMonitoring(currentConnectedDevice);
     } catch (error) {
       if (error.errorCode !== 2) {
         console.log("BLE connect error:", error);
@@ -193,6 +218,7 @@ const ConnectScale = ({ navigation, route }) => {
 
   const saveScaleData = async () => {
     try {
+      const connectedDevice = connectedDevices[connectedDevices.length - 1];
       const scaleResponse = await api.post("/bluetooth-scales", {
         macAddress: connectedDevice?.id,
         name: connectedDevice?.name,
@@ -206,13 +232,14 @@ const ConnectScale = ({ navigation, route }) => {
         bluetoothScaleId: scaleResponse.data.id,
         eventId: eventId || undefined,
         bioimpedanceMeasurement: {
-          weight: impedanceResult.weight,
+          weight: Math.floor(currentWeight),
           bodyFatPercentage: impedanceResult.fatPercentage,
           muscleMass: impedanceResult.muscleMass,
           boneMass: impedanceResult.boneMass,
           waterPercentage: impedanceResult.waterPercentage,
           visceralFat: impedanceResult.visceralFat,
           metabolicAge: impedanceResult.metabolicAge,
+          ...(formHeight && { height: parseFloat(formHeight) / 100 }),
         },
       };
 
@@ -233,6 +260,7 @@ const ConnectScale = ({ navigation, route }) => {
 
       await api.post("/measurement-sessions", payload);
 
+      Alert.alert("Sucesso", "Dados salvos com sucesso!");
       if (eventId) {
         // Navigate back to EventDetails if this was an event measurement
         navigation.navigate("EventDetails", { eventId });
@@ -245,9 +273,33 @@ const ConnectScale = ({ navigation, route }) => {
     }
   };
 
+  const calculateBioimpedance = (height, scaleResult = null) => {
+    // Use the passed result or fall back to the last result from state
+    const result = scaleResult || results[results.length - 1];
+
+    if (!result) {
+      console.error("No scale result available");
+      return;
+    }
+
+    const sex = userSex === "male" || userSex === "female" ? userSex : "male";
+    const { fatMassToIdeal, ...calculated } = useImpedance({
+      weight: result?.weight,
+      impedance: result?.impedance,
+      height: Number(height),
+      age: Number(userAge()),
+      sex,
+    });
+    setImpedanceResult(calculated);
+    setShowForm(false);
+  };
+
   return (
     <Layout goBackFunction={goBack} title={"Conectar dispositivo"}>
-      <View style={styles.container}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={localStyles.scroll}
+      >
         <View style={localStyles.gaugeContainer}>
           <Text style={localStyles.weightText}>
             {currentWeight > 0
@@ -285,28 +337,23 @@ const ConnectScale = ({ navigation, route }) => {
               onChangeText={setFormHeight}
               placeholder="Digite sua altura em cm"
             />
-            <Button
-              title="Calcular"
-              onPress={() => {
-                const result = results[results.length - 1];
-                const sex =
-                  userSex === "male" || userSex === "female" ? userSex : "male";
-                const { fatMassToIdeal, ...calculated } = useImpedance({
-                  weight: result?.weight,
-                  impedance: result?.impedance,
-                  height: Number(formHeight),
-                  age: Number(userAge()),
-                  sex,
-                });
-                setImpedanceResult(calculated);
-                setShowForm(false);
+            <TouchableOpacity
+              style={{
+                ...localStyles.buttonContainer,
+                opacity: !formHeight ? 0.3 : 1,
               }}
-            />
+              disabled={!formHeight}
+              onPress={() =>
+                calculateBioimpedance(formHeight, results[results.length - 1])
+              }
+            >
+              <Text style={localStyles.buttonText}>Calcular</Text>
+            </TouchableOpacity>
           </View>
         )}
 
         {impedanceResult && (
-          <ScrollView contentContainerStyle={localStyles.scroll}>
+          <>
             <Text style={localStyles.sectionTitle}>
               Resultados de Impedância
             </Text>
@@ -361,13 +408,12 @@ const ConnectScale = ({ navigation, route }) => {
               value={`${impedanceResult.idealWeight} kg`}
               emoji="🎯"
             />
-
             <View style={localStyles.buttonContainer}>
               <Button title="Salvar" onPress={saveScaleData} color="#4CAF50" />
             </View>
-          </ScrollView>
+          </>
         )}
-      </View>
+      </ScrollView>
     </Layout>
   );
 };
@@ -417,10 +463,11 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   scroll: {
+    paddingBottom: 40,
+    width: "100%",
     paddingHorizontal: 16,
-    paddingBottom: 20,
-    marginBottom: 300,
   },
+
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
@@ -436,6 +483,7 @@ const localStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    width: "100%",
   },
   cardTitle: {
     fontSize: 16,
@@ -448,9 +496,17 @@ const localStyles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
     marginTop: 20,
-    marginBottom: 30,
+    borderRadius: 8,
+    padding: 12,
+    backgroundColor: "#176B87",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 

@@ -99,12 +99,12 @@ model Exercise {
 
 model BodyMeasure {
   id        Int      @id @default(autoincrement())
-  chest     Int // Measurement of arm circumference in cm
-  arm       Int // Measurement of arm circumference in cm
-  waist     Int // Waist circumference in cm
-  thigh     Int // Thigh circumference in cm
-  hip       Int // Hip circumference in cm
-  calf      Int // Calf circumference in cm
+  chest     Int? // Measurement of arm circumference in cm
+  arm       Int? // Measurement of arm circumference in cm
+  waist     Int? // Waist circumference in cm
+  thigh     Int? // Thigh circumference in cm
+  hip       Int? // Hip circumference in cm
+  calf      Int? // Calf circumference in cm
   weight    Decimal // kg
   height    Decimal // Meters
   userId    Int

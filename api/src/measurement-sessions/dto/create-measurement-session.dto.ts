@@ -14,6 +14,9 @@ class BioimpedanceDto {
   weight?: any;
 
   @IsOptional()
+  height?: any;
+
+  @IsOptional()
   bodyFatPercentage?: any;
 
   @IsOptional()

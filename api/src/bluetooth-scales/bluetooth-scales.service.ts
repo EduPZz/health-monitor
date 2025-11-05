@@ -11,7 +11,7 @@ export class BluetoothScalesService {
     private readonly usersService: UsersService,
   ) {}
 
-  async create(
+  async findOrCreate(
     userId: number,
     createBluetoothScaleDto: CreateBluetoothScaleDto,
   ) {
@@ -19,12 +19,23 @@ export class BluetoothScalesService {
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
-    return this.prisma.bluetoothScales.create({
-      data: {
-        ...createBluetoothScaleDto,
+    let scale = await this.prisma.bluetoothScales.findFirst({
+      where: {
+        macAddress: createBluetoothScaleDto.macAddress,
         userId,
       },
     });
+
+    if (!scale) {
+      scale = await this.prisma.bluetoothScales.create({
+        data: {
+          ...createBluetoothScaleDto,
+          userId,
+        },
+      });
+    }
+
+    return scale;
   }
 
   async findAll(userId: number) {

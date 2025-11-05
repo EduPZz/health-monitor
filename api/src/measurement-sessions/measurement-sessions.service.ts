@@ -39,6 +39,7 @@ export class MeasurementSessionsService {
       where: { userId: userId },
       orderBy: { createdAt: 'desc' },
     });
+
     if (lastMeasure && dto.bioimpedanceMeasurement?.weight) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, createdAt, updatedAt, weight, ...rest } = lastMeasure;
@@ -47,6 +48,18 @@ export class MeasurementSessionsService {
         data: {
           ...rest,
           weight: dto.bioimpedanceMeasurement.weight,
+          userId: userId,
+        },
+      });
+    } else if (
+      !lastMeasure &&
+      dto.bioimpedanceMeasurement?.weight &&
+      dto.bioimpedanceMeasurement?.height
+    ) {
+      await this.prisma.bodyMeasure.create({
+        data: {
+          weight: dto.bioimpedanceMeasurement.weight,
+          height: dto.bioimpedanceMeasurement.height,
           userId: userId,
         },
       });

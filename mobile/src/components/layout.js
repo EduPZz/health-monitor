@@ -5,11 +5,9 @@ import {
   Text,
   StyleSheet,
   StatusBar,
-  Platform
+  Platform,
 } from "react-native";
-import {
-  SafeAreaView,
-} from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 import Icons from "./Icons";
 
 const statusBarHeight = Platform.OS === "android" ? StatusBar.currentHeight : 0;
@@ -34,7 +32,7 @@ const Layout = ({ goBackFunction, title, children }) => {
 
           {title && <Text style={styles.title}>{title}</Text>}
         </View>
-        {children}
+        <View style={{ flex: 1 }}>{children}</View>
       </View>
     </SafeAreaView>
   );
