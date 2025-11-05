@@ -9,12 +9,15 @@ import {
   TextInput,
   Alert,
   TouchableOpacity,
+  Platform,
+  Linking,
 } from "react-native";
-import { BleManager } from "react-native-ble-plx";
+import { BleManager, State } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import useImpedance from "../../hooks/useImpedance";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import api from "../../api";
+import { PermissionsAndroid } from "react-native";
 
 if (!global.Buffer) {
   global.Buffer = Buffer;
@@ -50,6 +53,8 @@ const ConnectScale = ({ navigation, route }) => {
 
   const [formHeight, setFormHeight] = useState("");
   const [requestHeigh, setRequestHeight] = useState("");
+  const [permissionsGranted, setPermissionsGranted] = useState(false);
+  const [bluetoothEnabled, setBluetoothEnabled] = useState(false);
 
   const goBack = () => navigation.goBack();
 
@@ -74,6 +79,166 @@ const ConnectScale = ({ navigation, route }) => {
     };
 
     fetchUserData();
+  }, []);
+
+  // Request permissions and check Bluetooth state
+  useEffect(() => {
+    const requestPermissions = async () => {
+      try {
+        if (Platform.OS === "android") {
+          // Check Android version
+          const androidVersion = Platform.Version;
+
+          if (androidVersion >= 31) {
+            // Android 12+ (API 31+) requires new permissions
+            const granted = await PermissionsAndroid.requestMultiple([
+              "android.permission.BLUETOOTH_SCAN",
+              "android.permission.BLUETOOTH_CONNECT",
+              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            ]);
+
+            const allGranted = Object.values(granted).every(
+              (status) => status === PermissionsAndroid.RESULTS.GRANTED
+            );
+
+            if (allGranted) {
+              setPermissionsGranted(true);
+            } else {
+              Alert.alert(
+                "Permissões Necessárias",
+                "Este aplicativo precisa de permissões de Bluetooth e Localização para conectar dispositivos. Por favor, conceda as permissões nas configurações.",
+                [
+                  { text: "Cancelar", style: "cancel" },
+                  {
+                    text: "Abrir Configurações",
+                    onPress: () => Linking.openSettings(),
+                  },
+                ]
+              );
+              return;
+            }
+          } else {
+            // Android 11 and below
+            const granted = await PermissionsAndroid.requestMultiple([
+              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+              PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+            ]);
+
+            const allGranted = Object.values(granted).every(
+              (status) =>
+                status === PermissionsAndroid.RESULTS.GRANTED ||
+                status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN
+            );
+
+            if (allGranted) {
+              setPermissionsGranted(true);
+            } else {
+              Alert.alert(
+                "Permissões Necessárias",
+                "Este aplicativo precisa de permissão de Localização para usar Bluetooth. Por favor, conceda a permissão nas configurações.",
+                [
+                  { text: "Cancelar", style: "cancel" },
+                  {
+                    text: "Abrir Configurações",
+                    onPress: () => Linking.openSettings(),
+                  },
+                ]
+              );
+              return;
+            }
+          }
+        } else {
+          // iOS - permissions are handled automatically by the system
+          setPermissionsGranted(true);
+        }
+
+        // Check Bluetooth state
+        const checkBluetoothState = async () => {
+          try {
+            const state = await manager.state();
+
+            if (state === State.PoweredOn) {
+              setBluetoothEnabled(true);
+            } else if (state === State.PoweredOff) {
+              setBluetoothEnabled(false);
+              Alert.alert(
+                "Bluetooth Desativado",
+                "Por favor, ative o Bluetooth nas configurações do dispositivo para conectar a balança.",
+                [
+                  { text: "Cancelar", style: "cancel" },
+                  {
+                    text: "Abrir Configurações",
+                    onPress: () => Linking.openSettings(),
+                  },
+                ]
+              );
+            } else if (state === State.Unauthorized) {
+              Alert.alert(
+                "Permissão Bluetooth Negada",
+                "Este aplicativo precisa de permissão para usar Bluetooth. Por favor, conceda a permissão nas configurações.",
+                [
+                  { text: "Cancelar", style: "cancel" },
+                  {
+                    text: "Abrir Configurações",
+                    onPress: () => Linking.openSettings(),
+                  },
+                ]
+              );
+            } else {
+              // State.Unsupported, State.Unknown, etc.
+              setBluetoothEnabled(false);
+              Alert.alert(
+                "Bluetooth Não Disponível",
+                "O Bluetooth não está disponível neste dispositivo.",
+                [{ text: "OK" }]
+              );
+            }
+          } catch (error) {
+            console.error("Error checking Bluetooth state:", error);
+            Alert.alert(
+              "Erro",
+              "Não foi possível verificar o estado do Bluetooth.",
+              [{ text: "OK" }]
+            );
+          }
+        };
+
+        // Monitor Bluetooth state changes
+        const subscription = manager.onStateChange((state) => {
+          if (state === State.PoweredOn) {
+            setBluetoothEnabled(true);
+          } else if (state === State.PoweredOff) {
+            setBluetoothEnabled(false);
+            Alert.alert(
+              "Bluetooth Desativado",
+              "O Bluetooth foi desativado. Por favor, ative-o para continuar.",
+              [
+                { text: "Cancelar", style: "cancel" },
+                {
+                  text: "Abrir Configurações",
+                  onPress: () => Linking.openSettings(),
+                },
+              ]
+            );
+          }
+        }, true); // true = emit current state immediately
+
+        await checkBluetoothState();
+
+        return () => {
+          subscription.remove();
+        };
+      } catch (error) {
+        console.error("Error requesting permissions:", error);
+        Alert.alert(
+          "Erro",
+          "Não foi possível solicitar as permissões necessárias.",
+          [{ text: "OK" }]
+        );
+      }
+    };
+
+    requestPermissions();
   }, []);
 
   const fetchMeasures = async (scaleResult) => {
@@ -210,7 +375,15 @@ const ConnectScale = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    startScan();
+    if (permissionsGranted && bluetoothEnabled) {
+      startScan();
+    }
+    return () => {
+      manager.stopDeviceScan();
+    };
+  }, [permissionsGranted, bluetoothEnabled]);
+
+  useEffect(() => {
     return () => {
       manager.destroy();
     };
@@ -408,9 +581,9 @@ const ConnectScale = ({ navigation, route }) => {
               value={`${impedanceResult.idealWeight} kg`}
               emoji="🎯"
             />
-            <View style={localStyles.buttonContainer}>
-              <Button title="Salvar" onPress={saveScaleData} color="#4CAF50" />
-            </View>
+            <TouchableOpacity style={{...localStyles.buttonContainer, backgroundColor: '#28A745'}} onPress={saveScaleData}>
+              <Text onPress={saveScaleData} style={{color: 'white'}}>Salvar dados</Text>
+            </TouchableOpacity>
           </>
         )}
       </ScrollView>
