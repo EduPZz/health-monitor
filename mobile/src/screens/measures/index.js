@@ -3,8 +3,7 @@ import Layout from "../../components/layout";
 import MeasureForm from "./components/MeasureForm";
 import styles from "./styles.js";
 import api from "../../api/index.js";
-import { ActivityIndicator, View, Text } from "react-native";
-import { TouchableOpacity } from "react-native";
+import { ActivityIndicator, View, Text, Alert, TouchableOpacity } from "react-native";
 
 const measurementsModel = {
   chest: "",

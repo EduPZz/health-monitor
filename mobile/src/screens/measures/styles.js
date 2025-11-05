@@ -39,14 +39,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#5F5F5F",
     borderRadius: 8,
     padding: 10,
-    fontWeight: "bold",
-    textAlign: "center",
     marginBottom: 16,
-    width: 'fit-content',
-    margin: 24
+    marginHorizontal: 24,
+    alignItems: "center",
+    justifyContent: "center",
   },
   editButtonLabel: {
     color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
