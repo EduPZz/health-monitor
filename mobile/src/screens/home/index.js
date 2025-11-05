@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
-  Button,
   RefreshControl,
 } from "react-native";
 import {
@@ -17,6 +16,7 @@ import { Context } from "../../context/authContext";
 import Toast from "react-native-toast-message";
 import api from "../../api";
 import Notifications from "./notifications";
+import UserProfile from "./userProfile";
 import getInitials from "../../utils/getInitials";
 import SkeletonCard from "../../components/SkeletonCard";
 import useSocket from "../../hooks/useSocket";
@@ -33,8 +33,8 @@ const Home = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [companionRequests, setCompanionRequests] = useState([]);
   const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
+  const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
 
-  // Use the new home data hook
   const { data, loading, error, refreshData } = useHomeData();
 
   const onErrorToFetchUser = (error) => {
@@ -52,12 +52,14 @@ const Home = ({ navigation }) => {
   const disconnect = async () => {
     try {
       await logout();
+      
       Toast.show({
         type: "success",
         text1: "Desconectado",
         text2: "Você foi desconectado com sucesso.",
       });
-      navigation.navigate("Login");
+      // Note: Navigation to Login will be handled automatically by Routes component
+      // when it detects the loggedIn state change
     } catch (error) {
       console.error("Failed to disconnect", error);
       Toast.show({
@@ -175,12 +177,16 @@ const Home = ({ navigation }) => {
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#979797ff" barStyle="dark-content" />
       <View style={styles.divWelcome}>
-        <View style={styles.userInfo}>
+        <TouchableOpacity
+          style={styles.userInfo}
+          onPress={() => setIsUserProfileVisible(true)}
+          activeOpacity={0.7}
+        >
           <View style={styles.divUser}>
             <Text style={styles.initials}>{getInitials(userName)}</Text>
           </View>
           <Text style={{ fontWeight: "bold", fontSize: 16 }}>{userName}</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.bellContainer}
           onPress={() => setIsNotificationsVisible(true)}
@@ -211,7 +217,6 @@ const Home = ({ navigation }) => {
           renderDataCards()
         )}
 
-        <Button title="Desconectar" onPress={disconnect} />
       </ScrollView>
 
       <Notifications
@@ -222,6 +227,12 @@ const Home = ({ navigation }) => {
           setIsNotificationsVisible(false);
           fetchData();
         }}
+      />
+
+      <UserProfile
+        visible={isUserProfileVisible}
+        onClose={() => setIsUserProfileVisible(false)}
+        onLogout={disconnect}
       />
     </SafeAreaView>
   );

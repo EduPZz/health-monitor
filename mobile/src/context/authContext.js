@@ -78,11 +78,15 @@ const user = (onErrorToFetchUser) => {
   };
 };
 
-const logout = (afterLogoutAction) => {
-  return async () => {
+const logout = (dispatch) => {
+  return async (afterLogoutAction) => {
     try {
       await AsyncStorage.removeItem("accessToken");
-      afterLogoutAction();
+      delete api.defaults.headers.Authorization;
+      dispatch({ type: 'SET_AUTHENTICATED', payload: false });
+      if (afterLogoutAction) {
+        afterLogoutAction();
+      }
     } catch (error) {
       console.error("Failed to Loggout", error);
     }

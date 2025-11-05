@@ -80,7 +80,7 @@ const Login = ({ navigation }) => {
 
             <View style={loginStyle.inputWrapper}>
               <TextInput
-                style={[loginStyle.input, { flex: 1 }]}
+                style={[loginStyle.input, { flex: 1, color: "#000" }]}
                 placeholder="Sua senha mais segura"
                 value={senha}
                 onChangeText={setSenha}
