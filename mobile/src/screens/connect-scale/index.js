@@ -465,18 +465,33 @@ const ConnectScale = ({ navigation, route }) => {
       return;
     }
 
-    const sex = userSex === "male" || userSex === "female" ? userSex : "male";
+    let sex = userSex === "male" || userSex === "female" ? userSex : "male";
+    if (recipientData?.sex) {
+      sex = recipientData.sex
+    }
+    let heightNum = height < 10 ? Number(height * 100) : Number(height);
+
+    if (recipientData?.height) {
+      const recipientHeight = Number(recipientData.height);
+      heightNum = recipientHeight < 10 ? recipientHeight * 100 : recipientHeight;
+    }
+    let age = Number(userAge(userBirthDate));
+    if (recipientData?.age) {
+      age = Number(recipientData.age);
+    }
+
     console.log({
       weight: result?.weight,
       impedance: result?.impedance,
-      height: height < 10 ? Number(height * 100) : Number(height),
-      age: Number(userAge(userBirthDate)),
+      height: heightNum,
+      age,
+      sex,
     })
     const { fatMassToIdeal, ...calculated } = useImpedance({
       weight: result?.weight,
       impedance: result?.impedance,
-      height: height < 10 ? Number(height) * 100 : Number(height),
-      age: Number(userAge(userBirthDate)),
+      height: heightNum,
+      age,
       sex,
     });
     setImpedanceResult(calculated);

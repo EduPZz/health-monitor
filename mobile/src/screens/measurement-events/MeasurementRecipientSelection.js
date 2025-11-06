@@ -11,6 +11,8 @@ import Layout from "../../components/layout";
 import UserSearchModal from "../../components/UserSearchModal";
 import Icons from "../../components/Icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import CustomPicker from "../../components/CustomPicker";
+
 
 const MeasurementRecipientSelection = ({ navigation, route }) => {
   const eventId = route?.params?.eventId;
@@ -21,7 +23,16 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
     name: "",
     email: "",
     phone: "",
+    age: "",
+    sex: "",
+    height: "",
   });
+
+  const sexOptions = [
+    { label: "Masculino", value: "male" },
+    { label: "Feminino", value: "female" },
+  ];
+
 
   const goBack = () => navigation.goBack();
 
@@ -49,7 +60,10 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
       return (
         anonymousData.name.trim() !== "" &&
         anonymousData.email.trim() !== "" &&
-        anonymousData.phone.trim() !== ""
+        anonymousData.phone.trim() !== "" &&
+        anonymousData.age.trim() !== "" &&
+        anonymousData.height.trim() !== "" &&
+        anonymousData.sex.trim() !== ""
       );
     }
     return recipientType === "user" && selectedUser !== null;
@@ -82,7 +96,8 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
       <KeyboardAwareScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
-        extraHeight={100}
+        style={{ flex: 1 }}
+        extraHeight={400}
       >
         <Text style={styles.subtitle}>
           Quem está sendo medido?
@@ -170,7 +185,40 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
               placeholderTextColor="#999"
               keyboardType="phone-pad"
             />
+
+            <Text style={styles.label}>Altura (cm)*</Text>
+            <TextInput
+              style={styles.input}
+              value={anonymousData.height}
+              onChangeText={(value) =>
+                handleAnonymousInputChange("height", value)
+              }
+              placeholder="Altura em centímetros"
+              placeholderTextColor="#999"
+              keyboardType="decimal-pad"
+            />
+
+
+            <Text style={styles.label}>Idade *</Text>
+            <TextInput
+              style={styles.input}
+              value={anonymousData.age}
+              onChangeText={(value) =>
+                handleAnonymousInputChange("age", value)
+              }
+              placeholder="Idade em anos"
+              placeholderTextColor="#999"
+              keyboardType="number-pad"
+            />
+
+            <Text style={styles.label}>Sexo *</Text>
+            <CustomPicker
+              options={sexOptions}
+              selectedValue={anonymousData.sex}
+              onValueChange={(value) => handleAnonymousInputChange("sex", value)}
+            />
           </View>
+
         )}
 
         {recipientType === "user" && !selectedUser && (
@@ -207,7 +255,6 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 24,
   },
   subtitle: {
@@ -263,6 +310,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     marginBottom: 24,
+    flexGrow: 0,
   },
   formTitle: {
     fontSize: 18,

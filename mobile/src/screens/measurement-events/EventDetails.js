@@ -17,7 +17,7 @@ import Icons from "../../components/Icons";
 const getAnonymousUser = (measurement) => {
   const measuredUser = measurement?.measuredUser;
   const isAnonymous = measurement?.anonymous;
-  
+
   if (!isAnonymous) {
     return null;
   }
@@ -55,7 +55,7 @@ const MeasurementCard = ({ measurement }) => {
     <View style={styles.measurementCard}>
       <View style={styles.measurementHeader}>
         <View style={styles.measurementTypeContainer}>
-          <Icons.MaterialIcons
+          <Icons.FontAwesome6
             name={
               measurement.measurementType === "scale" ? "weight-scale" : "edit"
             }
