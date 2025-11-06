@@ -142,6 +142,8 @@ const ManualMeasurement = ({ navigation, route }) => {
         contentContainerStyle={localStyles.scroll}
         keyboardShouldPersistTaps="handled"
         extraHeight={100}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
       >
         <View style={localStyles.formContainer}>
           <Text style={localStyles.formTitle}>Preencha seus dados</Text>

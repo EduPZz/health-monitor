@@ -80,6 +80,8 @@ const AddMeasurementEvent = ({ navigation, route }) => {
         contentContainerStyle={styles.addContentContainer}
         keyboardShouldPersistTaps="handled"
         extraHeight={100}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
       >
         <View style={styles.addCard}>
           <Text style={styles.addCardTitle}>Informações do Evento</Text>

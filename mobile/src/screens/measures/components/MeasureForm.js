@@ -40,6 +40,8 @@ const MeasureForm = ({
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
         extraHeight={100}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
       >
         <Text style={styles.title}>{title}</Text>
 

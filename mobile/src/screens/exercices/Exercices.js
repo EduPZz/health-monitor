@@ -99,7 +99,12 @@ const Exercices = ({ navigation }) => {
   if (data.length === 0) {
     return (
       <Layout goBackFunction={goBack} title="Exercices">
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView
+          enableOnAndroid={true}
+          enableAutomaticScroll={true}
+          extraScrollHeight={100}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={{ alignItems: "center", justifyContent: "center" }}>
             <AddExerciseForm onAddExercise={fetchExercises} />
           </View>
@@ -235,7 +240,12 @@ const Exercices = ({ navigation }) => {
 
   return (
     <Layout goBackFunction={goBack} title="Exercícios">
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        extraScrollHeight={100}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <View style={ExercicesStyle.containerGrafico}>
             <Text style={ExercicesStyle.textTitles}>

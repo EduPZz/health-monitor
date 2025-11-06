@@ -128,7 +128,8 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
         style={{ flex: 1 }}
-        extraHeight={400}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
       >
         <Text style={styles.subtitle}>
           Quem está sendo medido?
