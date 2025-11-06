@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Layout from "../../components/layout";
 import {
   View,
@@ -50,6 +50,7 @@ const ConnectScale = ({ navigation, route }) => {
 
   const [userSex, setUserSex] = useState("");
   const [userBirthDate, setUserBirthDate] = useState("");
+  const userBirthDateRef = useRef("");
 
   const [formHeight, setFormHeight] = useState("");
   const [requestHeigh, setRequestHeight] = useState("");
@@ -58,28 +59,37 @@ const ConnectScale = ({ navigation, route }) => {
 
   const goBack = () => navigation.goBack();
 
-  const userAge = () => {
+  const userAge = (userBirthDate) => {
     if (!userBirthDate) return 0;
     const birthDate = new Date(userBirthDate);
     const today = new Date();
     return today.getFullYear() - birthDate.getFullYear();
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const {
-          data: { sex, birthDate },
-        } = await api.get("auth/profile");
-        setUserSex(sex);
-        setUserBirthDate(birthDate);
-      } catch (error) {
-        console.error("Failed to fetch profile", error);
-      }
-    };
+  const fetchUserData = async () => {
+    try {
+      const {
+        data: { sex, birthDate },
+      } = await api.get("auth/profile");
+      setUserSex(sex);
+      setUserBirthDate(birthDate);
+      userBirthDateRef.current = birthDate;
+    } catch (error) {
+      console.error("Failed to fetch profile", error);
+    }
+  };
 
+
+  useEffect(() => {
+    // Fetch user data on mount
     fetchUserData();
-  }, []);
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchUserData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   // Request permissions and check Bluetooth state
   useEffect(() => {
@@ -241,7 +251,7 @@ const ConnectScale = ({ navigation, route }) => {
     requestPermissions();
   }, []);
 
-  const fetchMeasures = async (scaleResult) => {
+  const fetchMeasures = async (userBirthDate, scaleResult) => {
     try {
       const { data } = await api.get("body-measure");
 
@@ -251,7 +261,7 @@ const ConnectScale = ({ navigation, route }) => {
 
       if (lastBodyMeasure?.height) {
         setRequestHeight(lastBodyMeasure.height.toString());
-        calculateBioimpedance(lastBodyMeasure.height.toString(), scaleResult);
+        calculateBioimpedance(userBirthDate, lastBodyMeasure.height.toString(), scaleResult);
         return;
       }
       setShowForm(true);
@@ -292,7 +302,8 @@ const ConnectScale = ({ navigation, route }) => {
               device.cancelConnection();
               softDisconnectDevice();
               manager.stopDeviceScan();
-              fetchMeasures(result);
+              // Use ref to get the current value (avoids closure issues)
+              fetchMeasures(userBirthDateRef.current, result);
             }
           }
         },
@@ -300,7 +311,6 @@ const ConnectScale = ({ navigation, route }) => {
         "indication"
       );
     } catch (error) {
-      console.log("startMonitoring error:", error);
       softDisconnectDevice();
     }
   };
@@ -446,7 +456,7 @@ const ConnectScale = ({ navigation, route }) => {
     }
   };
 
-  const calculateBioimpedance = (height, scaleResult = null) => {
+  const calculateBioimpedance = (userBirthDate, height, scaleResult = null) => {
     // Use the passed result or fall back to the last result from state
     const result = scaleResult || results[results.length - 1];
 
@@ -456,11 +466,17 @@ const ConnectScale = ({ navigation, route }) => {
     }
 
     const sex = userSex === "male" || userSex === "female" ? userSex : "male";
+    console.log({
+      weight: result?.weight,
+      impedance: result?.impedance,
+      height: height < 10 ? Number(height * 100) : Number(height),
+      age: Number(userAge(userBirthDate)),
+    })
     const { fatMassToIdeal, ...calculated } = useImpedance({
       weight: result?.weight,
       impedance: result?.impedance,
-      height: Number(height),
-      age: Number(userAge()),
+      height: height < 10 ? Number(height) * 100 : Number(height),
+      age: Number(userAge(userBirthDate)),
       sex,
     });
     setImpedanceResult(calculated);
@@ -518,7 +534,7 @@ const ConnectScale = ({ navigation, route }) => {
               }}
               disabled={!formHeight}
               onPress={() =>
-                calculateBioimpedance(formHeight, results[results.length - 1])
+                calculateBioimpedance(userBirthDate, formHeight, results[results.length - 1])
               }
             >
               <Text style={localStyles.buttonText}>Calcular</Text>
@@ -582,8 +598,8 @@ const ConnectScale = ({ navigation, route }) => {
               value={`${impedanceResult.idealWeight} kg`}
               emoji="🎯"
             />
-            <TouchableOpacity style={{...localStyles.buttonContainer, backgroundColor: '#28A745'}} onPress={saveScaleData}>
-              <Text onPress={saveScaleData} style={{color: 'white'}}>Salvar dados</Text>
+            <TouchableOpacity style={{ ...localStyles.buttonContainer, backgroundColor: '#28A745' }} onPress={saveScaleData}>
+              <Text onPress={saveScaleData} style={{ color: 'white' }}>Salvar dados</Text>
             </TouchableOpacity>
           </>
         )}

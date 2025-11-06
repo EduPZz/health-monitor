@@ -92,6 +92,15 @@ const Home = ({ navigation }) => {
     fetchData();
   }, []);
 
+  // Add focus listener to refresh data when returning to this screen
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData();
+      refreshData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useSocket({
     onCompanionRequest: (data) => {

@@ -77,9 +77,6 @@ const UpcomingConsultationsCard = ({ consultations, onPress, onAddNew }) => {
               <Text style={styles.daysUntil}>
                 {getDaysUntil(consultation.scheduleDate)}
               </Text>
-              <TouchableOpacity style={styles.viewButton}>
-                <Text style={styles.viewButtonText}>Ver</Text>
-              </TouchableOpacity>
             </View>
           </View>
         ))}
