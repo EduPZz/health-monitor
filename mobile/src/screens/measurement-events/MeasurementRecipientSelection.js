@@ -27,6 +27,11 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
     sex: "",
     height: "",
   });
+  const [userMeasurementData, setUserMeasurementData] = useState({
+    age: "",
+    sex: "",
+    height: "",
+  });
 
   const sexOptions = [
     { label: "Masculino", value: "male" },
@@ -46,11 +51,24 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
   const handleUserSelect = (user) => {
     setSelectedUser(user);
     setRecipientType("user");
+    // Reset user measurement data when selecting a new user
+    setUserMeasurementData({
+      age: "",
+      sex: "",
+      height: "",
+    });
   };
 
   const handleAnonymousInputChange = (field, value) => {
     setAnonymousData({
       ...anonymousData,
+      [field]: value,
+    });
+  };
+
+  const handleUserMeasurementInputChange = (field, value) => {
+    setUserMeasurementData({
+      ...userMeasurementData,
       [field]: value,
     });
   };
@@ -66,7 +84,15 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
         anonymousData.sex.trim() !== ""
       );
     }
-    return recipientType === "user" && selectedUser !== null;
+    if (recipientType === "user") {
+      return (
+        selectedUser !== null &&
+        userMeasurementData.age.trim() !== "" &&
+        userMeasurementData.height.trim() !== "" &&
+        userMeasurementData.sex.trim() !== ""
+      );
+    }
+    return false;
   };
 
   const handleContinue = () => {
@@ -75,7 +101,7 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
         "Erro",
         recipientType === "anonymous"
           ? "Por favor, preencha todos os campos."
-          : "Por favor, selecione um usuário."
+          : "Por favor, preencha todos os campos de medição."
       );
       return;
     }
@@ -87,7 +113,12 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
       recipientData:
         recipientType === "anonymous"
           ? anonymousData
-          : { userId: selectedUser.id },
+          : {
+              userId: selectedUser.id,
+              sex: userMeasurementData.sex,
+              height: userMeasurementData.height,
+              age: userMeasurementData.age,
+            },
     });
   };
 
@@ -231,6 +262,48 @@ const MeasurementRecipientSelection = ({ navigation, route }) => {
           </TouchableOpacity>
         )}
 
+        {recipientType === "user" && selectedUser && (
+          <View style={styles.formContainer}>
+            <Text style={styles.formTitle}>Dados para Medição</Text>
+            <Text style={styles.formSubtitle}>
+              Informe os dados de {selectedUser.name} para a medição
+            </Text>
+
+            <Text style={styles.label}>Altura (cm) *</Text>
+            <TextInput
+              style={styles.input}
+              value={userMeasurementData.height}
+              onChangeText={(value) =>
+                handleUserMeasurementInputChange("height", value)
+              }
+              placeholder="Altura em centímetros"
+              placeholderTextColor="#999"
+              keyboardType="decimal-pad"
+            />
+
+            <Text style={styles.label}>Idade *</Text>
+            <TextInput
+              style={styles.input}
+              value={userMeasurementData.age}
+              onChangeText={(value) =>
+                handleUserMeasurementInputChange("age", value)
+              }
+              placeholder="Idade em anos"
+              placeholderTextColor="#999"
+              keyboardType="number-pad"
+            />
+
+            <Text style={styles.label}>Sexo *</Text>
+            <CustomPicker
+              options={sexOptions}
+              selectedValue={userMeasurementData.sex}
+              onValueChange={(value) =>
+                handleUserMeasurementInputChange("sex", value)
+              }
+            />
+          </View>
+        )}
+
         <TouchableOpacity
           style={[
             styles.continueButton,
@@ -316,6 +389,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#22313F",
+    marginBottom: 8,
+  },
+  formSubtitle: {
+    fontSize: 14,
+    color: "#666",
     marginBottom: 16,
   },
   label: {
