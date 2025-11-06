@@ -259,8 +259,8 @@ const ConnectScale = ({ navigation, route }) => {
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       )[0];
 
-      if (lastBodyMeasure?.height) {
-        setRequestHeight(lastBodyMeasure.height.toString());
+      if (lastBodyMeasure?.height || recipientData?.height) {
+        setRequestHeight(recipientData?.height.toString() || lastBodyMeasure.height.toString());
         calculateBioimpedance(userBirthDate, lastBodyMeasure.height.toString(), scaleResult);
         return;
       }
